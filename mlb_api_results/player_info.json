@@ -1,0 +1,55 @@
+{
+    "copyright": "Copyright 2025 MLB Advanced Media, L.P.  Use of any content on this page acknowledges agreement to the terms posted here http://gdx.mlb.com/components/copyright.txt",
+    "people": [
+        {
+            "id": 545361,
+            "fullName": "Mike Trout",
+            "link": "/api/v1/people/545361",
+            "firstName": "Michael",
+            "lastName": "Trout",
+            "primaryNumber": "27",
+            "birthDate": "1991-08-07",
+            "currentAge": 33,
+            "birthCity": "Vineland",
+            "birthStateProvince": "NJ",
+            "birthCountry": "USA",
+            "height": "6' 2\"",
+            "weight": 235,
+            "active": true,
+            "primaryPosition": {
+                "code": "8",
+                "name": "Outfielder",
+                "type": "Outfielder",
+                "abbreviation": "CF"
+            },
+            "useName": "Mike",
+            "useLastName": "Trout",
+            "middleName": "Nelson",
+            "boxscoreName": "Trout",
+            "nickName": "Kiiiiid",
+            "gender": "M",
+            "isPlayer": true,
+            "isVerified": true,
+            "draftYear": 2009,
+            "mlbDebutDate": "2011-07-08",
+            "batSide": {
+                "code": "R",
+                "description": "Right"
+            },
+            "pitchHand": {
+                "code": "R",
+                "description": "Right"
+            },
+            "nameFirstLast": "Mike Trout",
+            "nameSlug": "mike-trout-545361",
+            "firstLastName": "Mike Trout",
+            "lastFirstName": "Trout, Mike",
+            "lastInitName": "Trout, M",
+            "initLastName": "M Trout",
+            "fullFMLName": "Michael Nelson Trout",
+            "fullLFMName": "Trout, Michael Nelson",
+            "strikeZoneTop": 3.49,
+            "strikeZoneBottom": 1.6
+        }
+    ]
+}
