@@ -89,8 +89,11 @@ def save_to_file(data, filename):
 
 
 def automate_tests():
-    """Prueba automática de los endpoints relevantes con manejo de errores robusto."""
+    print("\033[93m--- Proyecto hackMLB-x-Google-Cloud iniciado ---\033[0m")
+    print("\033[94m=== Iniciando pruebas automáticas de la MLB API ===\033[0m")
     api = MLBAPI()
+
+    print("\033[95m*** CARGANDO INFORMACIÓN DESDE MLB API ***\033[0m")
 
     # Crear directorio para los resultados
     output_dir = "mlb_api_results"
@@ -99,7 +102,7 @@ def automate_tests():
     # 1. Obtener el calendario de la temporada
     schedule_data = api.get_season_schedule()
     if schedule_data is None:
-        print("Error al obtener el calendario de la temporada.")
+        print("\033[91m[ERROR]\033[0m Error al obtener el calendario de la temporada.")
     save_to_file(schedule_data, os.path.join(output_dir, "season_schedule.json"))
 
     # Extraer un game_pk para usarlo en pruebas posteriores
@@ -138,7 +141,9 @@ def automate_tests():
         print("Error al obtener la información del jugador.")
     save_to_file(player_data, os.path.join(output_dir, "player_info.json"))
 
-    print("\nPruebas completadas. Archivos generados en el directorio:", output_dir)
+    print("\033[96m*** EJECUCIÓN FINALIZADA ***\033[0m")
+    print("\033[97mCreado por entusiastas del béisbol y la tecnología.\033[0m")
+    print("\033[92mPruebas completadas. Archivos generados en el directorio:\033[0m", output_dir)
 
 
 if __name__ == "__main__":
