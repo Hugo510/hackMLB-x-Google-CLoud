@@ -1,5 +1,5 @@
-import { firestore } from "../../config/database";
-import logger from "../../config/logger";
+import { firestore } from "../../config/database.js";
+import logger from "../../config/logger.js";
 import { z } from "zod";
 
 // Definir el esquema de validación de eventos de juegos

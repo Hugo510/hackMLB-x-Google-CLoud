@@ -1,5 +1,5 @@
-import { database } from "../../config/database";
-import logger from "../../config/logger";
+import { database } from "../../config/database.js";
+import logger from "../../config/logger.js";
 import { z } from "zod";
 
 // Definir el esquema de validación de preferencias

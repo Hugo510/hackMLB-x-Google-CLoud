@@ -2,17 +2,17 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import { config } from "./config";
+import { config } from "./config/index.js";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import compression from "compression";
 import winston from "winston";
-import userRoutes from "./routes/userRoutes";
-import gameRoutes from "./routes/gameRoutes";
-import eventRoutes from "./routes/eventRoutes";
-import summaryRoutes from "./routes/summaryRoutes";
-import { errorHandler } from "./middleware/errorHandler";
+import userRoutes from "./routes/userRoutes.js";
+import gameRoutes from "./routes/gameRoutes.js";
+import eventRoutes from "./routes/eventRoutes.js";
+import summaryRoutes from "./routes/summaryRoutes.js";
+import { errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
 

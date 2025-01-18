@@ -1,15 +1,15 @@
 import dotenv from "dotenv";
 import Joi from "joi";
-import { ENV_VARS } from "./env";
+import { ENV_VARS } from "./env.js";
 import {
   storage,
   translate,
   speechClient,
   videoIntelligenceClient,
-} from "./googleCloud";
-import { spanner, firestore, database } from "./database";
-import { generateToken, verifyToken } from "./auth";
-import redis from "./redis";
+} from "./googleCloud.js";
+import { spanner, firestore, database } from "./database.js";
+import { generateToken, verifyToken } from "./auth.js";
+import redis from "./redis.js";
 
 dotenv.config();
 
@@ -23,6 +23,7 @@ const envSchema = Joi.object({
   REDIS_HOST: Joi.string().required(),
   REDIS_PORT: Joi.number().default(6379),
   REDIS_PASSWORD: Joi.string().optional(),
+  REDIS_DEFAULT_EXPIRATION: Joi.number().default(3600),
   // ...existing code...
 }).unknown(true);
 
@@ -41,6 +42,7 @@ export const config = {
   redisHost: value.REDIS_HOST,
   redisPort: value.REDIS_PORT,
   redisPassword: value.REDIS_PASSWORD,
+  redisDefaultExpiration: value.REDIS_DEFAULT_EXPIRATION,
   // ...existing code...
 };
 
