@@ -1,5 +1,7 @@
-import dotenv from "dotenv";
-dotenv.config();
+import dotenvSafe from "dotenv-safe";
+dotenvSafe.config({
+  allowEmptyValues: false,
+});
 
 import express from "express";
 import { config } from "./config/index";
@@ -8,11 +10,12 @@ import helmet from "helmet";
 import morgan from "morgan";
 import compression from "compression";
 import winston from "winston";
-import userRoutes from "./routes/userRoutes.js";
-import gameRoutes from "./routes/gameRoutes.js";
-import eventRoutes from "./routes/eventRoutes.js";
-import summaryRoutes from "./routes/summaryRoutes.js";
-import { errorHandler } from "./middleware/errorHandler.js";
+import userRoutes from "./routes/userRoutes";
+import gameRoutes from "./routes/gameRoutes";
+import eventRoutes from "./routes/eventRoutes";
+import summaryRoutes from "./routes/summaryRoutes";
+import preferencesRoutes from "./routes/preferencesRoutes"; // Importar rutas de preferencias
+import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
 
@@ -34,6 +37,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/games", gameRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/summaries", summaryRoutes);
+app.use("/api/preferences", preferencesRoutes); // Usar rutas de preferencias
 
 // Middleware de manejo de errores
 app.use(errorHandler);

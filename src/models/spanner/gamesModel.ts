@@ -14,7 +14,7 @@ const gameSchema = z.object({
   updated_at: z.string().optional(),
 });
 
-type Game = z.infer<typeof gameSchema>;
+export type Game = z.infer<typeof gameSchema>;
 
 const getGameById = async (gameId: string): Promise<Game | null> => {
   try {
@@ -113,4 +113,21 @@ const updateGame = async (
   }
 };
 
-export { getGameById, getGamesBySeason, createGame, updateGame };
+const deleteGame = async (gameId: string): Promise<void> => {
+  try {
+    const query = `
+      DELETE FROM Games
+      WHERE id = @gameId
+    `;
+    await database.run({
+      sql: query,
+      params: { gameId },
+    });
+    logger.info(`Juego eliminado con ID: ${gameId}`);
+  } catch (error) {
+    logger.error(`Error eliminando juego: ${error}`);
+    throw new Error("Error al eliminar el juego.");
+  }
+};
+
+export { getGameById, getGamesBySeason, createGame, updateGame, deleteGame };

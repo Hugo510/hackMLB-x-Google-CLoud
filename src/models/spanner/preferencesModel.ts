@@ -9,7 +9,7 @@ const preferencesSchema = z.object({
   updated_at: z.string().optional(),
 });
 
-type Preferences = z.infer<typeof preferencesSchema>;
+export type Preferences = z.infer<typeof preferencesSchema>;
 
 const getPreferencesByUserId = async (
   userId: string
@@ -50,4 +50,15 @@ const setPreferences = async (
   }
 };
 
-export { getPreferencesByUserId, setPreferences };
+const deletePreferences = async (userId: string): Promise<void> => {
+  try {
+    const query = `DELETE FROM Preferences WHERE user_id = @userId`;
+    await database.run({ sql: query, params: { userId } });
+    logger.info(`Preferencias eliminadas para el usuario ID: ${userId}`);
+  } catch (error) {
+    logger.error(`Error eliminando preferencias: ${error}`);
+    throw new Error("Error al eliminar las preferencias.");
+  }
+};
+
+export { getPreferencesByUserId, setPreferences, deletePreferences };

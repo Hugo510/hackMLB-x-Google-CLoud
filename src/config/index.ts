@@ -1,6 +1,4 @@
 import Joi from "joi";
-import dotenv from "dotenv";
-dotenv.config();
 import { ENV_VARS } from "./env";
 import {
   storage,
@@ -8,15 +6,17 @@ import {
   speechClient,
   videoIntelligenceClient,
 } from "./googleCloud";
-import { spanner, firestore, database } from "./database";
+// Evitar importar módulos que a su vez importen config/index.ts
+// Por ejemplo, si database.ts importa config/index.ts, no importar database aquí
+// import { someModule } from "../someModule"; // Asegúrate de no tener importaciones problemáticas
 import { generateToken, verifyToken } from "./auth";
-import redis from "./redis";
+/* import redis from "./redis"; */
 
 const envSchema = Joi.object({
   PORT: Joi.number().default(3000),
   JWT_SECRET: Joi.string().required(),
   GCLOUD_PROJECT_ID: Joi.string().required(),
-  GCLOUD_KEYFILE: Joi.string().required(),
+  GCLOUD_KEYFILE_PATH: Joi.string().required(),
   SPANNER_INSTANCE_ID: Joi.string().required(),
   SPANNER_DATABASE_ID: Joi.string().required(),
   REDIS_HOST: Joi.string().required(),
@@ -35,7 +35,7 @@ export const config = {
   port: value.PORT,
   jwtSecret: value.JWT_SECRET,
   gcloudProjectId: value.GCLOUD_PROJECT_ID,
-  gcloudKeyfile: value.GCLOUD_KEYFILE,
+  gcloudKeyfilePath: value.GCLOUD_KEYFILE_PATH,
   spannerInstanceId: value.SPANNER_INSTANCE_ID,
   spannerDatabaseId: value.SPANNER_DATABASE_ID,
   redisHost: value.REDIS_HOST,
@@ -50,10 +50,6 @@ export {
   translate,
   speechClient,
   videoIntelligenceClient,
-  spanner,
-  firestore,
-  database,
   generateToken,
   verifyToken,
-  redis,
 };
