@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 // Importar the screens to show
 import Login from '../screens/login';
+import TabNav from './tabNavigation';
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,7 @@ function Router() {
         {/* define the initial route in the screen*/}
       <Stack.Navigator initialRouteName='Login'> 
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
+        <Stack.Screen name="TabNavigator" component={TabNav} options={{headerShown: false}}/>
 
       </Stack.Navigator>
     </NavigationContainer>
