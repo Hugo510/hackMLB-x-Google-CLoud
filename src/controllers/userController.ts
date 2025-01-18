@@ -13,8 +13,16 @@ import bcrypt from "bcrypt";
 import { User } from "../models/spanner/usersModel";
 import { body, validationResult } from "express-validator";
 
+// Extender la interfaz Request para incluir la propiedad user
+interface AuthenticatedRequest extends Request {
+  user?: {
+    id: string;
+    email: string;
+  };
+}
+
 export const getAllUsersController = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response
 ): Promise<void> => {
   try {
@@ -26,7 +34,7 @@ export const getAllUsersController = async (
 };
 
 export const getUserDetailsController = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response
 ): Promise<void> => {
   try {
@@ -54,7 +62,7 @@ export const getUserDetailsController = async (
 };
 
 export const createUserController = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response
 ): Promise<void> => {
   try {
@@ -67,7 +75,7 @@ export const createUserController = async (
 };
 
 export const updateUserController = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response
 ): Promise<void> => {
   try {
@@ -93,7 +101,7 @@ export const updateUserController = async (
 };
 
 export const deleteUserController = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response
 ): Promise<void> => {
   try {
@@ -127,7 +135,7 @@ const validateLogin = [
 
 export const signup = [
   ...validateSignup,
-  async (req: Request, res: Response): Promise<void> => {
+  async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     try {
       // Validar entrada
       const errors = validationResult(req);
@@ -166,7 +174,7 @@ export const signup = [
 
 export const login = [
   ...validateLogin,
-  async (req: Request, res: Response): Promise<void> => {
+  async (req: AuthenticatedRequest, res: Response): Promise<void> => {
     try {
       // Validar entrada
       const errors = validationResult(req);

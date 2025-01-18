@@ -21,7 +21,7 @@ const envSchema = Joi.object({
   SPANNER_DATABASE_ID: Joi.string().required(),
   REDIS_HOST: Joi.string().required(),
   REDIS_PORT: Joi.number().default(6379),
-  REDIS_PASSWORD: Joi.string().optional(),
+  REDIS_PASSWORD: Joi.string().allow("").optional(), // Permitir que sea vacío u opcional
   REDIS_DEFAULT_EXPIRATION: Joi.number().default(3600),
   // ...existing code...
 }).unknown(true);

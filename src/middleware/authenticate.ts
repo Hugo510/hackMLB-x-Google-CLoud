@@ -2,8 +2,16 @@ import { Request, Response, NextFunction } from "express";
 import { verifyToken } from "../config/auth";
 import redis from "../config/redis";
 
+// Extender la interfaz Request para incluir la propiedad user
+interface AuthenticatedRequest extends Request {
+  user?: {
+    id: string;
+    email: string;
+  };
+}
+
 export const authenticate = async (
-  req: Request,
+  req: AuthenticatedRequest,
   res: Response,
   next: NextFunction
 ): Promise<void> => {

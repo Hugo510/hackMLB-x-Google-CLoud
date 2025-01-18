@@ -3,8 +3,8 @@ import { Firestore } from "@google-cloud/firestore";
 import { config } from "./index";
 
 // Agregar log para verificar que config.gcloudProjectId y config.gcloudKeyfilePath están definidos
-console.log("gcloudProjectId:", config.gcloudProjectId);
-console.log("GCLOUD_KEYFILE_PATH:", config.gcloudKeyfilePath);
+/* console.log("gcloudProjectId:", config.gcloudProjectId);
+console.log("GCLOUD_KEYFILE_PATH:", config.gcloudKeyfilePath); */
 
 const spanner = new Spanner({
   projectId: config.gcloudProjectId,
