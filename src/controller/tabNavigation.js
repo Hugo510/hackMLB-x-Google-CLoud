@@ -13,7 +13,8 @@ import { TabNavigator } from '../components/navigation'
  import Players from '../screensTab/players'
  import Profile from '../screensTab/profile'
 
-
+// Import TopBar
+import TopBar from '../components/TopBar';
 
 const Tab = createBottomTabNavigator()
 
@@ -82,7 +83,7 @@ const TabNav = () => {
                 }}
             >
                 {
-                    tabs.map((item, index) => 
+                    tabs.map((item,) => 
                         <Tab.Screen
                             key={item.id}
                             name={item.screen}
@@ -90,7 +91,7 @@ const TabNav = () => {
                             options={{
                                 tabBarShowLabel: false,
                                 tabBarButton: (props) => <TabNavigator item={item} {...props} />
-                            }}
+                                }}
                         />
                     )
                 }
