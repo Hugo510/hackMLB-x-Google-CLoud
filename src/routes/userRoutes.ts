@@ -28,7 +28,7 @@ router.post("/signup", authLimiter, signup);
 router.post("/login", authLimiter, login);
 
 // Definir rutas de usuarios protegidas
-router.get("/", authenticate, getAllUsersController);
+router.get("/", /* authenticate, */ getAllUsersController);
 router.get("/:userId", authenticate, getUserDetailsController);
 router.post("/", createUserController);
 router.put("/:userId", authenticate, updateUserController);

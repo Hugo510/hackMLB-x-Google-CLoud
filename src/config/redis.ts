@@ -13,14 +13,14 @@ if (config.redisPassword) {
   redisOptions.password = config.redisPassword;
 }
 
-const redis = new Redis(redisOptions);
+// const redis = new Redis(redisOptions); // Comentar la conexión a Redis
 
 const DEFAULT_EXPIRATION = config.redisDefaultExpiration;
 
 // Función para establecer una clave con expiración
 const setWithExpiration = async (key: string, value: string) => {
   try {
-    await redis.set(key, value, "EX", DEFAULT_EXPIRATION);
+    // await redis.set(key, value, "EX", DEFAULT_EXPIRATION); // Comentar la operación de Redis
     redisDebug(`Clave ${key} establecida con éxito en Redis`);
   } catch (err) {
     redisDebug(
@@ -31,6 +31,7 @@ const setWithExpiration = async (key: string, value: string) => {
   }
 };
 
+/*
 redis.on("connect", () => {
   redisDebug("Conectado a Redis");
   console.log("Conectado a Redis");
@@ -50,5 +51,6 @@ redis.on("end", () => {
   redisDebug("Conexión a Redis cerrada");
   console.log("Conexión a Redis cerrada");
 });
+*/
 
-export default redis;
+export default {}; // Exportar un objeto vacío temporalmente

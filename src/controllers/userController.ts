@@ -8,7 +8,7 @@ import {
   fetchGetUserByEmail,
 } from "../services/userService";
 import { generateToken } from "../config/auth";
-import redis from "../config/redis";
+// import redis from "../config/redis"; // Comentar la importación de Redis
 import bcrypt from "bcrypt";
 import { User } from "../models/spanner/usersModel";
 import { body, validationResult } from "express-validator";
@@ -41,10 +41,10 @@ export const getUserDetailsController = async (
     const { userId } = req.params;
 
     // Verificar si el usuario está en caché
-    const cachedUser = await redis.get(`user:${userId}`);
-    if (cachedUser) {
-      res.status(200).json(JSON.parse(cachedUser));
-    }
+    // const cachedUser = await redis.get(`user:${userId}`);
+    // if (cachedUser) {
+    //   res.status(200).json(JSON.parse(cachedUser));
+    // }
 
     const user = await fetchUserDetails(userId);
     if (!user) {
@@ -53,7 +53,7 @@ export const getUserDetailsController = async (
     }
 
     // Almacenar el usuario en caché
-    await redis.set(`user:${userId}`, JSON.stringify(user), "EX", 60 * 60); // Expira en 1 hora
+    // await redis.set(`user:${userId}`, JSON.stringify(user), "EX", 60 * 60); // Expira en 1 hora
 
     res.status(200).json(user);
   } catch (error) {
@@ -86,12 +86,12 @@ export const updateUserController = async (
     // Actualizar el usuario en caché
     const updatedUser = await fetchUserDetails(userId);
     if (updatedUser) {
-      await redis.set(
-        `user:${userId}`,
-        JSON.stringify(updatedUser),
-        "EX",
-        60 * 60
-      ); // Expira en 1 hora
+      // await redis.set(
+      //   `user:${userId}`,
+      //   JSON.stringify(updatedUser),
+      //   "EX",
+      //   60 * 60
+      // ); // Expira en 1 hora
     }
 
     res.status(200).json({ message: "Usuario actualizado exitosamente" });
@@ -109,7 +109,7 @@ export const deleteUserController = async (
     await fetchDeleteUser(userId);
 
     // Eliminar el usuario del caché
-    await redis.del(`user:${userId}`);
+    // await redis.del(`user:${userId}`);
 
     res.status(200).json({ message: "Usuario eliminado exitosamente" });
   } catch (error) {
@@ -203,7 +203,7 @@ export const login = [
       const token = generateToken(user!);
 
       // Almacenar el token en Redis
-      await redis.set(`user:${user.id}:token`, token, "EX", 60 * 60 * 24); // Expira en 24 horas
+      // await redis.set(`user:${user.id}:token`, token, "EX", 60 * 60 * 24); // Expira en 24 horas
 
       res.status(200).json({ message: "Inicio de sesión exitoso", token });
     } catch (error) {

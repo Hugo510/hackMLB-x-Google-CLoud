@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyToken } from "../config/auth";
-import redis from "../config/redis";
+/* import redis from "../config/redis"; */
 
 // Extender la interfaz Request para incluir la propiedad user
 interface AuthenticatedRequest extends Request {
@@ -26,11 +26,11 @@ export const authenticate = async (
     const decoded: any = verifyToken(token);
 
     // Verificar si el token existe en Redis
-    const storedToken = await redis.get(`user:${decoded.id}:token`);
+    /* const storedToken = await redis.get(`user:${decoded.id}:token`);
     if (storedToken !== token) {
       res.status(401).json({ message: "Token inválido o expirado" });
       return;
-    }
+    } */
 
     // Adjuntar información del usuario a la solicitud
     req.user = { id: decoded.id, email: decoded.email };
