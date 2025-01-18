@@ -1,17 +1,16 @@
-import dotenv from "dotenv";
 import Joi from "joi";
-import { ENV_VARS } from "./env.js";
+import dotenv from "dotenv";
+dotenv.config();
+import { ENV_VARS } from "./env";
 import {
   storage,
   translate,
   speechClient,
   videoIntelligenceClient,
-} from "./googleCloud.js";
-import { spanner, firestore, database } from "./database.js";
-import { generateToken, verifyToken } from "./auth.js";
-import redis from "./redis.js";
-
-dotenv.config();
+} from "./googleCloud";
+import { spanner, firestore, database } from "./database";
+import { generateToken, verifyToken } from "./auth";
+import redis from "./redis";
 
 const envSchema = Joi.object({
   PORT: Joi.number().default(3000),

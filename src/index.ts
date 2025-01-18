@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import { config } from "./config/index.js";
+import { config } from "./config/index";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
