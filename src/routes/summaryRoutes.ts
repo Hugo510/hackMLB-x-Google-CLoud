@@ -1,11 +1,16 @@
 import { Router } from "express";
-// ...importar controladores...
+import {
+  getSummariesController,
+  createSummaryController,
+} from "../controllers/summariesController";
+import { authenticate } from "../middleware/authenticate";
 
 const router = Router();
 
-// Definir rutas de resúmenes
-router.get("/" /* controlador */);
-router.post("/" /* controlador */);
-// ...otras rutas...
+// Rutas protegidas para resúmenes
+router.get("/user/:userId", authenticate, getSummariesController);
+router.post("/", authenticate, createSummaryController);
+
+// ...otras rutas si son necesarias...
 
 export default router;

@@ -46,4 +46,4 @@ const createSummary = async (
   }
 };
 
-export { getSummariesByUserId, createSummary };
+export { getSummariesByUserId, createSummary, Summary }; // Exportar Summary

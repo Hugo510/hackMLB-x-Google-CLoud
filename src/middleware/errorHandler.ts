@@ -8,7 +8,7 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ): void => {
-  // Loguear el error
+  // Loguear el error completo
   logger.error(err.stack || err.message || err);
 
   // Determinar el tipo de error y establecer el código de estado
@@ -17,7 +17,7 @@ export const errorHandler = (
 
   res.status(statusCode).json({
     message,
-    // Solo incluir detalles del error en el entorno de desarrollo
+    // Incluir stack trace solo en desarrollo
     ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
   });
 };
