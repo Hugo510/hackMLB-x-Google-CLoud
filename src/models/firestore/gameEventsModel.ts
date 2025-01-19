@@ -37,8 +37,8 @@ const addGameEvent = async (event: Omit<GameEvent, "id">): Promise<void> => {
     logger.info(`Evento de juego añadido para el gameId: ${event.gameId}`);
   } catch (error) {
     logger.error(`Error añadiendo evento de juego: ${error}`);
-    throw new Error("Error al añadir el evento de juego.");
+    throw new Error(`Error al añadir el evento de juego.`);
   }
 };
 
-export { getGameEvents, addGameEvent };
+export { getGameEvents, addGameEvent, GameEvent }; // Exportar GameEvent

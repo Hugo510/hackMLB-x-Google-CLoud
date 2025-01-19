@@ -1,12 +1,23 @@
 import { Request, Response, NextFunction } from "express";
+import logger from "../config/logger";
 
+// Middleware de manejo de errores centralizado
 export const errorHandler = (
-  err: Error,
+  err: any,
   req: Request,
   res: Response,
   next: NextFunction
-) => {
-  // Log del error
-  console.error(err.stack);
-  res.status(500).json({ error: "Internal Server Error" });
+): void => {
+  // Loguear el error
+  logger.error(err.stack || err.message || err);
+
+  // Determinar el tipo de error y establecer el código de estado
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Error interno del servidor";
+
+  res.status(statusCode).json({
+    message,
+    // Solo incluir detalles del error en el entorno de desarrollo
+    ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
+  });
 };

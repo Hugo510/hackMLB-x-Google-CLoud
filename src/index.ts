@@ -14,7 +14,7 @@ import userRoutes from "./routes/userRoutes";
 import gameRoutes from "./routes/gameRoutes";
 import eventRoutes from "./routes/eventRoutes";
 import summaryRoutes from "./routes/summaryRoutes";
-import preferencesRoutes from "./routes/preferencesRoutes"; // Importar rutas de preferencias
+import gameEventsRoutes from "./routes/gameEventsRoutes"; // Importar rutas de eventos de juego
 import { errorHandler } from "./middleware/errorHandler";
 
 const app = express();
@@ -37,7 +37,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/games", gameRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/summaries", summaryRoutes);
-app.use("/api/preferences", preferencesRoutes); // Usar rutas de preferencias
+app.use("/api/game-events", gameEventsRoutes); // Usar rutas de eventos de juego
 
 // Middleware de manejo de errores
 app.use(errorHandler);
