@@ -1,0 +1,34 @@
+
+# Ignorar dependencias de Node.js
+node_modules
+npm-debug.log
+yarn-error.log
+
+# Ignorar archivos de construcción
+dist
+build
+
+# Ignorar archivos de configuración local
+.env
+.env.*
+!.env.example
+
+# Ignorar control de versiones
+.git
+.gitignore
+.gitattributes
+
+# Ignorar archivos de Docker
+Dockerfile
+docker-compose.yml
+
+# Ignorar archivos temporales y logs
+logs
+*.log
+tmp
+temp
+
+# Ignorar otros archivos innecesarios
+.vscode
+.idea
+*.tsbuildinfo
