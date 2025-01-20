@@ -18,11 +18,3 @@ Proporciona ejemplos de cómo utilizar la aplicación:
 ```bash
 npm run dev
 ```
-
-## Contribuciones
-
-Las contribuciones son bienvenidas. Por favor, abre un issue o envía un pull request.
-
-## Licencia
-
-Este proyecto está licenciado bajo la Licencia MIT.
