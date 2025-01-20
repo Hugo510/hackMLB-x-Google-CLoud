@@ -1,38 +1,35 @@
-import { firestore } from "../../config/database";
+import { firestore, database } from "../../config/database";
 import logger from "../../config/logger";
 import { z } from "zod";
+import { FieldValue, Timestamp } from "firebase-admin/firestore"; // Importar FieldValue y Timestamp
 
 // Definir el esquema de validación de eventos de juegos
 const gameEventSchema = z.object({
   id: z.string().optional(),
   gameId: z.string(),
   eventType: z.string(),
-  timestamp: z.date(),
-  details: z.record(z.any()),
+  timestamp: z.instanceof(Timestamp).optional(), // Usar Timestamp en lugar de Date
+  details: z.record(z.any()).optional(),
 });
 
 type GameEvent = z.infer<typeof gameEventSchema>;
 
-const getGameEvents = async (gameId: string): Promise<GameEvent[]> => {
+const getGameEvents = async (
+  gameId: string,
+  limitEvents = 10
+): Promise<GameEvent[]> => {
   try {
+    logger.info("gameId", gameId);
     const snapshot = await firestore
       .collection("gameEvents")
-      // Eliminar cualquier filtrado para devolver todos los documentos
+      .where("gameId", "==", gameId)
+      /* .orderBy("timestamp", "desc") */ // Ordenar por timestamp
+      .limit(limitEvents)
       .get();
 
     if (snapshot.empty) {
-      logger.info(
-        "La colección 'gameEvents' no existe o está vacía. Creando documento placeholder..."
-      );
-      console.log(`No se encontraron eventos para gameId: ${gameId}`);
-      await firestore.collection("gameEvents").add({
-        gameId: "placeholder",
-        eventType: "placeholder",
-        timestamp: new Date(),
-        details: { placeholder: true },
-      });
-      // Reintentar la consulta después de crear el documento
-      return []; // o relanzar la consulta si deseas obtener los nuevos documentos
+      logger.info("La colección 'gameEvents' no existe o está vacía.");
+      return [];
     }
 
     return snapshot.docs.map((doc) => {
@@ -47,10 +44,15 @@ const getGameEvents = async (gameId: string): Promise<GameEvent[]> => {
   }
 };
 
-const addGameEvent = async (event: Omit<GameEvent, "id">): Promise<void> => {
+const addGameEvent = async (
+  event: Omit<GameEvent, "id" | "timestamp">
+): Promise<void> => {
   try {
     const eventData = gameEventSchema.parse(event);
-    await firestore.collection("gameEvents").add(eventData);
+    await firestore.collection("gameEvents").add({
+      ...eventData,
+      timestamp: FieldValue.serverTimestamp(), // Usar serverTimestamp
+    });
     logger.info(`Evento de juego añadido para el gameId: ${event.gameId}`);
   } catch (error) {
     logger.error(`Error añadiendo evento de juego: ${error}`);
@@ -60,4 +62,4 @@ const addGameEvent = async (event: Omit<GameEvent, "id">): Promise<void> => {
   }
 };
 
-export { getGameEvents, addGameEvent, GameEvent }; // Exportar GameEvent
+export { getGameEvents, addGameEvent, GameEvent };
