@@ -1,4 +1,5 @@
-export const formatData = (data) => {
+/* export const formatData = (data) => {
   // ...existing code...
   return data;
 };
+ */
