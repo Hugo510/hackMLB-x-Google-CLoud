@@ -16,27 +16,43 @@ type GameEvent = z.infer<typeof gameEventSchema>;
 
 const getGameEvents = async (
   gameId: string,
-  limitEvents = 10
-): Promise<GameEvent[]> => {
+  limitEvents = 10,
+  lastTimestamp?: Timestamp
+): Promise<{ events: GameEvent[]; lastTimestamp?: Timestamp }> => {
   try {
-    logger.info("gameId", gameId);
-    const snapshot = await firestore
+    let query = firestore
       .collection("gameEvents")
       .where("gameId", "==", gameId)
-      /* .orderBy("timestamp", "desc") */ // Ordenar por timestamp
-      .limit(limitEvents)
-      .get();
+      /* .orderBy("timestamp", "desc") */
+      .limit(limitEvents);
+
+    if (lastTimestamp) {
+      query = query.startAfter(lastTimestamp);
+    }
+
+    const snapshot = await query.get();
 
     if (snapshot.empty) {
       logger.info("La colección 'gameEvents' no existe o está vacía.");
-      return [];
+      return { events: [] };
     }
 
-    return snapshot.docs.map((doc) => {
+    const events: GameEvent[] = snapshot.docs.map((doc) => {
       const data = gameEventSchema.parse(doc.data());
-      return { id: doc.id, ...data };
+      return {
+        id: doc.id,
+        gameId: data.gameId,
+        eventType: data.eventType,
+        timestamp: data.timestamp,
+        details: data.details,
+      };
     });
-  } catch (error) {
+
+    const lastDoc = snapshot.docs[snapshot.docs.length - 1];
+    const newLastTimestamp = lastDoc.get("timestamp") as Timestamp;
+
+    return { events, lastTimestamp: newLastTimestamp };
+  } catch (error: any) {
     logger.error(`Error obteniendo eventos del juego: ${error}`);
     throw new Error(
       `Error al obtener los eventos del juego: ${(error as Error).message}`

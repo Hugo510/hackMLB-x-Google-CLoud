@@ -3,11 +3,15 @@ import {
   createSummary,
 } from "../models/firestore/summariesModel";
 import { Summary } from "../models/firestore/summariesModel";
+import { Timestamp } from "firebase-admin/firestore";
 
+// Si sólo quieres un arreglo de Summary:
 export const fetchSummariesByUserId = async (
   userId: string
-): Promise<Summary[]> => {
-  return await getSummariesByUserId(userId);
+): Promise<{ summaries: Summary[]; lastCreatedAt?: Timestamp }> => {
+  const result = await getSummariesByUserId(userId);
+  // Retornar el objeto completo para que coincida con la firma
+  return result;
 };
 
 export const fetchCreateSummary = async (

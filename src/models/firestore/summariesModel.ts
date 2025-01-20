@@ -15,20 +15,36 @@ type Summary = z.infer<typeof summarySchema>;
 
 const getSummariesByUserId = async (
   userId: string,
-  limitSummaries = 10
-): Promise<Summary[]> => {
+  limitSummaries = 10,
+  lastCreatedAt?: Timestamp
+): Promise<{ summaries: Summary[]; lastCreatedAt?: Timestamp }> => {
   try {
-    const snapshot = await firestore
+    let query = firestore
       .collection("summaries")
       .where("userId", "==", userId)
       /* .orderBy("createdAt", "desc") */
-      .limit(limitSummaries)
-      .get();
+      .limit(limitSummaries);
 
-    return snapshot.docs.map((doc) => {
+    if (lastCreatedAt) {
+      query = query.startAfter(lastCreatedAt);
+    }
+
+    const snapshot = await query.get();
+
+    const summaries: Summary[] = snapshot.docs.map((doc) => {
       const data = summarySchema.parse(doc.data());
-      return { id: doc.id, ...data };
+      return {
+        id: doc.id,
+        userId: data.userId,
+        content: data.content,
+        createdAt: data.createdAt,
+      };
     });
+
+    const lastDoc = snapshot.docs[snapshot.docs.length - 1];
+    const newLastCreatedAt = lastDoc.get("createdAt") as Timestamp;
+
+    return { summaries, lastCreatedAt: newLastCreatedAt };
   } catch (error) {
     logger.error(`Error obteniendo resúmenes del usuario: ${error}`);
     throw new Error("Error al obtener los resúmenes del usuario.");

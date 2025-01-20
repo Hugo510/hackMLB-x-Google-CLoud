@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import {
   fetchSummariesByUserId,
   fetchCreateSummary,
-} from "../services/summariesService";
+} from "../services/summaryService";
 import { Summary } from "../models/firestore/summariesModel";
 
 // Obtener resúmenes de un usuario

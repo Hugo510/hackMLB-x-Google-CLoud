@@ -6,7 +6,8 @@ import { GameEvent } from "../models/firestore/gameEventsModel";
 
 // Obtener eventos de un juego específico
 export const fetchGameEvents = async (gameId: string): Promise<GameEvent[]> => {
-  return await getGameEvents(gameId);
+  const result = await getGameEvents(gameId);
+  return result.events;
 };
 
 // Añadir un nuevo evento a un juego

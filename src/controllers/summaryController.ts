@@ -17,8 +17,10 @@ export const getSummariesController = async (
       res.status(400).json({ message: "El parámetro userId es obligatorio." });
       return;
     }
-    const summaries = await fetchSummariesByUserId(userId);
-    res.status(200).json(summaries);
+    // Recibir la estructura completa { summaries, lastCreatedAt }
+    const { summaries, lastCreatedAt } = await fetchSummariesByUserId(userId);
+    // Enviar ambas propiedades en la respuesta
+    res.status(200).json({ summaries, lastCreatedAt });
   } catch (error) {
     next(error); // Pasar el error al middleware de manejo de errores
   }
