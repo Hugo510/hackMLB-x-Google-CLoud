@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSHomeheet, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import stylesHome from './Styles/stylesHome'; //Import the styles
-// import renderItem from './components/recentlyNews';
+import RecentlyNews from './components/recentlyNews';
+import FavoriteGames from './components/favorites';
 
 const Home = ({ navigation }) => {
   const [news, setNews] = useState([]);
@@ -32,51 +33,33 @@ const Home = ({ navigation }) => {
           image: 'https://upload.wikimedia.org/wikipedia/commons/9/98/Angels_Stadium.JPG',
           time: '2025-01-20',
         },
+        {
+          id: '4',
+          title: 'El Baseball la mejor Liga',
+          Details: 'La liga MLB es lo mejor de la vida',
+          image: 'https://upload.wikimedia.org/wikipedia/commons/9/98/Angels_Stadium.JPG',
+          time: '2025-01-20',
+        },
+        {
+          id: '5',
+          title: 'El Baseball la mejor Liga',
+          Details: 'La liga MLB es lo mejor de la vida',
+          image: 'https://upload.wikimedia.org/wikipedia/commons/9/98/Angels_Stadium.JPG',
+          time: '2025-01-20',
+        },
       ]);
       setLoading(false);
     }, 0);
   }, []);
 
 
-  const limitText = (text, limit = 15) => {
-    const words = text.split(' ');
-    return words.length > limit ? `${words.slice(0, limit).join(' ')}...` : text;
-  }; 
-
-  const renderItem = ({ item }) => (
-    <View style={stylesHome.cardContainer}>
-    <TouchableOpacity
-      style={stylesHome.card}
-      onPress={() => navigation.navigate('NewsDetails', { newsItem: item })}
-    >
-      
-      <Image source={{ uri: item.image }} style={stylesHome.image} />
-      <View style={stylesHome.textContainer}>
-        <Text style={stylesHome.title}>{item.title}</Text>
-        <Text style={stylesHome.Details}>{limitText(item.Details)}</Text>
-       
-      </View>
-    </TouchableOpacity>
-    </View>
-  );
-
-  if (loading) {
-    return <ActivityIndicator style={stylesHome.loading} size="large" color="#007AFF" />;
-  }
-
-
-
 return (
   <View style={stylesHome.container}>
     <Text style={stylesHome.header}>Your Favorites</Text>
+    <FavoriteGames />
 
     <Text style={stylesHome.header}>Recently</Text>
-    <FlatList
-      data={news}
-      keyExtractor={(item) => item.id}
-      renderItem={renderItem}
-      contentContainerStyle={stylesHome.list}
-    />
+    <RecentlyNews news={news} navigation={navigation} />
   </View>
 );
 };
