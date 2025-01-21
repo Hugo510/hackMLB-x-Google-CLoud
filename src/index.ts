@@ -41,7 +41,7 @@ app.use("/api/game-events", gameEventsRoutes); // Usar rutas de eventos de juego
 // Middleware de manejo de errores
 app.use(errorHandler);
 
-const PORT = config.PORT || 8080;
+const port = process.env.PORT || 8080;
 
 // Función asíncrona para iniciar el servidor después de verificar la conexión a Firestore
 const startServer = async () => {
@@ -53,8 +53,8 @@ const startServer = async () => {
       .get();
     logger.info("Conexión a Firestore exitosa."); */
 
-    app.listen(process.env.PORT, () => {
-      logger.info(`Servidor funcionando en el puerto ${process.env.PORT}`);
+    app.listen(port, () => {
+      logger.info(`Servidor funcionando en el puerto ${port}`);
     });
   } catch (error) {
     logger.error("Error al conectar con Firestore:", error);
