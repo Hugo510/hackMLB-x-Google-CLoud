@@ -29,8 +29,6 @@ RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 # Establecer directorio de trabajo
 WORKDIR /app
 
-ENV HOST=0.0.0.0
-
 # Copiar solo los archivos necesarios desde la etapa de construcción
 COPY --from=builder /app/package.json /app/package-lock.json ./
 COPY --from=builder /app/dist ./dist
@@ -55,8 +53,10 @@ LABEL description="hackMLB-x-Google-Cloud Backend"
 # Exponer el puerto correcto para Cloud Run
 EXPOSE 8080
 
+ENV HOST=0.0.0.0
+
 # Agregar healthcheck
-HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+HEALTHCHECK --interval=60s --timeout=10s --start-period=60s --retries=3 \
   CMD curl -f http://localhost:8080/health || exit 1
 
 # Comando para iniciar la aplicación

@@ -53,8 +53,8 @@ const startServer = async () => {
       .get();
     logger.info("Conexión a Firestore exitosa."); */
 
-    app.listen(PORT, () => {
-      logger.info(`Servidor funcionando en el puerto ${PORT}`);
+    app.listen(process.env.PORT, () => {
+      logger.info(`Servidor funcionando en el puerto ${process.env.PORT}`);
     });
   } catch (error) {
     logger.error("Error al conectar con Firestore:", error);
