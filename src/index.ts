@@ -44,7 +44,6 @@ app.use(errorHandler);
 // Función asíncrona para iniciar el servidor después de verificar la conexión a Firestore
 const startServer = async () => {
   try {
-    const PORTNEW = config.port || 8080;
     // Verificar la conexión a Firestore realizando una consulta simple
     /* const testSnapshot = await firestore
       .collection("gameEvents")
@@ -52,8 +51,8 @@ const startServer = async () => {
       .get();
     logger.info("Conexión a Firestore exitosa."); */
 
-    app.listen(PORTNEW, () => {
-      logger.info(`Servidor funcionando en el puerto ${PORTNEW}`);
+    app.listen(config.PORT, () => {
+      logger.info(`Servidor funcionando en el puerto ${config.PORT}`);
     });
   } catch (error) {
     logger.error("Error al conectar con Firestore:", error);

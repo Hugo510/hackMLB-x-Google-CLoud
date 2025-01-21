@@ -32,7 +32,7 @@ if (error) {
 }
 
 export const config = {
-  port: value.PORT,
+  PORT: value.PORT || 8080,
   jwtSecret: value.JWT_SECRET,
   gcloudProjectId: value.GCLOUD_PROJECT_ID,
   gcloudKeyfilePath: value.GCLOUD_KEYFILE_PATH,
