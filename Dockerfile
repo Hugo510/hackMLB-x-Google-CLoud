@@ -49,9 +49,6 @@ LABEL maintainer="tu_email@ejemplo.com"
 LABEL version="1.0.0"
 LABEL description="hackMLB-x-Google-Cloud Backend"
 
-# Exponer el puerto correcto para Cloud Run
-EXPOSE 8080
-
 # Agregar healthcheck
 HEALTHCHECK --interval=60s --timeout=10s --start-period=60s --retries=3 \
   CMD curl -f http://localhost:8080/health || exit 1
