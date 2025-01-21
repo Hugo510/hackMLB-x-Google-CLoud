@@ -18,7 +18,6 @@ RUN npm run build
 
 # Establecer variables de entorno
 ENV NODE_ENV=production
-ENV PORT=8080
 
 # Etapa de producción
 FROM node:18-alpine
