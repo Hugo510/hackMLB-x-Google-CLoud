@@ -1,20 +1,17 @@
 import {NavigationContainer} from '@react-navigation/native'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import {StyleSheet, Text} from 'react-native'
-import { TabNavigator } from '../components/navigation'
+import { TabNavigator } from '../module/Tab/Components/navigation'
 
 // Import all the screen we use in the Tab Navigation
- import Login from '../screens/login'
- import LiveGames from '../screensTab/liveGames'
- import Favorites from '../screensTab/favorites'
- import Games from '../screensTab/games'
- import Home from '../screensTab/home'
- import Notification from '../screensTab/notification'
- import Players from '../screensTab/players'
- import Profile from '../screensTab/profile'
+ import LiveGames from '../module/Tab/screensTab/liveGames'
+ import Favorites from '../module/Tab/screensTab/favorites'
+ import Games from '../module/Tab/screensTab/games'
+ import Home from '../module/Home/home'
+ import Notification from '../module/Tab/screensTab/notification'
+ import Players from '../module/Tab/screensTab/players'
+ import Profile from '../module/Tab/screensTab/profile'
 
-// Import TopBar
-import TopBar from '../components/TopBar';
 
 const Tab = createBottomTabNavigator()
 
