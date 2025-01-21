@@ -2,7 +2,7 @@ import Joi from "joi";
 import { ENV_VARS } from "./env";
 import {
   storage,
-  translate,
+  /* translate, */
   speechClient,
   videoIntelligenceClient,
 } from "./googleCloud";
@@ -47,7 +47,7 @@ export const config = {
 
 export {
   storage,
-  translate,
+  /* translate, */
   speechClient,
   videoIntelligenceClient,
   generateToken,

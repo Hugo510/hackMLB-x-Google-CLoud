@@ -33,6 +33,9 @@ WORKDIR /app
 COPY --from=builder /app/package.json /app/package-lock.json ./
 COPY --from=builder /app/dist ./dist
 
+# Agregar la copia de .env.example
+COPY --from=builder /app/.env.example ./
+
 # Instalar solo dependencias de producción
 RUN npm install --only=production
 
