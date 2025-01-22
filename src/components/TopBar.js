@@ -6,7 +6,7 @@ import logo from '../../assets/Sport/mlb_logo.svg'
 const TopBar = ({ title, showIcons }) => (
   <View style={styles.topBar}>
     <Text style={styles.title}>{title}</Text>
-    <Image tyle={styles.logo} source={logo}></Image>
+    <Image style={styles.logo} source={logo}></Image>
     {showIcons && (
       <View style={styles.icons}>
        

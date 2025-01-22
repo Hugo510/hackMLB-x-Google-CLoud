@@ -8,7 +8,7 @@ import Login from '../module/Login/login'
 import TabNav from './tabNavigation';
 import NewsDetails from '../components/newDetails';
 
-import TopBar from '../components/topBar';
+import TopBar from '../components/TopBar';
 const Stack = createStackNavigator();
 
 // Create the routes
