@@ -10,11 +10,14 @@ const limitText = (text, limit = 15) => {
 const RecentlyNews = ({ news, navigation }) => {
   const renderItem = ({ item }) => (
     <View style={stylesHome.cardContainer}>
+      <Text style={stylesHome.time}>{item.time}</Text>
       <TouchableOpacity
         style={stylesHome.card}
         onPress={() => navigation.navigate('NewsDetails', { newsItem: item })}
       >
         <Image source={{ uri: item.image }} style={stylesHome.image} />
+        
+
         <View style={stylesHome.textContainer}>
           <Text style={stylesHome.title}>{item.title}</Text>
           <Text style={stylesHome.details}>{limitText(item.Details)}</Text>

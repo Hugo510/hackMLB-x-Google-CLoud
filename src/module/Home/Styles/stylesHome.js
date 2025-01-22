@@ -10,7 +10,7 @@ const stylesHome = StyleSheet.create({
 
     container: { 
       flex: 1,
-     
+      paddingBottom: 70,
       backgroundColor: '#fff',
     },
   
@@ -20,7 +20,9 @@ const stylesHome = StyleSheet.create({
       margin: 16 },
   
     list: {
-      padding: 10 },
+      padding: 20, 
+      paddingBottom: 70,
+    },
   
     card: { flexDirection: 'row',
        marginBottom: 16,
@@ -53,8 +55,8 @@ const stylesHome = StyleSheet.create({
 
     time: {
         position: 'absolute',
-        top: -12,
-        left: 16,
+        top: -25,
+        right: 10,
         right: 8,
         backgroundColor: 'rgba(0,0,0,0.7)',
         color: '#fff',
