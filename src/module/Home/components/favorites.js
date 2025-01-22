@@ -16,7 +16,7 @@ const FavoriteGames = () => {
           homeScore: 5,
           awayScore: 3,
           time: '10:21',
-          status: 'En Vivo',
+          status: 'Live',
           homeImage: 'https://1000marcas.net/wp-content/uploads/2022/05/Font-New-York-Yankees-Logo.jpg',
           awayImage: 'https://i.pinimg.com/736x/54/57/35/545735fa6d810f255224ff013df9fe62.jpg',
         },
@@ -58,10 +58,6 @@ const FavoriteGames = () => {
             </View>
 
           </View>
-
-         
-          {/* <Text style={stylesFavorites.score}> {game.homeScore} - {game.awayScore} </Text> */}
-
         </View>
       ))
     ) : (
