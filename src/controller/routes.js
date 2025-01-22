@@ -9,7 +9,7 @@ import TabNav from './tabNavigation';
 import NewsDetails from '../components/newDetails';
 import GameDetails from '../module/gameDetails/gameDetails';
 
-import TopBar from '../components/TopBar';
+import TopBar from '../module/topBar/TopBar';
 const Stack = createStackNavigator();
 
 // Create the routes
@@ -22,8 +22,7 @@ function Router() {
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
           {/* Route for see the TabNavigator */}
           <Stack.Screen
-            name="TabNavigator" component={TabNav} options={{ header: () => (
-                <TopBar title="FMLB" showIcons={false} />),}} />
+            name="TabNavigator" component={TabNav} options={{headerShown: false}} />
           {/*  route for see the information of the new Complete*/}
           <Stack.Screen name='NewsDetails' component={NewsDetails} options={{header: () => (
                 <TopBar title="FMLB" showIcons={false} />),}} />

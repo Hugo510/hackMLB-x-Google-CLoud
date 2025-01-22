@@ -1,6 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
-import {StyleSheet, Text} from 'react-native'
+import {StyleSheet, Text, TouchableOpacity} from 'react-native'
 import { TabNavigator } from '../module/Tab/Components/navigation'
 
 // Import all the screen we use in the Tab Navigation
@@ -10,8 +10,9 @@ import { TabNavigator } from '../module/Tab/Components/navigation'
  import Home from '../module/Home/home'
  import Notification from '../module/Tab/screensTab/notification'
  import Players from '../module/Tab/screensTab/players'
- import Profile from '../module/Tab/screensTab/profile'
+ import Profile from '../module/profile/profile'
 
+ import TopBar from '../module/topBar/TopBar'
 
 const Tab = createBottomTabNavigator()
 
@@ -75,7 +76,8 @@ const TabNav = () => {
             <Tab.Navigator
                 initialRouteName={'Home'}
                 screenOptions={{
-                    headerShown: false,
+                    headerShown: true, header: () => (
+                        <TopBar title="FMLB" showIcons={false} />),
                     tabBarStyle: styles.tabBar
                 }}
             >
@@ -87,7 +89,12 @@ const TabNav = () => {
                             component={item.Component}
                             options={{
                                 tabBarShowLabel: false,
-                                tabBarButton: (props) => <TabNavigator item={item} {...props} />
+                                tabBarButton: (props) => <TabNavigator item={item} {...props} />,
+                                    ...(item.screen === 'Profile' && {
+                                        headerShown: true,
+                                        header: () => (
+                                                <TopBar title="FMLB" showIcons={true} />)
+                                    }),
                                 }}
                         />
                     )
