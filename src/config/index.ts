@@ -11,6 +11,8 @@ import {
 // import { someModule } from "../someModule"; // Asegúrate de no tener importaciones problemáticas
 import { generateToken, verifyToken } from "./auth";
 /* import redis from "./redis"; */
+import { credentials } from "./credentials";
+import { appSettings } from "./appSettings";
 
 const envSchema = Joi.object({
   PORT: Joi.number().default(3000),
@@ -33,7 +35,7 @@ if (error) {
 
 export const config = {
   PORT: value.PORT || 8080,
-  jwtSecret: value.JWT_SECRET,
+  jwtSecret: credentials.jwtSecret,
   gcloudProjectId: value.GCLOUD_PROJECT_ID,
   gcloudKeyfilePath: value.GCLOUD_KEYFILE_PATH,
   spannerInstanceId: value.SPANNER_INSTANCE_ID,
@@ -42,7 +44,9 @@ export const config = {
   redisPort: value.REDIS_PORT,
   redisPassword: value.REDIS_PASSWORD,
   redisDefaultExpiration: value.REDIS_DEFAULT_EXPIRATION,
-  // ...existing code...
+  baseUrl: appSettings.baseUrl,
+  port: appSettings.port,
+  // ...mantener otras propiedades existentes...
 };
 
 export {

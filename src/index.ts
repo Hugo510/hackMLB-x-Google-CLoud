@@ -4,7 +4,6 @@ dotenvSafe.config({
 });
 
 import express from "express";
-import { config } from "./config/index";
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
@@ -16,7 +15,6 @@ import summaryRoutes from "./routes/summaryRoutes";
 import gameEventsRoutes from "./routes/gameEventsRoutes"; // Importar rutas de eventos de juego
 import mlbStatsRoutes from "./routes/mlbStatsRoutes"; // Importar rutas de MLB Stats
 import { errorHandler } from "./middleware/errorHandler";
-import { firestore } from "./config/database"; // Importar Firestore
 import rateLimit from "express-rate-limit"; // Importar rateLimit
 
 const app = express();
