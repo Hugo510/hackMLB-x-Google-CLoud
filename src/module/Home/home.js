@@ -55,7 +55,7 @@ const Home = ({ navigation }) => {
   const renderHeader = () => (
     <>
       <Text style={stylesHome.header}>Your Favorites</Text>
-      <FavoriteGames />
+      <FavoriteGames navigation={navigation}/>
       <Text style={stylesHome.header}>Recently</Text>
     </>
   );

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text,Image, ActivityIndicator } from 'react-native';
+import { View, Text,Image, ActivityIndicator, Touchable, TouchableOpacity } from 'react-native';
 import stylesFavorites from '../Styles/stylesFavorites';
 
-const FavoriteGames = () => {
+const FavoriteGames = ({navigation}) => {
   const [favoriteGames, setFavoriteGames] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -38,6 +38,8 @@ const FavoriteGames = () => {
 
       favoriteGames.map((game) => (
 
+        <TouchableOpacity key={game.id} style={stylesFavorites.gameCard} onPress={()=> navigation.navigate('GameDetails', {game})}>
+
         <View key={game.id} style={stylesFavorites.gameCard}>
           <Text style={stylesFavorites.status}>{game.status}</Text>
           <Text style={stylesFavorites.time}>{game.time}</Text>
@@ -59,6 +61,7 @@ const FavoriteGames = () => {
 
           </View>
         </View>
+        </TouchableOpacity>
       ))
     ) : (
         <Text style={stylesFavorites.noFavorites}>We can't find any games available</Text>

@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Login from '../module/Login/login'
 import TabNav from './tabNavigation';
 import NewsDetails from '../components/newDetails';
+import GameDetails from '../module/gameDetails/gameDetails';
 
 import TopBar from '../components/TopBar';
 const Stack = createStackNavigator();
@@ -25,6 +26,9 @@ function Router() {
                 <TopBar title="FMLB" showIcons={false} />),}} />
           {/*  route for see the information of the new Complete*/}
           <Stack.Screen name='NewsDetails' component={NewsDetails} options={{header: () => (
+                <TopBar title="FMLB" showIcons={false} />),}} />
+          {/* Route for see Detail frome a ine Game */}
+          <Stack.Screen name='GameDetails' component={GameDetails} options={{header: () => (
                 <TopBar title="FMLB" showIcons={false} />),}} />
 
       </Stack.Navigator>
