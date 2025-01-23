@@ -2,11 +2,15 @@ import { StyleSheet } from "react-native";
 
 
 const stylesProfile = StyleSheet.create({
+    allPage:{
+        backgroundColor: '#ffff',
+        height: '100%'
+    },
     container: {
         flexGrow: 1,
         alignItems: 'center',
         padding: 0,
-        backgroundColor: '#f8f9fa',
+        backgroundColor: '#ffff',
     },
     banner: {
         width: '100%',

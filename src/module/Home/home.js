@@ -3,6 +3,7 @@ import { View, Text, FlatList,ScrollView, TouchableOpacity, Image, ActivityIndic
 import stylesHome from './Styles/stylesHome'; //Import the styles
 import RecentlyNews from './components/recentlyNews';
 import FavoriteGames from './components/favorites';
+import WhitoutSession from '../../components/noProfile';
 
 const Home = ({ navigation }) => {
   const [news, setNews] = useState([]);
@@ -52,6 +53,10 @@ const Home = ({ navigation }) => {
     }, 0);
   }, []);
 
+  const user={
+    session:'false'
+  }
+
   const renderHeader = () => (
     <>
       <Text style={stylesHome.header}>Your Favorites</Text>
@@ -62,6 +67,12 @@ const Home = ({ navigation }) => {
 
 
 return (
+
+  <View style={stylesHome.allPage}>
+    
+  {user.session === 'true' ? (
+    <>
+   
   <FlatList
       ListHeaderComponent={renderHeader} 
       data={news}
@@ -71,6 +82,11 @@ return (
       )}
       contentContainerStyle={stylesHome.list}
     />
+    </>
+    ) : (
+      <WhitoutSession navigation={navigation}/>
+  )}
+    </View>
 );
 };
   

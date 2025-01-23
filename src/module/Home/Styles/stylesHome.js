@@ -1,7 +1,11 @@
 import { StyleSheet } from 'react-native';
 
 const stylesHome = StyleSheet.create({
-
+  
+    allPage:{
+      backgroundColor: '#ffff',
+      height: '100%'
+    },
     cardContainer:{
       marginBottom: 24, 
       position: 'relative',

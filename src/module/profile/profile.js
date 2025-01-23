@@ -17,7 +17,8 @@ import WhitoutSession from '../../components/noProfile';
     
     return (
      
-        <View style={stylesProfile.container}>
+        <View style={stylesProfile.allPage}>
+
            {user.session === 'true' ? (
           <>
             <ProfileSession navigation={navigation} />

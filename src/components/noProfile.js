@@ -10,16 +10,19 @@ function WhitoutSession({navigation}){
 
     return(
         <>
+        <View style={stylesNoProfile.container}>
         <ImageBackground
             source={{ uri: nouser.image }}
             style={stylesNoProfile.Image}
-            resizeMode='cover'> </ImageBackground>    
+            resizeMode='cover'>
+        </ImageBackground>    
          
          <Text style={stylesNoProfile.Text}>Aún No Has Iniciado Sesion</Text>
 
           <TouchableOpacity style={stylesNoProfile.LoginButton} onPress={() => navigation.navigate('Login')}>
             <Text style={stylesNoProfile.LoginText}>Iniciar Sesión</Text>
           </TouchableOpacity>
+        </View>
         </>
     );
 };

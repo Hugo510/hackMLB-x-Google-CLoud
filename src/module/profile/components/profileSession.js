@@ -16,6 +16,8 @@ function ProfileSession({navigation}){
       
     return(
         <>
+        <View style={stylesProfile.container}>
+
         <ImageBackground
             source={{ uri: user.banner }}
             style={stylesProfile.banner}
@@ -32,6 +34,7 @@ function ProfileSession({navigation}){
           <TouchableOpacity style={stylesProfile.logoutButton} onPress={() => navigation.navigate('Login')}>
             <Text style={stylesProfile.logoutText}>Cerrar Sesión</Text>
           </TouchableOpacity>
+         </View>
         </>
     );
 };
