@@ -5,7 +5,7 @@ import { TabNavigator } from '../module/Tab/Components/navigation'
 
 // Import all the screen we use in the Tab Navigation
  import LiveGames from '../module/Tab/screensTab/liveGames'
- import Favorites from '../module/Tab/screensTab/favorites'
+ import Favorites from '../module/favorites/favorites'
  import Games from '../module/Tab/screensTab/games'
  import Home from '../module/Home/home'
  import Notification from '../module/Tab/screensTab/notification'
