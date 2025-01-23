@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, ImageBackground, TouchableOpacity, Image, ScrollView } from 'react-native';
-import stylesNoProfile from '../styles/stylesNoProfile';
-
+import stylesNoProfile from './Styles/stylesNoProfile';
 
 function WhitoutSession({navigation}){
       

@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, ImageBackground, TouchableOpacity, Image, ScrollView } from 'react-native';
 import stylesProfile from './styles/stylesProfile';
-import ProfileSession from './components/profile';
-import WhitoutSession from './components/noProfile';
+import ProfileSession from './components/profileSession';
+import WhitoutSession from '../../components/noProfile';
 
   function Profile({navigation}) {
 
