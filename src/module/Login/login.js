@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ImageBackground, TouchableOpacity, Image } from "react-native";
+import { View, Text, ImageBackground, TouchableOpacity, Image, TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import stylesLogin from "./Styles/stylesLogin";
+import RegistrationForm from "./Components/form";
 
 const images = [
   {
@@ -45,15 +46,16 @@ function Login() {
         {/* Overlay azul */}
         <View style={stylesLogin.overlay}>
           {/* Logo Aun no funciona */}
-          {/* <Image
+          <Image
             source={{
               uri:'',
             }}
             style={stylesLogin.logo}
-          /> */}
+          />
           {/* Tarjeta de inicio de sesión */}
           <View style={stylesLogin.card}>
             <Text style={stylesLogin.title}>LOGIN</Text>
+            <RegistrationForm />
             <TouchableOpacity style={stylesLogin.button} onPress={routeHome}>
               <Text style={stylesLogin.buttonText}>Entrar</Text>
             </TouchableOpacity>

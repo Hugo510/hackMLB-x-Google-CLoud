@@ -25,9 +25,10 @@ const stylesLogin = StyleSheet.create({
   },
   card: {
     width: '80%',
+    height: '50%',
     backgroundColor: '#fff',
     borderRadius: 10,
-    padding: 20,
+    paddingTop: 80,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
@@ -53,6 +54,13 @@ const stylesLogin = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
+  textInput: {
+    marginTop: '4%',
+    width: '80%',
+    backgroundColor: "#678",
+    padding: '2%',
+    borderRadius: 5
+  }
 });
 
 
