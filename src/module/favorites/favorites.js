@@ -1,5 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import WhitoutSession from '../../components/noProfile';
+import stylesFavorites from './styles/stylesFavorites';
 
 const styles = StyleSheet.create({
     container: {
@@ -8,10 +10,18 @@ const styles = StyleSheet.create({
    
   });
   
-  function Favorites() {
-      
+  function Favorites({navigation}) {
+    
+    const user ={
+      session:'false',
+    }
+
     return (
-      <ScrollView style={styles.container}>
+
+    <View style={stylesFavorites.allPage}>
+      {user.session === 'true' ? (
+      <>
+        <ScrollView style={styles.container}>
   
         {/* Alerts Screen*/}
         <View style={{ flex: 10, justifyContent: 'center', alignItems: 'center',backgroundColor: '#828',}}>
@@ -19,7 +29,12 @@ const styles = StyleSheet.create({
         </View>
   
        
-      </ScrollView>
+        </ScrollView>
+      </>
+      ) : (
+        <WhitoutSession navigation={navigation}/>
+      )}
+    </View>
     );
   }
   
