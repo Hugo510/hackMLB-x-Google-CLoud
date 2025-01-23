@@ -44,14 +44,15 @@ export const fetchDeleteGame = async (gameId: string): Promise<void> => {
 export const fetchPreferences = async (
   userId: string
 ): Promise<Preferences[]> => {
-  return await getPreferencesByUserId(userId);
+  const preferences = await getPreferencesByUserId(userId);
+  return preferences ? [preferences] : [];
 };
 
 export const fetchSetPreferences = async (
   userId: string,
-  preferencesData: object
+  preferencesData: Preferences
 ): Promise<void> => {
-  return await setPreferences(userId, preferencesData);
+  return await setPreferences(preferencesData);
 };
 
 export const fetchDeletePreferences = async (userId: string): Promise<void> => {

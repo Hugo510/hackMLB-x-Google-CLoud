@@ -32,25 +32,25 @@ const setWithExpiration = async (key: string, value: string) => {
 };
 
 /*
-redis.on("connect", () => {
-  redisDebug("Conectado a Redis");
-  console.log("Conectado a Redis");
-});
+// redis.on("connect", () => {
+//   redisDebug("Conectado a Redis");
+//   console.log("Conectado a Redis");
+// });
 
-redis.on("error", (err) => {
-  redisDebug(`Error en Redis: ${err.message}`);
-  console.error("Error en Redis:", err);
-});
+// redis.on("error", (err) => {
+//   redisDebug(`Error en Redis: ${err.message}`);
+//   console.error("Error en Redis:", err);
+// });
 
-redis.on("reconnecting", () => {
-  redisDebug("Intentando reconectar a Redis...");
-  console.log("Intentando reconectar a Redis...");
-});
+// redis.on("reconnecting", () => {
+//   redisDebug("Intentando reconectar a Redis...");
+//   console.log("Intentando reconectar a Redis...");
+// });
 
-redis.on("end", () => {
-  redisDebug("Conexión a Redis cerrada");
-  console.log("Conexión a Redis cerrada");
-});
+// redis.on("end", () => {
+//   redisDebug("Conexión a Redis cerrada");
+//   console.log("Conexión a Redis cerrada");
+// });
 */
 
-export default {}; // Exportar un objeto vacío temporalmente
+export { /* redis, */ setWithExpiration };

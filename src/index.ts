@@ -14,8 +14,11 @@ import gameRoutes from "./routes/gameRoutes";
 import summaryRoutes from "./routes/summaryRoutes";
 import gameEventsRoutes from "./routes/gameEventsRoutes"; // Importar rutas de eventos de juego
 import mlbStatsRoutes from "./routes/mlbStatsRoutes"; // Importar rutas de MLB Stats
+// import preferencesRoutes from "./routes/preferencesRoutes"; // Eliminar importación de rutas de Preferences
 import { errorHandler } from "./middleware/errorHandler";
 import rateLimit from "express-rate-limit"; // Importar rateLimit
+/* import { redis } from "./config/redis"; // Asegurar importación de Redis */
+import { firestore } from "./config/database"; // Asegurar importación de Firestore
 
 const app = express();
 
@@ -45,6 +48,7 @@ app.use("/api/games", gameRoutes);
 app.use("/api/summaries", summaryRoutes); // Usar rutas de resúmenes
 app.use("/api/game-events", gameEventsRoutes); // Usar rutas de eventos de juego
 app.use("/api/mlb-stats", mlbStatsRoutes); // Usar rutas de MLB Stats
+// app.use("/api/preferences", preferencesRoutes); // Eliminar rutas de Preferences
 
 // Middleware de manejo de errores
 app.use(errorHandler);
@@ -61,11 +65,15 @@ const startServer = async () => {
       .get();
     logger.info("Conexión a Firestore exitosa."); */
 
+    // // Verificar conexión a Redis (descomentar si Redis está habilitado)
+    // await redis.ping();
+    // logger.info("Conexión a Redis exitosa.");
+
     app.listen(port, () => {
       logger.info(`Servidor funcionando en el puerto ${port}`);
     });
   } catch (error) {
-    logger.error("Error al conectar con Firestore:", error);
+    logger.error("Error al conectar con Firestore o Redis:", error);
     process.exit(1); // Terminar el proceso si la conexión falla
   }
 };

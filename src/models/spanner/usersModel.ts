@@ -1,6 +1,10 @@
 import { database } from "../../config/database";
 import logger from "../../config/logger";
 import { z } from "zod";
+import {
+  runSingleRowQuery,
+  runMultipleRowQuery,
+} from "../../helpers/spannerHelpers";
 
 // Definir el esquema de validación de usuarios
 const userSchema = z.object({
@@ -16,16 +20,8 @@ export type User = z.infer<typeof userSchema>;
 
 const getUserById = async (userId: string): Promise<User | null> => {
   try {
-    const query = `SELECT * FROM Users WHERE id = @userId`;
-    const [rows] = await database.run({
-      sql: query,
-      params: { userId },
-    });
-    if (rows.length > 0) {
-      const user = userSchema.parse(rows[0]);
-      return user;
-    }
-    return null;
+    const query = "SELECT * FROM Users WHERE id = @userId";
+    return await runSingleRowQuery(query, { userId }, userSchema);
   } catch (error) {
     logger.error(`Error obteniendo usuario por ID: ${error}`);
     throw new Error("Error al obtener el usuario.");
@@ -34,16 +30,8 @@ const getUserById = async (userId: string): Promise<User | null> => {
 
 const getUserByEmail = async (email: string): Promise<User | null> => {
   try {
-    const query = `SELECT * FROM Users WHERE email = @email`;
-    const [rows] = await database.run({
-      sql: query,
-      params: { email },
-    });
-    if (rows.length > 0) {
-      const user = userSchema.parse(rows[0]);
-      return user;
-    }
-    return null;
+    const query = "SELECT * FROM Users WHERE email = @email";
+    return await runSingleRowQuery(query, { email }, userSchema);
   } catch (error) {
     logger.error(`Error obteniendo usuario por email: ${error}`);
     throw new Error("Error al obtener el usuario.");
@@ -67,9 +55,8 @@ const createUser = async (user: User): Promise<void> => {
 
 const getAllUsers = async (): Promise<User[]> => {
   try {
-    const query = `SELECT * FROM Users`;
-    const [rows] = await database.run({ sql: query, params: {} });
-    return rows.map((row) => userSchema.parse(row));
+    const query = "SELECT * FROM Users";
+    return await runMultipleRowQuery(query, {}, userSchema);
   } catch (error) {
     logger.error(`Error obteniendo todos los usuarios: ${error}`);
     throw new Error("Error al obtener los usuarios.");

@@ -1,5 +1,5 @@
 import { Router } from "express";
-// ...importar controladores...
+import { celebrate, Joi } from "celebrate";
 import {
   getAllUsersController,
   getUserDetailsController,
@@ -9,9 +9,12 @@ import {
   signup,
   login,
 } from "../controllers/userController";
-
+import {
+  getPreferencesController,
+  setPreferencesController,
+} from "../controllers/preferencesController";
 import { authenticate } from "../middleware/authenticate";
-import rateLimit from "express-rate-limit"; // Rehabilitar la importación
+import rateLimit from "express-rate-limit";
 
 const router = Router();
 
@@ -24,15 +27,153 @@ const authLimiter = rateLimit({
 });
 
 // Definir rutas de autenticación
-router.post("/signup", authLimiter, signup);
-router.post("/login", authLimiter, login);
+/**
+ * @route POST /api/users/signup
+ * @desc Registrar un nuevo usuario
+ * @access Público
+ */
+router.post(
+  "/signup",
+  authLimiter,
+  celebrate({
+    body: Joi.object({
+      name: Joi.string().min(1).required(),
+      email: Joi.string().email().required(),
+      password: Joi.string().required(),
+    }),
+  }),
+  signup
+);
+
+/**
+ * @route POST /api/users/login
+ * @desc Iniciar sesión de usuario
+ * @access Público
+ */
+router.post(
+  "/login",
+  authLimiter,
+  celebrate({
+    body: Joi.object({
+      email: Joi.string().email().required(),
+      password: Joi.string().required(),
+    }),
+  }),
+  login
+);
 
 // Definir rutas de usuarios protegidas
-router.get("/", /* authenticate, */ getAllUsersController);
-router.get("/:userId", authenticate, getUserDetailsController);
-router.post("/", createUserController);
-router.put("/:userId", authenticate, updateUserController);
-router.delete("/:userId", authenticate, deleteUserController);
-// ...otras rutas...
+/**
+ * @route GET /api/users
+ * @desc Obtener todos los usuarios
+ * @access Privado
+ */
+router.get("/", authenticate, getAllUsersController);
+
+/**
+ * @route GET /api/users/:userId
+ * @desc Obtener detalles de un usuario por ID
+ * @access Privado
+ */
+router.get(
+  "/:userId",
+  authenticate,
+  celebrate({
+    params: Joi.object({
+      userId: Joi.string().required(),
+    }),
+  }),
+  getUserDetailsController
+);
+
+/**
+ * @route POST /api/users
+ * @desc Crear un nuevo usuario
+ * @access Público
+ */
+router.post(
+  "/",
+  celebrate({
+    body: Joi.object({
+      name: Joi.string().min(1).required(),
+      email: Joi.string().email().required(),
+      password: Joi.string().required(),
+    }),
+  }),
+  createUserController
+);
+
+/**
+ * @route PUT /api/users/:userId
+ * @desc Actualizar un usuario por ID
+ * @access Privado
+ */
+router.put(
+  "/:userId",
+  authenticate,
+  celebrate({
+    params: Joi.object({
+      userId: Joi.string().required(),
+    }),
+    body: Joi.object({
+      name: Joi.string().min(1).optional(),
+      email: Joi.string().email().optional(),
+      password: Joi.string().optional(),
+    }),
+  }),
+  updateUserController
+);
+
+/**
+ * @route DELETE /api/users/:userId
+ * @desc Eliminar un usuario por ID
+ * @access Privado
+ */
+router.delete(
+  "/:userId",
+  authenticate,
+  celebrate({
+    params: Joi.object({
+      userId: Joi.string().required(),
+    }),
+  }),
+  deleteUserController
+);
+
+// Rutas de preferencias
+/**
+ * @route POST /api/users/preferences
+ * @desc Crear o actualizar preferencias de usuario
+ * @access Privado
+ */
+router.post(
+  "/preferences",
+  authenticate,
+  celebrate({
+    body: Joi.object({
+      userId: Joi.string().required(),
+      teams: Joi.array().items(Joi.string()).required(),
+      players: Joi.array().items(Joi.string()).required(),
+      playTypes: Joi.array().items(Joi.string()).required(),
+    }),
+  }),
+  setPreferencesController
+);
+
+/**
+ * @route GET /api/users/preferences/:userId
+ * @desc Obtener preferencias de usuario por ID
+ * @access Privado
+ */
+router.get(
+  "/preferences/:userId",
+  authenticate,
+  celebrate({
+    params: Joi.object({
+      userId: Joi.string().required(),
+    }),
+  }),
+  getPreferencesController
+);
 
 export default router;

@@ -1,53 +1,65 @@
 import { Request, Response } from "express";
 import {
-  fetchPreferences,
-  fetchSetPreferences,
-  fetchDeletePreferences,
-} from "../services/preferencesService";
-import { Preferences } from "../models/spanner/preferencesModel";
+  getPreferencesByUserId,
+  setPreferences,
+} from "../models/spanner/preferencesModel";
+import { sendErrorResponse } from "../helpers/errorResponseHelper";
 
-export const getPreferencesController = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+/**
+ * @desc Obtener preferencias de usuario por ID
+ * @route GET /api/users/preferences/:userId
+ * @access Privado
+ * @param {string} userId - ID del usuario
+ * @returns {Object} Preferencias del usuario
+ */
+export const getPreferencesController = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
-    const preferences = await fetchPreferences(userId);
-    res.status(200).json(preferences);
+    const preferences = await getPreferencesByUserId(userId);
+    if (preferences) {
+      res.json(preferences);
+    } else {
+      sendErrorResponse(
+        res,
+        404,
+        "Preferencias no encontradas para el usuario."
+      );
+    }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error al obtener las preferencias", error });
+    sendErrorResponse(
+      res,
+      500,
+      "Error obteniendo las preferencias del usuario."
+    );
   }
 };
 
-export const setPreferencesController = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+/**
+ * @desc Crear o actualizar preferencias de usuario
+ * @route POST /api/users/preferences
+ * @access Privado
+ * @param {Object} preferences - Datos de las preferencias
+ * @returns {Object} Mensaje de éxito
+ */
+export const setPreferencesController = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.params;
-    const preferencesData: object = req.body;
-    await fetchSetPreferences(userId, preferencesData);
-    res.status(200).json({ message: "Preferencias actualizadas exitosamente" });
-  } catch (error) {
+    const { userId, teams, players, playTypes } = req.body;
+    const preferences = {
+      userId,
+      teams,
+      players,
+      playTypes,
+      createdAt: new Date().toISOString(),
+    };
+    await setPreferences(preferences);
     res
-      .status(500)
-      .json({ message: "Error al actualizar las preferencias", error });
-  }
-};
-
-export const deletePreferencesController = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
-  try {
-    const { userId } = req.params;
-    await fetchDeletePreferences(userId);
-    res.status(200).json({ message: "Preferencias eliminadas exitosamente" });
+      .status(201)
+      .json({ message: "Preferencias actualizadas exitosamente." });
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Error al eliminar las preferencias", error });
+    sendErrorResponse(
+      res,
+      500,
+      "Error actualizando las preferencias del usuario."
+    );
   }
 };

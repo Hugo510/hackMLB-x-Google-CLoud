@@ -21,6 +21,12 @@ interface AuthenticatedRequest extends Request {
   };
 }
 
+/**
+ * @desc Obtener todos los usuarios
+ * @route GET /api/users
+ * @access Privado
+ * @returns {Array} Lista de usuarios
+ */
 export const getAllUsersController = async (
   req: AuthenticatedRequest,
   res: Response
@@ -33,6 +39,13 @@ export const getAllUsersController = async (
   }
 };
 
+/**
+ * @desc Obtener detalles de un usuario por ID
+ * @route GET /api/users/:userId
+ * @access Privado
+ * @param {string} userId - ID del usuario
+ * @returns {Object} Detalles del usuario
+ */
 export const getUserDetailsController = async (
   req: AuthenticatedRequest,
   res: Response
@@ -61,6 +74,13 @@ export const getUserDetailsController = async (
   }
 };
 
+/**
+ * @desc Crear un nuevo usuario
+ * @route POST /api/users
+ * @access Público
+ * @param {Object} user - Datos del usuario
+ * @returns {Object} Mensaje de éxito
+ */
 export const createUserController = async (
   req: AuthenticatedRequest,
   res: Response
@@ -74,6 +94,14 @@ export const createUserController = async (
   }
 };
 
+/**
+ * @desc Actualizar un usuario por ID
+ * @route PUT /api/users/:userId
+ * @access Privado
+ * @param {string} userId - ID del usuario
+ * @param {Object} updates - Datos a actualizar
+ * @returns {Object} Mensaje de éxito
+ */
 export const updateUserController = async (
   req: AuthenticatedRequest,
   res: Response
@@ -100,6 +128,13 @@ export const updateUserController = async (
   }
 };
 
+/**
+ * @desc Eliminar un usuario por ID
+ * @route DELETE /api/users/:userId
+ * @access Privado
+ * @param {string} userId - ID del usuario
+ * @returns {Object} Mensaje de éxito
+ */
 export const deleteUserController = async (
   req: AuthenticatedRequest,
   res: Response

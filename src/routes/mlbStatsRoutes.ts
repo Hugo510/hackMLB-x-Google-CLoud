@@ -12,6 +12,11 @@ import {
 
 const router = Router();
 
+/**
+ * @route GET /api/mlb-stats/schedule
+ * @desc Obtener el calendario de la temporada
+ * @access Público
+ */
 router.get("/schedule", async (req, res) => {
   try {
     const data = await getSeasonSchedule();
@@ -21,6 +26,11 @@ router.get("/schedule", async (req, res) => {
   }
 });
 
+/**
+ * @route GET /api/mlb-stats/live/:gamePk
+ * @desc Obtener estado en vivo de un juego por gamePk
+ * @access Público
+ */
 router.get(
   "/live/:gamePk",
   celebrate({
@@ -37,6 +47,11 @@ router.get(
   }
 );
 
+/**
+ * @route GET /api/mlb-stats/live/:gamePk/timecode/:timecode
+ * @desc Obtener estado en vivo de un juego por gamePk y timecode
+ * @access Público
+ */
 router.get(
   "/live/:gamePk/timecode/:timecode",
   celebrate({
@@ -60,6 +75,11 @@ router.get(
   }
 );
 
+/**
+ * @route GET /api/mlb-stats/live/:gamePk/timestamps
+ * @desc Obtener timestamps de un juego por gamePk
+ * @access Público
+ */
 router.get(
   "/live/:gamePk/timestamps",
   celebrate({
@@ -78,6 +98,11 @@ router.get(
   }
 );
 
+/**
+ * @route GET /api/mlb-stats/people/:playerId
+ * @desc Obtener información de un jugador por playerId
+ * @access Público
+ */
 router.get(
   "/people/:playerId",
   celebrate({
@@ -96,6 +121,11 @@ router.get(
   }
 );
 
+/**
+ * @route GET /api/mlb-stats/teams/:teamId/roster
+ * @desc Obtener el roster de un equipo por teamId
+ * @access Público
+ */
 router.get(
   "/teams/:teamId/roster",
   celebrate({
@@ -113,7 +143,5 @@ router.get(
     }
   }
 );
-
-// ...crear más endpoints según se requiera...
 
 export default router;
