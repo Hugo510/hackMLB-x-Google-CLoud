@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text,Image, ActivityIndicator } from 'react-native';
 import stylesHeader from '../Styles/stylesHeaderLive';
+import { style } from 'deprecated-react-native-prop-types/DeprecatedViewPropTypes';
 
 const EstadisticGameLive = () => {
   const [favoriteGames, setFavoriteGames] = useState([]);
@@ -17,8 +18,8 @@ const EstadisticGameLive = () => {
           awayScore: 2,
           time: '10:21',
           status: 'En Vivo',
-          homeImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Los_Angeles_Angels_of_Anaheim.svg/188px-Los_Angeles_Angels_of_Anaheim.svg.png',
-          awayImage: 'https://i.pinimg.com/736x/54/57/35/545735fa6d810f255224ff013df9fe62.jpg',
+          homeImage: 'https://s.yimg.com/cv/apiv2/default/mlb/20190319/500x500/yankees_wbgs.png',
+          awayImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Washington_Nationals_logo.svg/2048px-Washington_Nationals_logo.svg.png',
         },
         
       ];
@@ -43,24 +44,23 @@ const EstadisticGameLive = () => {
           <Text style={stylesHeader.time}>{game.time}</Text>
 
           <View style={stylesHeader.teams}>
-
             <View style={stylesHeader.team}>
               <Image source={{ uri: game.homeImage }} style={stylesHeader.teamImage} />
               <Text style={stylesHeader.teamName}>{game.homeTeam}</Text>
+              <Text style={stylesHeader.marcadorActualHomeTeam}>51-61</Text>
             </View>
             <Text style={stylesHeader.score}> {game.homeScore} </Text>
-            <Text style={stylesHeader.vs}>-</Text>
-            <Text style={stylesHeader.score}> {game.awayScore} </Text>
-
+            <View style={stylesHeader.vsContainer}>
+              <Text style={stylesHeader.vs}>VS</Text>
+              <Text style={stylesHeader.marcador}>2-2, 2 Out</Text>
+            </View>
+            <Text style={stylesHeader.score}>{game.awayScore} </Text>
             <View style={stylesHeader.team}>
               <Image source={{ uri: game.awayImage }} style={stylesHeader.teamImage} />
               <Text style={stylesHeader.teamName}>{game.awayTeam}</Text>
+              <Text style={stylesHeader.marcadorActualAwayTeam}>67-46</Text>
             </View>
-
           </View>
-
-         
-          {/* <Text style={stylesHeader.score}> {game.homeScore} - {game.awayScore} </Text> */}
 
         </View>
       ))

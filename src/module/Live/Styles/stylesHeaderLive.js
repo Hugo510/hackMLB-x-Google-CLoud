@@ -24,21 +24,45 @@ const stylesLiveHeader = StyleSheet.create({
       alignItems: 'center',
     },
     teamImage: {
-      width: 50,
-      height: 50,
+      width: 83,
+      height: 83,
       marginBottom: 8,
     },
     teamName: {
-      fontSize: 14,
+      fontSize: 16,
+      fontWeight: 'bold',
       textAlign: 'center',
+    },
+    vsContainer: {
+      alignItems: 'center',
     },
     vs: {
       fontSize: 26,
       fontWeight: 'bold',
       color: '#333',
+      marginTop: 20,
+    },
+    marcador: {
+      fontSize: 14,
+      textAlign: 'center',
+      fontWeight: 'light',
+      marginTop: 10, 
+    },
+    marcadorActualHomeTeam: {
+      fontSize: 14,
+      textAlign: 'center',
+      fontWeight: 'light',
+      marginTop: 10,
+    },
+    marcadorActualAwayTeam: {
+      fontSize: 14,
+      textAlign: 'center',
+      fontWeight: 'light',
+      marginTop: 10,
+      color: '#34A853',
     },
     score: {
-      fontSize: 22,
+      fontSize: 32,
       fontWeight: 'bold',
       textAlign: 'center',
       marginBottom: 2,
@@ -57,7 +81,7 @@ const stylesLiveHeader = StyleSheet.create({
     },
     time: {
       fontSize: 12,
-      color: 'green',
+      color: '#127236',
       textAlign: 'center',
       fontWeight: 'bold'
     },
