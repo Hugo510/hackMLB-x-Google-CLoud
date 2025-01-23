@@ -2,10 +2,31 @@ import { Storage } from "@google-cloud/storage";
 /* import { Translate } from "@google-cloud/translate/build/src/v2"; */
 import { SpeechClient } from "@google-cloud/speech";
 import { VideoIntelligenceServiceClient } from "@google-cloud/video-intelligence";
+import { CloudTasksClient } from "@google-cloud/tasks";
+import { config } from "./index";
 
-const storage = new Storage();
-/* const translate = new Translate(); */
-const speechClient = new SpeechClient();
-const videoIntelligenceClient = new VideoIntelligenceServiceClient();
+const createClient = (ClientClass: any) => {
+  if (!config) {
+    throw new Error(
+      "Configuración de Google Cloud inválida: 'gcloudProjectId' o 'gcloudKeyfilePath' faltante."
+    );
+  }
+  console.log("Creando cliente con configuración:", config);
+  return new ClientClass({
+    projectId: config.gcloudProjectId,
+    keyFilename: config.gcloudKeyfilePath,
+  });
+};
 
-export { storage, /* translate, */ speechClient, videoIntelligenceClient };
+const storage = createClient(Storage);
+/* const translate = createClient(Translate); */
+const speechClient = createClient(SpeechClient);
+const videoIntelligenceClient = createClient(VideoIntelligenceServiceClient);
+const cloudTasksClient = createClient(CloudTasksClient);
+
+export {
+  storage,
+  /* translate, */ speechClient,
+  videoIntelligenceClient,
+  cloudTasksClient,
+};

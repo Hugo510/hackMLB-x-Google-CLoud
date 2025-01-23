@@ -1,16 +1,7 @@
+console.log("Inicializando configuración...");
+
 import Joi from "joi";
-import { ENV_VARS } from "./env";
-import {
-  storage,
-  /* translate, */
-  speechClient,
-  videoIntelligenceClient,
-} from "./googleCloud";
-// Evitar importar módulos que a su vez importen config/index.ts
-// Por ejemplo, si database.ts importa config/index.ts, no importar database aquí
-// import { someModule } from "../someModule"; // Asegúrate de no tener importaciones problemáticas
-import { generateToken, verifyToken } from "./auth";
-/* import redis from "./redis"; */
+/* import { ENV_VARS } from "./env"; */
 import { credentials } from "./credentials";
 import { appSettings } from "./appSettings";
 
@@ -25,6 +16,8 @@ const envSchema = Joi.object({
   REDIS_PORT: Joi.number().default(6379),
   REDIS_PASSWORD: Joi.string().allow("").optional(), // Permitir que sea vacío u opcional
   REDIS_DEFAULT_EXPIRATION: Joi.number().default(3600),
+  GCLOUD_TASKS_QUEUE: Joi.string().required(),
+  GCLOUD_TASKS_LOCATION: Joi.string().required(),
   // ...existing code...
 }).unknown(true);
 
@@ -44,16 +37,9 @@ export const config = {
   redisPort: value.REDIS_PORT,
   redisPassword: value.REDIS_PASSWORD,
   redisDefaultExpiration: value.REDIS_DEFAULT_EXPIRATION,
+  gcloudTasksQueue: value.GCLOUD_TASKS_QUEUE,
+  gcloudTasksLocation: value.GCLOUD_TASKS_LOCATION,
   baseUrl: appSettings.baseUrl,
   port: appSettings.port,
   // ...mantener otras propiedades existentes...
-};
-
-export {
-  storage,
-  /* translate, */
-  speechClient,
-  videoIntelligenceClient,
-  generateToken,
-  verifyToken,
 };
