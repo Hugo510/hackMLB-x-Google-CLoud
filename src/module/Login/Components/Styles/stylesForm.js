@@ -1,6 +1,12 @@
 import { StyleSheet } from "react-native";
 
 const stylesForm = StyleSheet.create({
+    container: {
+      // backgroundColor: "#4567",
+      padding: 10,
+      margin: 25,
+      width: '80%'
+    },
     title: {
       fontSize: 24,
       fontWeight: 'bold',
@@ -12,11 +18,13 @@ const stylesForm = StyleSheet.create({
       borderWidth: 1,
       borderColor: '#ccc',
       borderRadius: 5,
-      marginBottom: 15,
+      marginTop: 10,
+      marginBottom: 10,
       backgroundColor: '#fff',
     },
     button: {
-      backgroundColor: '#007BFF',
+      backgroundColor: '#003087',
+      marginTop: 40,
       padding: 15,
       borderRadius: 5,
       width: '100%',

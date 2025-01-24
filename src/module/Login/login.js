@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ImageBackground, TouchableOpacity, Image, TextInput } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { View, Text, ImageBackground, Image } from "react-native";
 import stylesLogin from "./Styles/stylesLogin";
 import RegistrationForm from "./Components/form";
+import { Link } from "@react-navigation/native";
 
 const images = [
   {
@@ -21,11 +21,6 @@ const images = [
 
 function Login() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const navigation = useNavigation();
-
-  const routeHome = () => {
-    navigation.navigate("TabNavigator"); // go to the app
-  };
 
   // Cambiar imagen automáticamente
   useEffect(() => {
@@ -45,20 +40,19 @@ function Login() {
       >
         {/* Overlay azul */}
         <View style={stylesLogin.overlay}>
-          {/* Logo Aun no funciona */}
-          <Image
-            source={{
-              uri:'',
-            }}
-            style={stylesLogin.logo}
-          />
           {/* Tarjeta de inicio de sesión */}
           <View style={stylesLogin.card}>
-            <Text style={stylesLogin.title}>LOGIN</Text>
+            <Image
+              source={{
+                uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRi5AKF6eAu9Va9BzZzgw0PSsQXw8rXPiQLHA&s",
+              }}
+              style={stylesLogin.logo}
+            />
+            <View style={stylesLogin.line} />
+            <Text style={stylesLogin.title}>Login</Text>
             <RegistrationForm />
-            <TouchableOpacity style={stylesLogin.button} onPress={routeHome}>
-              <Text style={stylesLogin.buttonText}>Entrar</Text>
-            </TouchableOpacity>
+            <View style={stylesLogin.line} />
+            <Link>Don't have an account? Sign Up</Link>
           </View>
         </View>
       </ImageBackground>

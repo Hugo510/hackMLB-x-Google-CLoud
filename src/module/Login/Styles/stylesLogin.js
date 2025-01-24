@@ -13,22 +13,16 @@ const stylesLogin = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 139, 0.5)', // Azul transparente
+    backgroundColor: 'rgba(0, 0, 139, 0.5)',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  logo: {
-    width: 150,
-    height: 150,
-    marginBottom: 20,
-    resizeMode: 'contain'
   },
   card: {
     width: '80%',
     height: '50%',
     backgroundColor: '#fff',
     borderRadius: 10,
-    paddingTop: 80,
+    paddingTop: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
@@ -54,13 +48,20 @@ const stylesLogin = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
-  textInput: {
-    marginTop: '4%',
-    width: '80%',
-    backgroundColor: "#678",
-    padding: '2%',
-    borderRadius: 5
-  }
+  line: {
+    height:1,
+    position: 'relative',
+    bottom: 20,
+    borderRadius:30,
+    backgroundColor: '#ccc',
+    width:'100%'
+  },
+  logo: {
+    width: 80,
+    height: 80,
+    marginBottom: 20,
+    resizeMode: 'contain',
+  },
 });
 
 
