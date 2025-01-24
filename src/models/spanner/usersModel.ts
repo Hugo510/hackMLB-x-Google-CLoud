@@ -40,12 +40,17 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
 
 const createUser = async (user: User): Promise<void> => {
   try {
-    userSchema.parse(user);
-    await database.insert({
-      table: "Users",
-      columns: ["id", "name", "email", "password", "created_at"],
-      values: [user],
-    });
+    // Definimos los valores que vamos a insertar
+    const rows = [
+      {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        // password: user.password
+        // created_at: user.created_at,
+      },
+    ];
+    await database.table('Users').insert(rows);
     logger.info(`Usuario creado con ID: ${user.id}`);
   } catch (error) {
     logger.error(`Error creando usuario: ${error}`);
