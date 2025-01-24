@@ -7,11 +7,11 @@ import WhitoutSession from '../../components/noProfile';
   function Profile({navigation}) {
 
     const user = {
-      name: 'John Doe',
-      email: 'johndoe@example.com',
+      name: 'Miguel soto',
+      email: 'Miguel@example.com',
       location: 'Durango, Mx',
       profileImage: 'https://upload.wikimedia.org/wikipedia/commons/e/e6/Dodgers_at_Nationals_%2853677192000%29_%28cropped%29.jpg',
-      session: 'false',
+      session: 'true',
       banner: 'https://img.mlbstatic.com/mlb-images/image/private/t_16x9/t_w1024/mlb/imlzxnamjqq98s8cxdfo'
     };
     

@@ -54,7 +54,7 @@ const Home = ({ navigation }) => {
   }, []);
 
   const user={
-    session:'false'
+    session:'true'
   }
 
   const renderHeader = () => (
@@ -78,7 +78,7 @@ return (
       data={news}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
-        <RecentlyNews news={[item]} navigation={navigation} />
+        <RecentlyNews news={[item]} navigation={navigation}/>
       )}
       contentContainerStyle={stylesHome.list}
     />
