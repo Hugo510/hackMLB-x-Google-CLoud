@@ -6,8 +6,8 @@ import stylesProfile from '../styles/stylesProfile';
 function ProfileSession({navigation}){
 
     const user = {
-        name: 'John Doe',
-        email: 'johndoe@example.com',
+        name: 'Miguel Soto',
+        email: 'Miguel@example.com',
         location: 'Durango, Mx',
         profileImage: 'https://upload.wikimedia.org/wikipedia/commons/e/e6/Dodgers_at_Nationals_%2853677192000%29_%28cropped%29.jpg',
         session: 'true',
