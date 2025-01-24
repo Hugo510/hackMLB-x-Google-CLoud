@@ -1,16 +1,29 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, Image } from "react-native";
+import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import stylesForm from "./Styles/stylesForm";
 import { useNavigation } from "@react-navigation/native";
 
-const RegistrationForm = () => {
+const RegistrationForm = ({ screenSelect }) => {
+  const [screen] = useState(screenSelect);
+  const navigation = useNavigation();
+
   // Estados para almacenar los valores del formulario
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    fullName: "",
+    age: "",
+    phone: "",
   });
 
-  const navigation = useNavigation();
+  //Inputs del formulario
+  const inputFields = [
+    { name: "email", placeholder: "Email", keyboardType: "email-address" },
+    { name: "password", placeholder: "Password", secureTextEntry: true },
+    { name: "fullName", placeholder: "Full Name" },
+    { name: "age", placeholder: "Age" },
+    { name: "phone", placeholder: "Phone" },
+  ];
 
   // Datos temporales de inicio de sesion
   const data = {
@@ -25,39 +38,83 @@ const RegistrationForm = () => {
 
   // Función para manejar el envío del formulario
   const handleSubmit = () => {
-    //sanitizacion yy estandarizacion de niputs
     const email = formData.email.trim().toLowerCase();
     const password = formData.password.trim();
+    const fullName = formData.fullName.trim();
+    const phone = formData.phone.trim();
+    const age = formData.age.trim();
 
+    // Validar si hay campos vacíos
     if (!email || !password) {
+      console.log("Campos vacíos, llénalos");
+      return;
+    }
+
+    if ((screen === "Register" && !fullName) || !phone || !age) {
       console.log("Campos vacios, llenalos");
-    } else if (email === data.email && password === data.password) {
+      return;
+    }
+
+    // Validar que la edad sea un número válido
+    const parsedAge = parseInt(age, 10);
+    if (isNaN(parsedAge) || parsedAge <= 17) {
+      console.log("Por favor, ingresa una edad válida");
+      return;
+    }
+
+    // Validar que el número de teléfono sea válido
+    const phoneValidation = /^[0-9]{10}$/; // Asegura que sean exactamente 10 dígitos
+    if (!phoneValidation.test(phone)) {
+      console.log(
+        "Por favor, ingresa un número de teléfono válido (10 dígitos)"
+      );
+      return; 
+    }
+
+    if (
+      screen === "Login" &&
+      email === data.email &&
+      password === data.password
+    ) {
       console.log("Éxito", "Inicio de sesión correcto");
-      navigation.navigate("TabNavigator"); // go to the app
-    } else {
+      navigation.navigate("TabNavigator");
+    }
+    // Lógica de registro
+    else if (screen === "Register") {
+      console.log("Registro exitoso", {
+        email,
+        password,
+        fullName,
+        phone,
+        age,
+      });
+      navigation.navigate("TabNavigator");
+    }
+    // Error en las credenciales
+    else {
       console.log("Error", "Credenciales incorrectas");
     }
   };
 
   return (
     <View style={stylesForm.container}>
-      {/* Campo Email */}
-      <TextInput
-        style={stylesForm.input}
-        placeholder="Email"
-        value={formData.email}
-        onChangeText={(value) => handleChange("email", value)}
-        keyboardType="email-address"
-      />
-
-      {/* Campo Contraseña */}
-      <TextInput
-        style={stylesForm.input}
-        placeholder="Password"
-        value={formData.password}
-        onChangeText={(value) => handleChange("password", value)}
-        secureTextEntry
-      />
+      {inputFields.map(
+        (field) =>
+          (screenSelect === "Register" ||
+            (field.name !== "fullName" &&
+              field.name !== "age" &&
+              field.name !== "phone")) && (
+            <TextInput
+              key={field.name}
+              style={stylesForm.input}
+              placeholder={field.placeholder}
+              value={formData[field.name]}
+              onChangeText={(value) => handleChange(field.name, value)}
+              keyboardType={field.keyboardType || "default"}
+              secureTextEntry={field.secureTextEntry}
+            />
+          )
+      )}
 
       {/* Botón de Enviar */}
       <TouchableOpacity style={stylesForm.button} onPress={handleSubmit}>

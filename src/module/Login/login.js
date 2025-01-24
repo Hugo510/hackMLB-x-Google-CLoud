@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, ImageBackground, Image } from "react-native";
+import {
+  View,
+  Text,
+  ImageBackground,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import stylesLogin from "./Styles/stylesLogin";
+import { useNavigation } from "@react-navigation/native";
 import RegistrationForm from "./Components/form";
-import { Link } from "@react-navigation/native";
 
 const images = [
   {
@@ -21,6 +27,7 @@ const images = [
 
 function Login() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const navigation = useNavigation();
 
   // Cambiar imagen automáticamente
   useEffect(() => {
@@ -50,9 +57,13 @@ function Login() {
             />
             <View style={stylesLogin.line} />
             <Text style={stylesLogin.title}>Login</Text>
-            <RegistrationForm />
+            <RegistrationForm screenSelect="Login" />
             <View style={stylesLogin.line} />
-            <Link>Don't have an account? Sign Up</Link>
+            <TouchableOpacity onPress={() => navigation.navigate("Register")}>
+              <Text style={stylesLogin.buttonRegister}>
+                Don't have an account? Sign Up
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       </ImageBackground>

@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 // Importar the screens to show
 import Login from '../module/Login/login'
+import Register from '../module/Login/register'
 import TabNav from './tabNavigation';
 import NewsDetails from '../components/newDetails';
 import GameDetails from '../module/gameDetails/gameDetails';
@@ -20,6 +21,8 @@ function Router() {
       <Stack.Navigator initialRouteName='Login'> 
           {/* Route for the login */}
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
+          {/* Route for the register */}
+          <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}/>
           {/* Route for see the TabNavigator */}
           <Stack.Screen
             name="TabNavigator" component={TabNav} options={{headerShown: false}} />

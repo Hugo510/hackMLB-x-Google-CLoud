@@ -5,7 +5,7 @@ const stylesForm = StyleSheet.create({
       // backgroundColor: "#4567",
       padding: 10,
       margin: 25,
-      width: '80%'
+      width: '80%',
     },
     title: {
       fontSize: 24,

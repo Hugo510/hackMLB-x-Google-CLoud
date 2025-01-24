@@ -1,6 +1,6 @@
-import { Dimensions, StyleSheet } from 'react-native'
+import { Dimensions, StyleSheet } from "react-native";
 
-const { width, height } = Dimensions.get('window');
+const { width, height } = Dimensions.get("window");
 
 const stylesLogin = StyleSheet.create({
   container: {
@@ -9,60 +9,63 @@ const stylesLogin = StyleSheet.create({
   backgroundImage: {
     width: width,
     height: height,
-    position: 'absolute',
+    position: "absolute",
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 139, 0.5)',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "rgba(0, 0, 139, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
   },
   card: {
-    width: '80%',
-    height: '50%',
-    backgroundColor: '#fff',
+    width: "80%",
+    height: "auto",
+    backgroundColor: "#fff",
     borderRadius: 10,
     paddingTop: 5,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    alignItems: 'center',
+    alignItems: "center",
   },
   title: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
     marginBottom: 10,
   },
   button: {
     marginTop: 20,
     paddingVertical: 10,
     paddingHorizontal: 30,
-    backgroundColor: '#003087',
+    backgroundColor: "#003087",
     borderRadius: 25,
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    textAlign: 'center',
+    textAlign: "center",
   },
   line: {
-    height:1,
-    position: 'relative',
+    height: 1,
+    position: "relative",
     bottom: 20,
-    borderRadius:30,
-    backgroundColor: '#ccc',
-    width:'100%'
+    borderRadius: 30,
+    backgroundColor: "#ccc",
+    width: "100%",
   },
   logo: {
     width: 80,
     height: 80,
     marginBottom: 20,
-    resizeMode: 'contain',
+    resizeMode: "contain",
+  },
+  buttonRegister: {
+    color: "blue",
+    marginBottom:15
   },
 });
-
 
 export default stylesLogin;
