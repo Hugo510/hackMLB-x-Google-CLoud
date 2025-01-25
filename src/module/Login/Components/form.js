@@ -36,51 +36,52 @@ const RegistrationForm = ({ screenSelect }) => {
     setFormData({ ...formData, [field]: value });
   };
 
-  // Función para manejar el envío del formulario
   const handleSubmit = () => {
     const email = formData.email.trim().toLowerCase();
     const password = formData.password.trim();
     const fullName = formData.fullName.trim();
     const phone = formData.phone.trim();
     const age = formData.age.trim();
-
-    // Validar si hay campos vacíos
-    if (!email || !password) {
-      console.log("Campos vacíos, llénalos");
-      return;
-    }
-
-    if ((screen === "Register" && !fullName) || !phone || !age) {
-      console.log("Campos vacios, llenalos");
-      return;
-    }
-
-    // Validar que la edad sea un número válido
-    const parsedAge = parseInt(age, 10);
-    if (isNaN(parsedAge) || parsedAge <= 17) {
-      console.log("Por favor, ingresa una edad válida");
-      return;
-    }
-
-    // Validar que el número de teléfono sea válido
-    const phoneValidation = /^[0-9]{10}$/; // Asegura que sean exactamente 10 dígitos
-    if (!phoneValidation.test(phone)) {
-      console.log(
-        "Por favor, ingresa un número de teléfono válido (10 dígitos)"
-      );
+  
+    // Validar campos para Login
+    if (screen === "Login") {
+      if (!email || !password) {
+        console.log("Campos vacíos, llénalos login");
+        console.log(screen);
+        return;
+      }
+  
+      if (email === data.email && password === data.password) {
+        console.log("Éxito", "Inicio de sesión correcto");
+        navigation.navigate("TabNavigator");
+      } else {
+        console.log("Error", "Credenciales incorrectas");
+      }
       return; 
     }
-
-    if (
-      screen === "Login" &&
-      email === data.email &&
-      password === data.password
-    ) {
-      console.log("Éxito", "Inicio de sesión correcto");
-      navigation.navigate("TabNavigator");
-    }
-    // Lógica de registro
-    else if (screen === "Register") {
+  
+    // Validar campos para Register
+    if (screen === "Register") {
+      if (!email || !password || !fullName || !phone || !age) {
+        console.log("Campos vacíos, llénalos register");
+        console.log(screen);
+        return;
+      }
+  
+      const parsedAge = parseInt(age, 10);
+      if (isNaN(parsedAge) || parsedAge <= 17) {
+        console.log("Por favor, ingresa una edad válida");
+        return;
+      }
+  
+      const phoneValidation = /^[0-9]{10}$/; 
+      if (!phoneValidation.test(phone)) {
+        console.log(
+          "Por favor, ingresa un número de teléfono válido (10 dígitos)"
+        );
+        return;
+      }
+  
       console.log("Registro exitoso", {
         email,
         password,
@@ -90,12 +91,8 @@ const RegistrationForm = ({ screenSelect }) => {
       });
       navigation.navigate("TabNavigator");
     }
-    // Error en las credenciales
-    else {
-      console.log("Error", "Credenciales incorrectas");
-    }
   };
-
+  
   return (
     <View style={stylesForm.container}>
       {inputFields.map(

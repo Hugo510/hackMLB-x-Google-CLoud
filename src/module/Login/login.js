@@ -56,6 +56,7 @@ function Login() {
               style={stylesLogin.logo}
             />
             <View style={stylesLogin.line} />
+            <Text>root@gmail.com   1234</Text>
             <Text style={stylesLogin.title}>Login</Text>
             <RegistrationForm screenSelect="Login" />
             <View style={stylesLogin.line} />
