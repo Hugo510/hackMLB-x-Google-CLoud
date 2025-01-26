@@ -1,48 +1,46 @@
 import { database } from "../config/database";
-import { ZodTypeAny, z } from "zod";
 import logger from "../config/logger";
+import { ZodType } from "zod";
 
-export async function runSingleRowQuery<T extends ZodTypeAny>(
-  sql: string,
-  params: Record<string, unknown>,
-  schema: T
-): Promise<z.infer<T> | null> {
+/**
+ * @desc Ejecutar una consulta que retorna una sola fila
+ * @param {string} query - Consulta SQL
+ * @param {object} params - Parámetros de la consulta
+ * @param {ZodType} schema - Esquema de validación Zod
+ * @returns {Promise<any | null>} Fila resultante o null
+ */
+export const runSingleRowQuery = async (
+  query: string,
+  params: Record<string, any>,
+  schema: ZodType
+): Promise<any | null> => {
   try {
-    const [rows] = await database.run({ sql, params });
-    if (rows.length === 0) {
-      return null;
-    }
-    // Convertir el Arreglo resultante a objeto para manejo del schema
-    const rowObject = rows[0].reduce((acc: Record<string, any>, column: { name: string; value: any }) => {
-      acc[column.name] = column.value;
-      return acc;
-    }, {});
-    return schema.parse(rowObject);
+    const [rows] = await database.run({ sql: query, params });
+    if (rows.length === 0) return null;
+    return schema.parse(rows[0]);
   } catch (error) {
-    logger.error(`Error al ejecutar consulta de una fila: ${error}`);
+    logger.error(`Error ejecutando consulta de una sola fila: ${error}`);
     throw error;
   }
-}
+};
 
-export async function runMultipleRowQuery<T extends ZodTypeAny>(
-  sql: string,
-  params: Record<string, unknown>,
-  schema: T
-): Promise<z.infer<T>[]> {
+/**
+ * @desc Ejecutar una consulta que retorna múltiples filas
+ * @param {string} query - Consulta SQL
+ * @param {object} params - Parámetros de la consulta
+ * @param {ZodType} schema - Esquema de validación Zod
+ * @returns {Promise<any[]>} Lista de filas resultantes
+ */
+export const runMultipleRowQuery = async (
+  query: string,
+  params: Record<string, any>,
+  schema: ZodType
+): Promise<any[]> => {
   try {
-    const [rows] = await database.run({ sql, params });
-
-    const transformedRows = rows.map((row) => {
-    const rowObject: Record<string, unknown> = {};
-    row.forEach((column: { name: string; value: unknown }) => {
-      rowObject[column.name] = column.value;
-    });
-    return rowObject;
-  });
-
-  return transformedRows.map((rowObject) => schema.parse(rowObject));
+    const [rows] = await database.run({ sql: query, params });
+    return rows.map((row) => schema.parse(row));
   } catch (error) {
-    logger.error(`Error al ejecutar consulta de múltiples filas: ${error}`);
+    logger.error(`Error ejecutando consulta de múltiples filas: ${error}`);
     throw error;
   }
-}
+};
