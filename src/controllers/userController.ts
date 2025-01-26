@@ -192,10 +192,13 @@ export const signup = [
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Crear el usuario en la base de datos
+      const { age } = req.body;
       const newUser = await fetchCreateUser({
         name,
         email,
         password: hashedPassword,
+        status: "active",
+        age,
       });
 
       res

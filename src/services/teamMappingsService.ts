@@ -34,7 +34,7 @@ export const storeTeamMappings = async (): Promise<void> => {
   await upsertTeams(mappingsObject);
 
   // Guardar en Redis
-  await setWithExpiration("TEAM_MAPPINGS", JSON.stringify(mappingsObject));
+  /* await setWithExpiration("TEAM_MAPPINGS", JSON.stringify(mappingsObject)); */
 
   logger.info("Team mappings almacenados correctamente en Spanner y Redis.");
 };

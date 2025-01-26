@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import logger from "../config/logger";
 import { getSeasonSchedule } from "../services/mlbStatsService";
 import { getPreferencesByUserId } from "../models/spanner/preferencesModel";
+import { setWithExpiration } from "../config/redis";
 
 /**
  * @desc Configurar preferencias iniciales del usuario
@@ -25,16 +26,23 @@ const setupUserPreferences = async (
       return;
     }
 
-    // 2. Consultar datos iniciales (juegos próximos de equipos favoritos)
-    const upcomingGames = await Promise.all(
-      preferences.teams.map(async (teamId: string) => {
-        const data = await getSeasonSchedule();
-        return data;
-      })
+    // Obtener calendario de la temporada
+    const schedule = await getSeasonSchedule();
+
+    // Filtrar juegos relacionados con los equipos favoritos
+    const relevantGames = schedule.dates.flatMap((date: any) =>
+      date.games.filter(
+        (game: any) =>
+          preferences.teams.includes(game.teams.home.team.id) ||
+          preferences.teams.includes(game.teams.away.team.id)
+      )
     );
 
-    // 3. Almacenar en Redis (cache) - Comentado temporalmente
-    // ...existing code...
+    // Almacenar en Redis (cache)
+    await setWithExpiration(
+      `relevantGames:${userId}`,
+      JSON.stringify(relevantGames)
+    );
 
     logger.info(`Setup completed for userId: ${userId}`);
     res.status(200).send("Setup completed.");
