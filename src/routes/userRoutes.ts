@@ -68,7 +68,7 @@ router.post(
  * @desc Obtener todos los usuarios
  * @access Privado
  */
-router.get("/", authenticate, getAllUsersController);
+router.get("/", getAllUsersController);
 
 /**
  * @route GET /api/users/:userId
@@ -77,7 +77,7 @@ router.get("/", authenticate, getAllUsersController);
  */
 router.get(
   "/:userId",
-  authenticate,
+  // authenticate,
   celebrate({
     params: Joi.object({
       userId: Joi.string().required(),
@@ -110,7 +110,7 @@ router.post(
  */
 router.put(
   "/:userId",
-  authenticate,
+  // authenticate,
   celebrate({
     params: Joi.object({
       userId: Joi.string().required(),
@@ -125,13 +125,13 @@ router.put(
 );
 
 /**
- * @route DELETE /api/users/:userId
+ * @route PUT /api/users/:userId
  * @desc Eliminar un usuario por ID
  * @access Privado
  */
-router.delete(
-  "/:userId",
-  authenticate,
+router.put(
+  "/delete/:userId",
+  // authenticate,
   celebrate({
     params: Joi.object({
       userId: Joi.string().required(),
@@ -148,7 +148,7 @@ router.delete(
  */
 router.post(
   "/preferences",
-  authenticate,
+  // authenticate,
   celebrate({
     body: Joi.object({
       userId: Joi.string().required(),
@@ -167,7 +167,7 @@ router.post(
  */
 router.get(
   "/preferences/:userId",
-  authenticate,
+  // authenticate,
   celebrate({
     params: Joi.object({
       userId: Joi.string().required(),
