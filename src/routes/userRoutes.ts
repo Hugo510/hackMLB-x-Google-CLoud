@@ -12,10 +12,10 @@ import {
 import {
   getPreferencesController,
   setPreferencesController,
+  getUserPreferencesDetails,
 } from "../controllers/preferencesController";
 import { authenticate } from "../middleware/authenticate";
 import rateLimit from "express-rate-limit";
-import { getUserPreferencesDetails } from "../controllers/userPreferencesController";
 
 const router = Router();
 

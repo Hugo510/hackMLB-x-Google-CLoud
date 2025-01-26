@@ -3,6 +3,7 @@ import { Storage } from "@google-cloud/storage";
 import { SpeechClient } from "@google-cloud/speech";
 import { VideoIntelligenceServiceClient } from "@google-cloud/video-intelligence";
 import { CloudTasksClient } from "@google-cloud/tasks";
+import logger from "./logger";
 import { config } from "./index";
 
 const createClient = (ClientClass: any) => {
@@ -11,7 +12,7 @@ const createClient = (ClientClass: any) => {
       "Configuración de Google Cloud inválida: 'gcloudProjectId' o 'gcloudKeyfilePath' faltante."
     );
   }
-  console.log("Creando cliente con configuración:", config);
+  logger.log("Creando cliente con configuración:", config);
   return new ClientClass({
     projectId: config.gcloudProjectId,
     keyFilename: config.gcloudKeyfilePath,
