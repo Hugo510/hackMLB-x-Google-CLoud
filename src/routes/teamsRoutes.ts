@@ -27,6 +27,6 @@ router.post("/", createTeamController);
  * @desc Almacenar mapeos de equipos en Spanner y Redis
  * @access Privado
  */
-router.post("/team-mappings", authenticate, storeTeamMappingsController);
+router.post("/team-mappings", /* authenticate, */ storeTeamMappingsController);
 
 export default router;

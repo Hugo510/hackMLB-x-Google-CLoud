@@ -33,7 +33,7 @@ const initializeFirebase = () => {
     }
   };
 
-  verifyFirestoreConnection();
+  /* verifyFirestoreConnection(); */
 
   return firestore;
 };

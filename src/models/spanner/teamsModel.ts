@@ -101,35 +101,7 @@ export const upsertTeams = async (
       name: teamName,
     }));
 
-    // Utilizar la sintaxis MERGE para upsert en Spanner
-    const mergeStatements = rows
-      .map(
-        (row) => `
-      MERGE Teams T
-      USING (SELECT @id AS id, @name AS name) AS S
-      ON T.id = S.id
-      WHEN MATCHED THEN
-        UPDATE SET name = S.name
-      WHEN NOT MATCHED THEN
-        INSERT (id, name) VALUES (S.id, S.name);
-    `
-      )
-      .join(" ");
-
-    const paramsArray = rows.flatMap((row, index) => [
-      { name: `id${index}`, value: row.id },
-      { name: `name${index}`, value: row.name },
-    ]);
-
-    const params: Record<string, any> = {};
-    paramsArray.forEach((param) => {
-      params[`@${param.name}`] = param.value;
-    });
-
-    await database.run({
-      sql: mergeStatements,
-      params,
-    });
+    await database.table("Teams").upsert(rows);
 
     logger.info("Upsert de equipos realizado correctamente.");
   } catch (error) {
