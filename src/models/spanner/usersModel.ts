@@ -73,20 +73,38 @@ const updateUser = async (
   try {
     const userRow: Partial<User> = {
       ...updates,
-      updated_at: new Date().toISOString(),
     };
-    userSchema.partial().parse(userRow);
-    await database.update({
-      table: "Users",
-      columns: Object.keys(userRow),
-      values: [
+    await database.runTransaction(async (err, transaction) => {
+      if (err) {
+        console.error('Error al iniciar la transacción:', err);
+        return; 
+      }
+      if (!transaction) {
+        console.error('Transacción no iniciada correctamente.');
+        return;
+      }
+      const query = {
+        columns: ['id', 'name', 'email', 'password', 'created_at'],
+        keys: [[userId]], 
+      };
+
+      const results = await transaction.read('Users', query);
+      const userData = results[0].map((row: any) => row.toJSON());
+      if (!userData.length) {
+        throw new Error('Usuario no encontrado');
+      }
+
+      // Realiza la actualización en la tabla Users
+      await transaction.update('Users', [
         {
           id: userId,
           ...userRow,
         },
-      ],
+      ]);
+      
+      await transaction.commit();
+      console.log(`Usuario con ID ${userId} actualizado correctamente`);
     });
-    logger.info(`Usuario actualizado con ID: ${userId}`);
   } catch (error) {
     logger.error(`Error actualizando usuario: ${error}`);
     throw new Error("Error al actualizar el usuario.");

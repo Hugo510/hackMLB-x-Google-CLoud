@@ -37,7 +37,6 @@ export async function runMultipleRowQuery<T extends ZodTypeAny>(
     row.forEach((column: { name: string; value: unknown }) => {
       rowObject[column.name] = column.value;
     });
-    console.log("Usuario tranformados", rowObject)
     return rowObject;
   });
 
