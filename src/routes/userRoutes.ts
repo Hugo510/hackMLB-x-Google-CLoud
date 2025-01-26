@@ -15,6 +15,7 @@ import {
 } from "../controllers/preferencesController";
 import { authenticate } from "../middleware/authenticate";
 import rateLimit from "express-rate-limit";
+import { getUserPreferencesDetails } from "../controllers/userPreferencesController";
 
 const router = Router();
 
@@ -174,6 +175,22 @@ router.get(
     }),
   }),
   getPreferencesController
+);
+
+/**
+ * @route GET /api/users/:userId/preferences/full
+ * @desc Obtener detalles completos de las preferencias de un usuario
+ * @access Privado
+ */
+router.get(
+  "/:userId/preferences/full",
+  authenticate,
+  celebrate({
+    params: Joi.object({
+      userId: Joi.string().required(),
+    }),
+  }),
+  getUserPreferencesDetails
 );
 
 export default router;

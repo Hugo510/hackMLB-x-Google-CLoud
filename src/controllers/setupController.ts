@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
-import { database } from "../config/database";
-// import redis from "../config/redis";
 import logger from "../config/logger";
 import { getSeasonSchedule } from "../services/mlbStatsService";
+import { getPreferencesByUserId } from "../models/spanner/preferencesModel";
 
 /**
  * @desc Configurar preferencias iniciales del usuario
@@ -15,11 +14,8 @@ const setupUserPreferences = async (req: Request, res: Response) => {
   const { userId } = req.body;
 
   try {
-    // 1. Obtener las preferencias del usuario desde Spanner
-    const [preferences] = await database.run({
-      sql: `SELECT teams, players, playTypes FROM Preferences WHERE userId = @userId`,
-      params: { userId },
-    });
+    // 1. Obtener las preferencias del usuario usando el modelo existente
+    const preferences = await getPreferencesByUserId(userId);
 
     if (!preferences) {
       res.status(404).send("No preferences found for this user.");
@@ -28,21 +24,14 @@ const setupUserPreferences = async (req: Request, res: Response) => {
 
     // 2. Consultar datos iniciales (juegos próximos de equipos favoritos)
     const upcomingGames = await Promise.all(
-      (preferences as any).teams.map(async (teamId: string) => {
+      preferences.teams.map(async (teamId: string) => {
         const data = await getSeasonSchedule();
         return data;
       })
     );
 
-    // 3. Almacenar en Redis (cache)
-    // upcomingGames.forEach((games) => {
-    //   games.dates.forEach((date: any) => {
-    //     date.games.forEach(async (game: any) => {
-    //       const cacheKey = `game:${game.gamePk}:schedule`;
-    //       await redis.set(cacheKey, JSON.stringify(game), "EX", 3600); // TTL: 1 hora
-    //     });
-    //   });
-    // });
+    // 3. Almacenar en Redis (cache) - Comentado temporalmente
+    // ...existing code...
 
     logger.info(`Setup completed for userId: ${userId}`);
     res.status(200).send("Setup completed.");
