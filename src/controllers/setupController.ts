@@ -10,7 +10,10 @@ import { getPreferencesByUserId } from "../models/spanner/preferencesModel";
  * @param {string} userId - ID del usuario
  * @returns {Object} Mensaje de éxito o error
  */
-const setupUserPreferences = async (req: Request, res: Response) => {
+const setupUserPreferences = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
   const { userId } = req.body;
 
   try {

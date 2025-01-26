@@ -12,6 +12,9 @@ const userSchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
   password: z.string(),
+  age: z.number().int().positive(),
+  phone: z.string().optional(),
+  status: z.enum(["active", "inactive", "pending"]),
   created_at: z.string().nullable(),
   updated_at: z.string().optional(),
 });
@@ -45,10 +48,10 @@ const createUser = async (user: User): Promise<void> => {
         id: user.id,
         name: user.name,
         email: user.email,
-        password: user.password
+        password: user.password,
       },
     ];
-    await database.table('Users').insert(rows);
+    await database.table("Users").insert(rows);
     logger.info(`Usuario creado con ID: ${user.id}`);
   } catch (error) {
     logger.error(`Error creando usuario: ${error}`);
@@ -76,32 +79,32 @@ const updateUser = async (
     };
     await database.runTransaction(async (err, transaction) => {
       if (err) {
-        console.error('Error al iniciar la transacción:', err);
-        return; 
+        console.error("Error al iniciar la transacción:", err);
+        return;
       }
       if (!transaction) {
-        console.error('Transacción no iniciada correctamente.');
+        console.error("Transacción no iniciada correctamente.");
         return;
       }
       const query = {
-        columns: ['id', 'name', 'email', 'password', 'created_at'],
-        keys: [[userId]], 
+        columns: ["id", "name", "email", "password", "created_at"],
+        keys: [[userId]],
       };
 
-      const results = await transaction.read('Users', query);
+      const results = await transaction.read("Users", query);
       const userData = results[0].map((row: any) => row.toJSON());
       if (!userData.length) {
-        throw new Error('Usuario no encontrado');
+        throw new Error("Usuario no encontrado");
       }
 
       // Realiza la actualización en la tabla Users
-      await transaction.update('Users', [
+      await transaction.update("Users", [
         {
           id: userId,
           ...userRow,
         },
       ]);
-      
+
       await transaction.commit();
       console.log(`Usuario con ID ${userId} actualizado correctamente`);
     });
@@ -111,39 +114,38 @@ const updateUser = async (
   }
 };
 
-const deleteUser = async (
-  userId: string,
-): Promise<void> => {
+const deleteUser = async (userId: string): Promise<void> => {
   try {
     const userRow = {
-      name: "Innactive", 
-    }
+      name: "Innactive",
+    };
 
     await database.runTransaction(async (err, transaction) => {
       if (err) {
-        console.error('Error al iniciar la transacción:', err);
-        return; 
+        console.error("Error al iniciar la transacción:", err);
+        return;
       }
       if (!transaction) {
-        console.error('Transacción no iniciada correctamente.');
+        console.error("Transacción no iniciada correctamente.");
         return;
       }
       const query = {
-        columns: ['id', 'name', 'email', 'password', 'created_at'],
-        keys: [[userId]], 
+        columns: ["id", "name", "email", "password", "created_at"],
+        keys: [[userId]],
       };
 
-      const results = await transaction.read('Users', query);
+      const results = await transaction.read("Users", query);
       const userData = results[0].map((row: any) => row.toJSON());
       if (!userData.length) {
-        throw new Error('Usuario no encontrado');
+        throw new Error("Usuario no encontrado");
       }
 
       // Realiza la eliminacion en la tabla Users
-      await transaction.update('Users', [
+      await transaction.update("Users", [
         {
           id: userId,
-          name: userRow.name,        },
+          name: userRow.name,
+        },
       ]);
       await transaction.commit();
       console.log(`Usuario con ID ${userId} eliminado correctamente`);
