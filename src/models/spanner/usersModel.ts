@@ -12,7 +12,7 @@ const userSchema = z.object({
   name: z.string().min(1),
   email: z.string().email(),
   password: z.string(),
-  created_at: z.string(),
+  created_at: z.string().nullable(),
   updated_at: z.string().optional(),
 });
 
@@ -40,14 +40,12 @@ const getUserByEmail = async (email: string): Promise<User | null> => {
 
 const createUser = async (user: User): Promise<void> => {
   try {
-    // Definimos los valores que vamos a insertar
     const rows = [
       {
         id: user.id,
         name: user.name,
         email: user.email,
-        // password: user.password
-        // created_at: user.created_at,
+        password: user.password
       },
     ];
     await database.table('Users').insert(rows);
