@@ -15,3 +15,4 @@ axios.defaults.withCredentials = true;
 
 // Funciones para interactuar con el servidor
 export const login = async (user) => axios.post(`http://${apiUrl}:${PORT}/api/users/login`, user);
+export const signup = async (user) => axios.post(`http://${apiUrl}:${PORT}/api/users/signup`, user);
