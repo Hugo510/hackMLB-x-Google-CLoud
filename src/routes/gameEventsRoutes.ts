@@ -7,8 +7,10 @@ import { authenticate } from "../middleware/authenticate";
 
 const router = Router();
 
-// Rutas protegidas para eventos de juegos
-router.get("/:gameId/events", /* authenticate, */ getGameEventsController);
+/**
+ * Rutas protegidas para eventos de juegos
+ */
+router.get("/:gameId/events", authenticate, getGameEventsController);
 router.post("/:gameId/events", authenticate, addGameEventController);
 
 // ...otras rutas si son necesarias...
