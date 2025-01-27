@@ -13,7 +13,7 @@ export const publishGameEvent = async (event: any) => {
     const topicName = config.pubsubTopicName;
     const messageBuffer = Buffer.from(JSON.stringify(event));
 
-    await pubsubClient.topic(topicName).publish(messageBuffer);
+    await pubsubClient.topic(topicName).publishMessage({ data: messageBuffer });
     logger.info("Evento publicado en Pub/Sub:", event);
   } catch (error) {
     logger.error("Error al publicar en Pub/Sub:", error);
