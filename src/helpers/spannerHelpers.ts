@@ -19,16 +19,19 @@ export const runSingleRowQuery = async (
     if (rows.length === 0) return null;
    // Convertir el Arreglo resultante a objeto para manejo del schema
    const rowObject = rows[0].reduce(
-    (acc: Record<string | number, any>, column: { name: string | number; value: any }) => {
+    (acc: Record<string, any>, column: { name: string; value: any }) => {
       if (typeof column.value === "object" && column.value !== null && "value" in column.value) {
         // Extrae el valor si es un objeto del tipo { value: '...' }
         acc[column.name] = Number((column.value as any).value);
-      } 
+      } else {
+        acc[column.name] = column.value;
+      }
       return acc;
     },
     {}
   );
-  console.log("Fila transformada:", rowObject);
+  console.log("Objeto transformado:", rowObject);
+  // Validar con el esquema de Zod
   return schema.parse(rowObject);
   } catch (error) {
     logger.error(`Error ejecutando consulta de una sola fila: ${error}`);
