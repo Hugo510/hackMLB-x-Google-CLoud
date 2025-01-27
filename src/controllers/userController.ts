@@ -179,7 +179,7 @@ export const signup = [
         return; // No retornamos el Response directamente
       }
 
-      const { name, email, password } = req.body;
+      const { name, email, password, age, phone } = req.body;
 
       // Verificar si el usuario ya existe
       const existingUser = await fetchGetUserByEmail(email);
@@ -192,13 +192,13 @@ export const signup = [
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Crear el usuario en la base de datos
-      const { age } = req.body;
       const newUser = await fetchCreateUser({
         name,
         email,
         password: hashedPassword,
         status: "active",
         age,
+        phone,
       });
 
       res

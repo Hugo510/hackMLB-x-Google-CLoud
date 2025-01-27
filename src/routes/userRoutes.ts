@@ -41,6 +41,8 @@ router.post(
       name: Joi.string().min(1).required(),
       email: Joi.string().email().required(),
       password: Joi.string().required(),
+      age: Joi.number().required(),
+      phone: Joi.string().required(),
     }),
   }),
   signup

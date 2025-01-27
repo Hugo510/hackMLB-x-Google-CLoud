@@ -17,7 +17,19 @@ export const runSingleRowQuery = async (
   try {
     const [rows] = await database.run({ sql: query, params });
     if (rows.length === 0) return null;
-    return schema.parse(rows[0]);
+   // Convertir el Arreglo resultante a objeto para manejo del schema
+   const rowObject = rows[0].reduce(
+    (acc: Record<string | number, any>, column: { name: string | number; value: any }) => {
+      if (typeof column.value === "object" && column.value !== null && "value" in column.value) {
+        // Extrae el valor si es un objeto del tipo { value: '...' }
+        acc[column.name] = Number((column.value as any).value);
+      } 
+      return acc;
+    },
+    {}
+  );
+  console.log("Fila transformada:", rowObject);
+  return schema.parse(rowObject);
   } catch (error) {
     logger.error(`Error ejecutando consulta de una sola fila: ${error}`);
     throw error;
@@ -38,7 +50,26 @@ export const runMultipleRowQuery = async (
 ): Promise<any[]> => {
   try {
     const [rows] = await database.run({ sql: query, params });
-    return rows.map((row) => schema.parse(row));
+
+    const transformedRows = rows.map((row) => {
+      const rowObject: Record<string | number, unknown> = {};
+      
+      row.forEach((column: { name: string; value: unknown }) => {
+        rowObject[column.name] = column.value;
+      });
+      row.forEach((column: { name: string | number; value: unknown }) => {
+        if (
+          typeof column.value === "object" && column.value !== null && "value" in column.value
+        ) {
+          // Extrae el valor si es un objeto del tipo { value: '...' }
+          rowObject[column.name] = Number((column.value as any).value);
+        }
+      });
+      console.log("Usuario transformado:", rowObject);
+      return rowObject;
+    });
+    // Validación con Zod
+    return transformedRows.map((rowObject) => schema.parse(rowObject));
   } catch (error) {
     logger.error(`Error ejecutando consulta de múltiples filas: ${error}`);
     throw error;
