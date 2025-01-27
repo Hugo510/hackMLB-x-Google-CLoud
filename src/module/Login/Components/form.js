@@ -52,20 +52,8 @@ const RegistrationForm = ({ screenSelect }) => {
         const data = await login(user);
         console.log('Login successful:', data);
         navigation.navigate("TabNavigator"); // Navegar al siguiente screen si el login es exitoso
-      } catch (error) {
-        // Imprimir el error completo para obtener más detalles
-        if (error.response) {
-          // Error de respuesta HTTP (por ejemplo, 400, 500, etc.)
-          console.error("Response error:", error.response.data);
-          console.error("Status code:", error.response.status);
-          console.error("Headers:", error.response.headers);
-        } else if (error.request) {
-          // Error de solicitud (no se recibió respuesta)
-          console.error("Request error:", error.request);
-        } else {
-          // Otro tipo de error (por ejemplo, errores de configuración)
+      } catch (error) {    
           console.error("Error message:", error.message);
-        }
         console.error("Config:", error.config);
       }
       return; // Prevenir la ejecución adicional del registro si es login
