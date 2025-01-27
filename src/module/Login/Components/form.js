@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import stylesForm from "./Styles/stylesForm";
 import { useNavigation } from "@react-navigation/native";
+import { login } from "../../../services/config/auth";
 
 const RegistrationForm = ({ screenSelect }) => {
   const [screen] = useState(screenSelect);
@@ -11,7 +12,7 @@ const RegistrationForm = ({ screenSelect }) => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    fullName: "",
+    name: "",
     age: "",
     phone: "",
   });
@@ -20,26 +21,20 @@ const RegistrationForm = ({ screenSelect }) => {
   const inputFields = [
     { name: "email", placeholder: "Email", keyboardType: "email-address" },
     { name: "password", placeholder: "Password", secureTextEntry: true },
-    { name: "fullName", placeholder: "Full Name" },
+    { name: "name", placeholder: "Full Name" },
     { name: "age", placeholder: "Age" },
     { name: "phone", placeholder: "Phone" },
   ];
-
-  // Datos temporales de inicio de sesion
-  const data = {
-    email: "root@gmail.com",
-    password: "1234",
-  };
 
   // Función para manejar cambios en los inputs
   const handleChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const email = formData.email.trim().toLowerCase();
     const password = formData.password.trim();
-    const fullName = formData.fullName.trim();
+    const name = formData.name.trim();
     const phone = formData.phone.trim();
     const age = formData.age.trim();
   
@@ -50,19 +45,35 @@ const RegistrationForm = ({ screenSelect }) => {
         console.log(screen);
         return;
       }
-  
-      if (email === data.email && password === data.password) {
-        console.log("Éxito", "Inicio de sesión correcto");
-        navigation.navigate("TabNavigator");
-      } else {
-        console.log("Error", "Credenciales incorrectas");
+      const user = { email, password };
+
+      try {
+        // Llamar a la función login desde los servicios
+        const data = await login(user);
+        console.log('Login successful:', data);
+        navigation.navigate("TabNavigator"); // Navegar al siguiente screen si el login es exitoso
+      } catch (error) {
+        // Imprimir el error completo para obtener más detalles
+        if (error.response) {
+          // Error de respuesta HTTP (por ejemplo, 400, 500, etc.)
+          console.error("Response error:", error.response.data);
+          console.error("Status code:", error.response.status);
+          console.error("Headers:", error.response.headers);
+        } else if (error.request) {
+          // Error de solicitud (no se recibió respuesta)
+          console.error("Request error:", error.request);
+        } else {
+          // Otro tipo de error (por ejemplo, errores de configuración)
+          console.error("Error message:", error.message);
+        }
+        console.error("Config:", error.config);
       }
-      return; 
+      return; // Prevenir la ejecución adicional del registro si es login
     }
   
     // Validar campos para Register
     if (screen === "Register") {
-      if (!email || !password || !fullName || !phone || !age) {
+      if (!email || !password || !name || !phone || !age) {
         console.log("Campos vacíos, llénalos register");
         console.log(screen);
         return;
@@ -85,7 +96,7 @@ const RegistrationForm = ({ screenSelect }) => {
       console.log("Registro exitoso", {
         email,
         password,
-        fullName,
+        name,
         phone,
         age,
       });
@@ -98,7 +109,7 @@ const RegistrationForm = ({ screenSelect }) => {
       {inputFields.map(
         (field) =>
           (screenSelect === "Register" ||
-            (field.name !== "fullName" &&
+            (field.name !== "name" &&
               field.name !== "age" &&
               field.name !== "phone")) && (
             <TextInput
