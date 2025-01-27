@@ -1,6 +1,7 @@
 import axios from "axios";
 import { setWithExpiration } from "../config/redis"; // Importar la función de Redis
 import { firestore } from "../config/database";
+import { publishGameEvent } from "../utils/pubSubPublisher"; // Importar publishGameEvent
 
 const mlbApi = axios.create({
   baseURL: process.env.MLB_STATS_BASEURL || "https://statsapi.mlb.com",
@@ -9,6 +10,14 @@ const mlbApi = axios.create({
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000; // 1 segundo
 
+/**
+ * Realiza una solicitud HTTP con reintentos en caso de fallo.
+ *
+ * @param url - URL a la que se realiza la solicitud.
+ * @param retries - Número de reintentos restantes.
+ * @returns La respuesta de la solicitud.
+ * @throws {Error} Si todos los reintentos fallan.
+ */
 async function fetchWithRetry(
   url: string,
   retries = MAX_RETRIES
@@ -26,6 +35,13 @@ async function fetchWithRetry(
   }
 }
 
+/**
+ * Obtiene datos desde la caché o ejecuta una función para obtener los datos.
+ *
+ * @param cacheKey - Clave de la caché.
+ * @param fetchFunction - Función para obtener los datos si no están en caché.
+ * @returns Los datos obtenidos.
+ */
 async function getCachedData(
   cacheKey: string,
   fetchFunction: () => Promise<any>
@@ -201,6 +217,12 @@ export async function getTeamRoster(teamId: string) {
   }
 }
 
+/**
+ * Obtiene los juegos que están en progreso y publica eventos clave en Pub/Sub.
+ *
+ * @returns Una lista de datos de juegos en progreso.
+ * @throws {Error} Si falla al obtener los datos de los juegos.
+ */
 export async function getGamesInProgress() {
   // Obtener calendario
   const scheduleData = await getSeasonSchedule();
@@ -229,6 +251,16 @@ export async function getGamesInProgress() {
       const { data } = await fetchWithRetry(liveUrl);
       await setWithExpiration(cacheKey, JSON.stringify(data));
       results.push(data);
+
+      // Filtrar eventos clave (por ejemplo, jonrones y ponches)
+      const events = data.liveData.plays.allPlays.filter((play: any) =>
+        ["home_run", "strike_out"].includes(play.result.eventType)
+      );
+
+      // Publicar eventos clave en Pub/Sub
+      events.forEach((event: any) => {
+        publishGameEvent({ gamePk, event });
+      });
     } catch (error) {
       throw new Error(`Error fetching live feed for gamePk: ${gamePk}`);
     }

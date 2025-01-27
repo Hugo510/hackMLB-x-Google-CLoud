@@ -28,7 +28,7 @@ const getPreferencesByUserId = async (
 
 const setPreferences = async (preferences: Preferences): Promise<void> => {
   try {
-    preferencesSchema.parse(preferences);
+    preferencesSchema.parse(preferences); // Validar preferencias
     await database.upsert({
       table: "Preferences",
       columns: ["userId", "teams", "players", "playTypes", "createdAt"],
@@ -53,5 +53,49 @@ const deletePreferences = async (userId: string): Promise<void> => {
     throw new Error("Error al eliminar las preferencias.");
   }
 };
+
+/**
+ * Retorna todos los usuarios cuyas preferencias incluyan el tipo de jugada,
+ * el equipo o el jugador que generó el evento.
+ */
+export async function getAllUsersWithTeamOrPlayer(
+  playEvent: any
+): Promise<any[]> {
+  try {
+    const eventType = playEvent.result?.eventType || "";
+    // Suponiendo que el evento contiene "teamId" y/o "playerId":
+    const teamId = playEvent.teamId || "";
+    const playerId = playEvent.playerId || "";
+
+    // Consultar todas las preferencias
+    const query = {
+      sql: `SELECT userId, teams, players, playTypes
+            FROM preferences`,
+    };
+    const [rows] = await database.run(query);
+
+    const users: any[] = [];
+    rows.forEach((row: any) => {
+      const userId = row.toJSON().userId;
+      const teams = row.toJSON().teams || [];
+      const players = row.toJSON().players || [];
+      const playTypes = row.toJSON().playTypes || [];
+
+      // Verificar si coincide con el tipo de jugada o equipo/jugador
+      const matchesEventType = playTypes.includes(eventType);
+      const matchesTeam = teams.includes(teamId);
+      const matchesPlayer = players.includes(playerId);
+
+      if (matchesEventType || matchesTeam || matchesPlayer) {
+        users.push({ id: userId });
+      }
+    });
+
+    return users;
+  } catch (error) {
+    logger.error("Error obteniendo usuarios con preferencias:", error);
+    return [];
+  }
+}
 
 export { getPreferencesByUserId, setPreferences, deletePreferences };

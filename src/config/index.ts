@@ -19,6 +19,9 @@ const envSchema = Joi.object({
   GCLOUD_TASKS_QUEUE: Joi.string().required(),
   GCLOUD_TASKS_LOCATION: Joi.string().required(),
   BASE_URL: Joi.string().required(), // Añadir base URL para uso interno
+  PUBSUB_TOPIC_NAME: Joi.string().required(), // Nombre del tema de Pub/Sub para eventos de juego
+  PUBSUB_SUBSCRIPTION_NAME: Joi.string().required(), // Nombre de la suscripción de Pub/Sub para procesar eventos
+  ENABLE_PUBSUB_PROCESSOR: Joi.boolean().default(false), // Habilitar (true) o deshabilitar (false) el procesador de Pub/Sub
   // ...existing code...
 }).unknown(true);
 
@@ -42,5 +45,8 @@ export const config = {
   gcloudTasksLocation: value.GCLOUD_TASKS_LOCATION,
   baseUrl: appSettings.baseUrl,
   port: appSettings.port,
+  pubsubTopicName: value.PUBSUB_TOPIC_NAME,
+  pubsubSubscriptionName: value.PUBSUB_SUBSCRIPTION_NAME,
+  enablePubsubProcessor: value.ENABLE_PUBSUB_PROCESSOR,
   // ...mantener otras propiedades existentes...
 };

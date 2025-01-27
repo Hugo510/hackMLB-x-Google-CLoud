@@ -7,6 +7,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import compression from "compression";
 import winston from "winston";
+import { config } from "./config";
 import userRoutes from "./routes/userRoutes";
 import gameRoutes from "./routes/gameRoutes";
 import summaryRoutes from "./routes/summaryRoutes";
@@ -15,6 +16,7 @@ import teamsRoutes from "./routes/teamsRoutes"; // Importar rutas de equipos
 import mlbStatsRoutes from "./routes/mlbStatsRoutes"; // Importar rutas de MLB Stats
 import { errorHandler } from "./middleware/errorHandler";
 import rateLimit from "express-rate-limit"; // Importar rateLimit
+import { startPubSubProcessor } from "./middleware/pubSubProcessor"; // Importar startPubSubProcessor
 /* import { redis } from "./config/redis"; // Asegurar importación de Redis */
 
 const app = express();
@@ -52,7 +54,10 @@ app.use(errorHandler);
 
 const port = process.env.PORT || 8080;
 
-// Función asíncrona para iniciar el servidor después de verificar la conexión a Firestore
+/**
+ * Función asíncrona para iniciar el servidor después de verificar la conexión a Firestore.
+ * Inicia el procesador de Pub/Sub si está habilitado en la configuración.
+ */
 const startServer = async () => {
   try {
     // Verificar la conexión a Firestore realizando una consulta simple
@@ -68,6 +73,13 @@ const startServer = async () => {
 
     app.listen(port, () => {
       logger.info(`Servidor funcionando en el puerto ${port}`);
+      if (config.enablePubsubProcessor) {
+        // Iniciar procesador de Pub/Sub condicionalmente basado en la configuración
+        startPubSubProcessor();
+        logger.info("Procesador de Pub/Sub iniciado.");
+      } else {
+        logger.info("Procesador de Pub/Sub deshabilitado.");
+      }
     });
   } catch (error) {
     logger.error("Error al conectar con Firestore o Redis:", error);
