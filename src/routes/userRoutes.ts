@@ -3,7 +3,6 @@ import { celebrate, Joi } from "celebrate";
 import {
   getAllUsersController,
   getUserDetailsController,
-  createUserController,
   updateUserController,
   deleteUserController,
   signup,
@@ -87,23 +86,6 @@ router.get(
     }),
   }),
   getUserDetailsController
-);
-
-/**
- * @route POST /api/users
- * @desc Crear un nuevo usuario
- * @access Público
- */
-router.post(
-  "/",
-  celebrate({
-    body: Joi.object({
-      name: Joi.string().min(1).required(),
-      email: Joi.string().email().required(),
-      password: Joi.string().required(),
-    }),
-  }),
-  createUserController
 );
 
 /**

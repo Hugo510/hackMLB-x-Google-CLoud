@@ -74,25 +74,6 @@ export const getUserDetailsController = async (
   }
 };
 
-/**
- * @desc Crear un nuevo usuario
- * @route POST /api/users
- * @access Público
- * @param {Object} user - Datos del usuario
- * @returns {Object} Mensaje de éxito
- */
-export const createUserController = async (
-  req: AuthenticatedRequest,
-  res: Response
-): Promise<void> => {
-  try {
-    const userData: Omit<User, "created_at" | "updated_at"> = req.body;
-    await fetchCreateUser(userData);
-    res.status(201).json({ message: "Usuario creado exitosamente" });
-  } catch (error) {
-    res.status(500).json({ message: "Error al crear el usuario", error });
-  }
-};
 
 /**
  * @desc Actualizar un usuario por ID
