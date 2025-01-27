@@ -43,9 +43,9 @@ async function getCachedData(
 }
 
 export async function getSeasonSchedule() {
-  const cacheKey = "seasonSchedule:2024";
+  const cacheKey = "seasonSchedule:2025";
   const cachedData = await getCachedData(cacheKey, () =>
-    fetchWithRetry("/api/v1/schedule?sportId=1&season=2024&gameType=R")
+    fetchWithRetry("/api/v1/schedule?sportId=1&season=2025&gameType=R")
   );
   if (cachedData) {
     return cachedData;
@@ -53,13 +53,13 @@ export async function getSeasonSchedule() {
 
   try {
     const { data } = await fetchWithRetry(
-      "/api/v1/schedule?sportId=1&season=2024&gameType=R"
+      "/api/v1/schedule?sportId=1&season=2025&gameType=R"
     );
     await setWithExpiration(cacheKey, JSON.stringify(data)); // Usar función de Redis
     return data;
   } catch (error) {
     // Fallback a Firestore
-    const doc = await firestore.collection("seasonSchedules").doc("2024").get();
+    const doc = await firestore.collection("seasonSchedules").doc("2025").get();
     if (doc.exists) {
       return doc.data();
     }
@@ -177,7 +177,7 @@ export async function getPlayerInfo(playerId: string) {
 export async function getTeamRoster(teamId: string) {
   const cacheKey = `teamRoster:${teamId}`;
   const cachedData = await getCachedData(cacheKey, () =>
-    fetchWithRetry(`/api/v1/teams/${teamId}/roster?season=2024`)
+    fetchWithRetry(`/api/v1/teams/${teamId}/roster?season=2025`)
   );
   if (cachedData) {
     return cachedData;
@@ -185,7 +185,7 @@ export async function getTeamRoster(teamId: string) {
 
   try {
     const { data } = await fetchWithRetry(
-      `/api/v1/teams/${teamId}/roster?season=2024`
+      `/api/v1/teams/${teamId}/roster?season=2025`
     );
     await setWithExpiration(cacheKey, JSON.stringify(data));
     return data;
@@ -199,4 +199,40 @@ export async function getTeamRoster(teamId: string) {
       "Error obteniendo la plantilla del equipo desde la API y Firestore."
     );
   }
+}
+
+export async function getGamesInProgress() {
+  // Obtener calendario
+  const scheduleData = await getSeasonSchedule();
+
+  // Filtrar juegos en progreso
+  const inProgressGames = scheduleData.dates.flatMap((date: any) =>
+    date.games.filter(
+      (game: any) => game.status && game.status.abstractGameState === "Live"
+    )
+  );
+
+  // Para cada juego, obtener su live feed
+  const results = [];
+  for (const game of inProgressGames) {
+    const gamePk = game.gamePk;
+    const cacheKey = `inProgressGame:${gamePk}`;
+    const liveUrl = `/api/v1/feed/live?gamePk=${gamePk}`;
+    const cachedData = await getCachedData(cacheKey, () =>
+      fetchWithRetry(liveUrl)
+    );
+    if (cachedData) {
+      results.push(cachedData);
+      continue;
+    }
+    try {
+      const { data } = await fetchWithRetry(liveUrl);
+      await setWithExpiration(cacheKey, JSON.stringify(data));
+      results.push(data);
+    } catch (error) {
+      throw new Error(`Error fetching live feed for gamePk: ${gamePk}`);
+    }
+  }
+
+  return results;
 }

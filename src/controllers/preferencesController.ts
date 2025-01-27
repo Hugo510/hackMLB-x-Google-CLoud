@@ -9,6 +9,7 @@ import {
   isTeamsTablePopulated,
 } from "../models/spanner/teamsModel";
 import { storeTeamMappings } from "../services/teamMappingsService"; // Importar el servicio
+import { triggerSetupProcess } from "../services/setupTasksService";
 
 import logger from "../config/logger";
 
@@ -84,6 +85,7 @@ export const setPreferencesController = async (
       createdAt: new Date().toISOString(),
     };
     await setPreferences(preferences);
+    await triggerSetupProcess(preferences.userId); // Encolar tarea en Cloud Tasks
     res
       .status(201)
       .json({ message: "Preferencias actualizadas exitosamente." });

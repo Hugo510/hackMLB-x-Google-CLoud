@@ -8,6 +8,7 @@ import {
   getGameTimestamps,
   getPlayerInfo,
   getTeamRoster,
+  getGamesInProgress,
 } from "../services/mlbStatsService";
 
 const router = Router();
@@ -143,5 +144,19 @@ router.get(
     }
   }
 );
+
+/**
+ * @route GET /api/mlb-stats/live/gamesInProgress
+ * @desc Obtener juegos en progreso
+ * @access Público
+ */
+router.get("/live/gamesInProgress", async (req, res) => {
+  try {
+    const data = await getGamesInProgress();
+    res.json(data);
+  } catch (error) {
+    sendErrorResponse(res, 500, "Error obteniendo juegos en progreso");
+  }
+});
 
 export default router;

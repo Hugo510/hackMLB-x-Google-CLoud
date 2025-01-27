@@ -20,7 +20,7 @@ const DEFAULT_EXPIRATION = config.redisDefaultExpiration;
 // Función para establecer una clave con expiración
 const setWithExpiration = async (key: string, value: string) => {
   try {
-    // await redis.set(key, value, "EX", DEFAULT_EXPIRATION); // Comentar la operación de Redis
+    // await redis.set(key, value, "EX", DEFAULT_EXPIRATION);
     redisDebug(`Clave ${key} establecida con éxito en Redis`);
   } catch (err) {
     redisDebug(

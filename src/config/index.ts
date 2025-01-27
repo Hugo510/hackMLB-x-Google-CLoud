@@ -18,6 +18,7 @@ const envSchema = Joi.object({
   REDIS_DEFAULT_EXPIRATION: Joi.number().default(3600),
   GCLOUD_TASKS_QUEUE: Joi.string().required(),
   GCLOUD_TASKS_LOCATION: Joi.string().required(),
+  BASE_URL: Joi.string().required(), // Añadir base URL para uso interno
   // ...existing code...
 }).unknown(true);
 
