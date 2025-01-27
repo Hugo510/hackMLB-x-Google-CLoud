@@ -223,7 +223,7 @@ export const login = [
 
       // Almacenar el token en Redis
       // await redis.set(`user:${user.id}:token`, token, "EX", 60 * 60 * 24); // Expira en 24 horas
-
+      console.log('Inicio de Sesion Exitoso')
       res.status(200).json({ message: "Inicio de sesión exitoso", token });
     } catch (error) {
       res.status(500).json({ message: "Error al iniciar sesión", error });
