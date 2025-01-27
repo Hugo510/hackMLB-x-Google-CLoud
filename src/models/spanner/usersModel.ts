@@ -119,7 +119,7 @@ const updateUser = async (
 const deleteUser = async (userId: string): Promise<void> => {
   try {
     const userRow = {
-      name: "Innactive",
+      status: "inactive",
     };
 
     await database.runTransaction(async (err, transaction) => {
@@ -132,7 +132,7 @@ const deleteUser = async (userId: string): Promise<void> => {
         return;
       }
       const query = {
-        columns: ["id", "name", "email", "password", "created_at"],
+        columns: ["id", "name", "email", "password","status", "created_at"],
         keys: [[userId]],
       };
 
@@ -146,7 +146,7 @@ const deleteUser = async (userId: string): Promise<void> => {
       await transaction.update("Users", [
         {
           id: userId,
-          name: userRow.name,
+          status: userRow.status,
         },
       ]);
       await transaction.commit();
