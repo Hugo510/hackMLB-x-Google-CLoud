@@ -5,7 +5,12 @@ import {
 } from "../services/gameEventsService";
 import { GameEvent } from "../models/firestore/gameEventsModel";
 
-// Obtener eventos de un juego
+/**
+ * Controlador para obtener eventos de un juego
+ * @param req - Objeto de solicitud
+ * @param res - Objeto de respuesta
+ * @param next - Función de siguiente middleware
+ */
 export const getGameEventsController = async (
   req: Request,
   res: Response,
@@ -24,7 +29,12 @@ export const getGameEventsController = async (
   }
 };
 
-// Añadir un nuevo evento a un juego
+/**
+ * Controlador para añadir un nuevo evento a un juego
+ * @param req - Objeto de solicitud
+ * @param res - Objeto de respuesta
+ * @param next - Función de siguiente middleware
+ */
 export const addGameEventController = async (
   req: Request,
   res: Response,
@@ -33,7 +43,14 @@ export const addGameEventController = async (
   try {
     const event: Omit<GameEvent, "id"> = req.body;
     // Validar que los campos necesarios estén presentes
-    if (!event.gameId || !event.eventType || !event.timestamp) {
+    if (
+      !event.userId ||
+      !event.gameId ||
+      !event.eventType ||
+      !event.details?.playerId ||
+      !event.details?.teamId ||
+      !event.details?.description
+    ) {
       res
         .status(400)
         .json({ message: "Faltan campos requeridos en el evento." });
