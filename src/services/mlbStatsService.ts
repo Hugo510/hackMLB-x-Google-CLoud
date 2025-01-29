@@ -5,7 +5,7 @@ import { publishGameEvent } from "../utils/pubSubPublisher"; // Importar publish
 import { config } from "../config";
 
 const mlbApi = axios.create({
-  baseURL: config.mlbStatsBaseUrl,
+  baseURL: "https://statsapi.mlb.com",
 });
 
 const MAX_RETRIES = 3;

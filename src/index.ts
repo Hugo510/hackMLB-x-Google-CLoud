@@ -22,6 +22,9 @@ import logger from "./config/logger"; // Importar logger configurado
 
 const app = express();
 
+// Agregar esta línea para confiar en el proxy
+app.set("trust proxy", 1); // Confía en el primer proxy (por ejemplo, Ngrok)
+
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos
   max: 100, // límite de peticiones
