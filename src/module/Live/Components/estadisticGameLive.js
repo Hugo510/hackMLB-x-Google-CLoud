@@ -74,3 +74,4 @@ const EstadisticGameLive = () => {
 
 
 export default EstadisticGameLive;
+
