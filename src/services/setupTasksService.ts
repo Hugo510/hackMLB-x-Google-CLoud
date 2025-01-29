@@ -19,7 +19,13 @@ export const triggerSetupProcess = async (userId: string) => {
       },
     };
 
-    await cloudTasksClient.createTask({ parent: queuePath, task });
+    const [response] = await cloudTasksClient.createTask({
+      parent: queuePath,
+      task,
+    });
+    logger.info(
+      `Tarea creada exitosamente para userId: ${userId}, Nombre de la tarea: ${response.name}`
+    );
   } catch (error) {
     logger.error(`Error al crear la tarea para userId: ${userId}`, error);
     throw error;
