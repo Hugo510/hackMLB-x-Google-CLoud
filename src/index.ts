@@ -6,7 +6,6 @@ import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
 import compression from "compression";
-import winston from "winston";
 import { config } from "./config";
 import userRoutes from "./routes/userRoutes";
 import gameRoutes from "./routes/gameRoutes";
@@ -17,16 +16,10 @@ import mlbStatsRoutes from "./routes/mlbStatsRoutes"; // Importar rutas de MLB S
 import { errorHandler } from "./middleware/errorHandler";
 import rateLimit from "express-rate-limit"; // Importar rateLimit
 import { startPubSubProcessor } from "./middleware/pubSubProcessor"; // Importar startPubSubProcessor
+import logger from "./config/logger"; // Importar logger configurado
 /* import { redis } from "./config/redis"; // Asegurar importación de Redis */
 
 const app = express();
-
-const logger = winston.createLogger({
-  transports: [
-    new winston.transports.Console(),
-    // ...agregar transportes de archivos o servicios externos...
-  ],
-});
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutos

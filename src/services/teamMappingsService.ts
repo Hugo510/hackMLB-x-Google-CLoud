@@ -1,5 +1,5 @@
 import { getSeasonSchedule } from "../services/mlbStatsService";
-import { setWithExpiration } from "../config/redis";
+/* import { setWithExpiration } from "../config/redis"; */
 import logger from "../config/logger";
 import { upsertTeams } from "../models/spanner/teamsModel";
 

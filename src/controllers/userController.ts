@@ -8,18 +8,10 @@ import {
   fetchGetUserByEmail,
 } from "../services/userService";
 import { generateToken } from "../config/auth";
-// import redis from "../config/redis"; // Comentar la importación de Redis
+// import { redis } from "../config/redis"; // Descomentar la importación de Redis
 import bcrypt from "bcrypt";
 import { User } from "../models/spanner/usersModel";
 import { body, validationResult } from "express-validator";
-
-// Extender la interfaz Request para incluir la propiedad user
-interface AuthenticatedRequest extends Request {
-  user?: {
-    id: string;
-    email: string;
-  };
-}
 
 /**
  * @desc Obtener todos los usuarios
@@ -28,7 +20,7 @@ interface AuthenticatedRequest extends Request {
  * @returns {Array} Lista de usuarios
  */
 export const getAllUsersController = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response
 ): Promise<void> => {
   try {
@@ -47,7 +39,7 @@ export const getAllUsersController = async (
  * @returns {Object} Detalles del usuario
  */
 export const getUserDetailsController = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response
 ): Promise<void> => {
   try {
@@ -57,6 +49,7 @@ export const getUserDetailsController = async (
     // const cachedUser = await redis.get(`user:${userId}`);
     // if (cachedUser) {
     //   res.status(200).json(JSON.parse(cachedUser));
+    //   return;
     // }
 
     const user = await fetchUserDetails(userId);
@@ -74,7 +67,6 @@ export const getUserDetailsController = async (
   }
 };
 
-
 /**
  * @desc Actualizar un usuario por ID
  * @route PUT /api/users/:userId
@@ -84,7 +76,7 @@ export const getUserDetailsController = async (
  * @returns {Object} Mensaje de éxito
  */
 export const updateUserController = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response
 ): Promise<void> => {
   try {
@@ -93,15 +85,15 @@ export const updateUserController = async (
     await fetchUpdateUser(userId, updates);
 
     // Actualizar el usuario en caché
-    const updatedUser = await fetchUserDetails(userId);
-    if (updatedUser) {
-      // await redis.set(
-      //   `user:${userId}`,
-      //   JSON.stringify(updatedUser),
-      //   "EX",
-      //   60 * 60
-      // ); // Expira en 1 hora
-    }
+    // const updatedUser = await fetchUserDetails(userId);
+    // if (updatedUser) {
+    //   await redis.set(
+    //     `user:${userId}`,
+    //     JSON.stringify(updatedUser),
+    //     "EX",
+    //     60 * 60
+    //   ); // Expira en 1 hora
+    // }
 
     res.status(200).json({ message: "Usuario actualizado exitosamente" });
   } catch (error) {
@@ -117,7 +109,7 @@ export const updateUserController = async (
  * @returns {Object} Mensaje de éxito
  */
 export const deleteUserController = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response
 ): Promise<void> => {
   try {
@@ -151,7 +143,7 @@ const validateLogin = [
 
 export const signup = [
   ...validateSignup,
-  async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  async (req: Request, res: Response): Promise<void> => {
     try {
       // Validar entrada
       const errors = validationResult(req);
@@ -193,7 +185,7 @@ export const signup = [
 
 export const login = [
   ...validateLogin,
-  async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  async (req: Request, res: Response): Promise<void> => {
     try {
       // Validar entrada
       const errors = validationResult(req);
@@ -223,7 +215,7 @@ export const login = [
 
       // Almacenar el token en Redis
       // await redis.set(`user:${user.id}:token`, token, "EX", 60 * 60 * 24); // Expira en 24 horas
-      console.log('Inicio de Sesion Exitoso')
+      console.log("Inicio de Sesion Exitoso");
       res.status(200).json({ message: "Inicio de sesión exitoso", token });
     } catch (error) {
       res.status(500).json({ message: "Error al iniciar sesión", error });

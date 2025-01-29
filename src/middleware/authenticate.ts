@@ -1,20 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { verifyToken } from "../config/auth";
-/* import redis from "../config/redis"; */
+/* import { redis } from "../config/redis"; */
+import { RequestHandler } from "express";
 
-// Extender la interfaz Request para incluir la propiedad user
-interface AuthenticatedRequest extends Request {
-  user?: {
-    id: string;
-    email: string;
-  };
-}
-
-export const authenticate = async (
-  req: AuthenticatedRequest,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
+export const authenticate: RequestHandler = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -33,7 +22,11 @@ export const authenticate = async (
     } */
 
     // Adjuntar información del usuario a la solicitud
-    req.user = { id: decoded.id, email: decoded.email };
+    req.user = {
+      id: decoded.id,
+      email: decoded.email,
+    };
+
     next();
   } catch (error) {
     res.status(401).json({ message: "Autenticación fallida", error });

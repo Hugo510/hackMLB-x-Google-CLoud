@@ -8,7 +8,8 @@ import { Timestamp } from "firebase-admin/firestore"; // Importar Timestamp
 /**
  * Suscripción al tema de Pub/Sub para procesar mensajes entrantes.
  */
-const subscription = pubsubClient.subscription(config.pubsubSubscriptionName);
+const subscriptionName = config.pubsubSubscriptionName;
+const subscription = pubsubClient.subscription(subscriptionName);
 
 /**
  * Maneja los mensajes recibidos de Pub/Sub.

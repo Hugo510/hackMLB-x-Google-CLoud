@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import "../types/express"; // Asegurarse de importar los tipos personalizados
 import {
   extractVideoClip,
   generateAudio,

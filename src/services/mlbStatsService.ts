@@ -1,10 +1,11 @@
 import axios from "axios";
-import { setWithExpiration } from "../config/redis"; // Importar la función de Redis
+// import { setWithExpiration } from "../config/redis"; // Importar la función de Redis
 import { firestore } from "../config/database";
 import { publishGameEvent } from "../utils/pubSubPublisher"; // Importar publishGameEvent
+import { config } from "../config";
 
 const mlbApi = axios.create({
-  baseURL: process.env.MLB_STATS_BASEURL || "https://statsapi.mlb.com",
+  baseURL: config.mlbStatsBaseUrl,
 });
 
 const MAX_RETRIES = 3;
@@ -71,7 +72,7 @@ export async function getSeasonSchedule() {
     const { data } = await fetchWithRetry(
       "/api/v1/schedule?sportId=1&season=2025&gameType=R"
     );
-    await setWithExpiration(cacheKey, JSON.stringify(data)); // Usar función de Redis
+    // await setWithExpiration(cacheKey, JSON.stringify(data)); // Usar función de Redis
     return data;
   } catch (error) {
     // Fallback a Firestore
@@ -94,7 +95,7 @@ export async function getGameLive(gamePk: string) {
 
   try {
     const { data } = await fetchWithRetry(`/api/v1.1/game/${gamePk}/feed/live`);
-    await setWithExpiration(cacheKey, JSON.stringify(data));
+    // await setWithExpiration(cacheKey, JSON.stringify(data));
     return data;
   } catch (error) {
     // Fallback a Firestore
@@ -121,7 +122,7 @@ export async function getGameLiveByTimecode(gamePk: string, timecode: string) {
     const { data } = await fetchWithRetry(
       `/api/v1.1/game/${gamePk}/feed/live?timecode=${timecode}`
     );
-    await setWithExpiration(cacheKey, JSON.stringify(data));
+    // await setWithExpiration(cacheKey, JSON.stringify(data));
     return data;
   } catch (error) {
     // Fallback a Firestore
@@ -151,7 +152,7 @@ export async function getGameTimestamps(gamePk: string) {
     const { data } = await fetchWithRetry(
       `/api/v1.1/game/${gamePk}/feed/live/timestamps`
     );
-    await setWithExpiration(cacheKey, JSON.stringify(data));
+    // await setWithExpiration(cacheKey, JSON.stringify(data));
     return data;
   } catch (error) {
     // Fallback a Firestore
@@ -176,7 +177,7 @@ export async function getPlayerInfo(playerId: string) {
 
   try {
     const { data } = await fetchWithRetry(`/api/v1/people/${playerId}`);
-    await setWithExpiration(cacheKey, JSON.stringify(data));
+    // await setWithExpiration(cacheKey, JSON.stringify(data));
     return data;
   } catch (error) {
     // Fallback a Firestore
@@ -203,7 +204,7 @@ export async function getTeamRoster(teamId: string) {
     const { data } = await fetchWithRetry(
       `/api/v1/teams/${teamId}/roster?season=2025`
     );
-    await setWithExpiration(cacheKey, JSON.stringify(data));
+    // await setWithExpiration(cacheKey, JSON.stringify(data));
     return data;
   } catch (error) {
     // Fallback a Firestore
@@ -249,7 +250,7 @@ export async function getGamesInProgress() {
     }
     try {
       const { data } = await fetchWithRetry(liveUrl);
-      await setWithExpiration(cacheKey, JSON.stringify(data));
+      // await setWithExpiration(cacheKey, JSON.stringify(data));
       results.push(data);
 
       // Filtrar eventos clave (por ejemplo, jonrones y ponches)

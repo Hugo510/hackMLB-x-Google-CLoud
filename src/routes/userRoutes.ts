@@ -79,7 +79,7 @@ router.get("/", getAllUsersController);
  */
 router.get(
   "/:userId",
-  // authenticate,
+  authenticate,
   celebrate({
     params: Joi.object({
       userId: Joi.string().required(),
@@ -95,7 +95,7 @@ router.get(
  */
 router.put(
   "/:userId",
-  // authenticate,
+  authenticate,
   celebrate({
     params: Joi.object({
       userId: Joi.string().required(),
@@ -116,7 +116,7 @@ router.put(
  */
 router.put(
   "/delete/:userId",
-  // authenticate,
+  authenticate,
   celebrate({
     params: Joi.object({
       userId: Joi.string().required(),
@@ -133,7 +133,7 @@ router.put(
  */
 router.post(
   "/preferences",
-  // authenticate,
+  authenticate,
   celebrate({
     body: Joi.object({
       userId: Joi.string().required(),
@@ -152,7 +152,7 @@ router.post(
  */
 router.get(
   "/preferences/:userId",
-  // authenticate,
+  authenticate,
   celebrate({
     params: Joi.object({
       userId: Joi.string().required(),
