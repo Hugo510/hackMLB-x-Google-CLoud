@@ -5,12 +5,10 @@ const stylesLive = StyleSheet.create({
     cardContainer:{
       marginBottom: 24, 
       position: 'relative',
-      
     },
 
     container: { 
       flex: 1,
-     
       backgroundColor: '#fff',
     },
   

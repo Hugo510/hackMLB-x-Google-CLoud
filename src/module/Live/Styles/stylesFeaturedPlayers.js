@@ -4,7 +4,6 @@ const stylesFeaturedPlayers = StyleSheet.create({
   container: {
     flex: 1,
     marginLeft: 20,
-    backgroundColor: '#f0f0f0',
   },
   card: {
     flexDirection: 'row',
@@ -12,7 +11,6 @@ const stylesFeaturedPlayers = StyleSheet.create({
     paddingLeft: 20,
     marginVertical: 10,
     borderRadius: 10,
-    backgroundColor: '#f0f0f0',
     elevation: 1,
   },
   position: {

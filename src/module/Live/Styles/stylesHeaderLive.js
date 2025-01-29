@@ -1,6 +1,9 @@
 import { StyleSheet } from 'react-native';
 
 const stylesLiveHeader = StyleSheet.create({
+    container: {
+      backgroundColor: '#fff',
+    },
     loading: {
       marginTop: 20,
     },
@@ -10,7 +13,7 @@ const stylesLiveHeader = StyleSheet.create({
       borderRadius: 10,
       // borderColor: '#',
       // borderWidth: 1,
-      backgroundColor: '#f6f6f6',
+      backgroundColor: '#fff',
     },
     teams: {
       flexDirection: 'row',
