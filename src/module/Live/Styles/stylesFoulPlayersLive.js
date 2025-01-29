@@ -7,7 +7,7 @@ const stylesFoulPlayersLive = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
     padding: 5,
-    marginInline: 16,
+    marginInline: 26,
     marginTop: 10,
   },
   left: {
@@ -31,7 +31,7 @@ const stylesFoulPlayersLive = StyleSheet.create({
     marginHorizontal: 5,
   },
   text: {
-    fontSize: 16,
+    fontSize: 14,
     color: 'black',
   },
 });

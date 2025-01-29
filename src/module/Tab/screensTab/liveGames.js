@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import EstadisticGame from '../../Live/estadisticGame';
-import stylesLive from '../../Live/Styles/stylesHeaderLive';
+import stylesLiveHeader from '../../Live/Styles/stylesHeaderLive';
 
 
 function LiveGames() {
     
   return (
-    <View style={stylesLive.container}>
+    <View style={stylesLiveHeader.container}>
       <ScrollView style={stylesLive.list}>
         <EstadisticGame />
       </ScrollView>

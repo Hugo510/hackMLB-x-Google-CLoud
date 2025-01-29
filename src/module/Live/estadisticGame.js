@@ -4,6 +4,7 @@ import EstadisticGameLive from './Components/estadisticGameLive';
 import stylesLiveHeader from './Styles/stylesHeaderLive';
 import FeaturedPlayers from './Components/featuredPlayers';
 import FoulPlayersLive from './Components/foulPlayersLive';
+import InfoGameLive from './Components/infoGamelive';
 
 function EstadisticGame() {
     
@@ -12,6 +13,7 @@ function EstadisticGame() {
         <EstadisticGameLive />
         <FeaturedPlayers />
         <FoulPlayersLive />
+        <InfoGameLive />
     </View>
   );
 }

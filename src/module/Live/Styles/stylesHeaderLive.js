@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 const stylesLiveHeader = StyleSheet.create({
     container: {
       backgroundColor: '#fff',
+      paddingBottom: 70,
     },
     loading: {
       marginTop: 20,
