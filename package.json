@@ -39,6 +39,8 @@
   },
   "devDependencies": {
     "@google-cloud/tasks": "^5.5.2",
+    "@google-cloud/text-to-speech": "^5.8.0",
+    "@google-cloud/translate": "^8.5.0",
     "@types/bcrypt": "^5.0.2",
     "@types/compression": "^1.7.5",
     "@types/cors": "^2.8.17",

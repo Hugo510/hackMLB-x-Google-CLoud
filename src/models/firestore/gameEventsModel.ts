@@ -14,9 +14,19 @@ const gameEventSchema = z.object({
   timestamp: z.instanceof(Timestamp).optional(), // Usar Timestamp en lugar de Date
   details: z
     .object({
-      playerId: z.string(),
-      teamId: z.string(),
-      description: z.string(),
+      playerId: z.string().optional(),
+      teamId: z.string().optional(),
+      description: z.string().optional(),
+      videoUri: z.string().optional(),
+      audioUris: z
+        .array(
+          z.object({
+            uri: z.string(),
+            text: z.string(),
+            languageCode: z.string(),
+          })
+        )
+        .optional(),
     })
     .optional(),
 });

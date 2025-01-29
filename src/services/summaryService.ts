@@ -4,6 +4,15 @@ import {
 } from "../models/firestore/summariesModel";
 import { Summary } from "../models/firestore/summariesModel";
 import { Timestamp } from "firebase-admin/firestore";
+import {
+  extractVideoClip as gcExtractVideoClip,
+  generateAudio as gcGenerateAudio,
+  translateText as gcTranslateText,
+} from "../config/googleCloud";
+
+export const extractVideoClip = gcExtractVideoClip;
+export const generateAudio = gcGenerateAudio;
+export const translateText = gcTranslateText;
 
 // Si sólo quieres un arreglo de Summary:
 export const fetchSummariesByUserId = async (
