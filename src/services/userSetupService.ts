@@ -1,7 +1,7 @@
 import logger from "../config/logger";
 import { getSeasonSchedule } from "./mlbStatsService";
 import { getPreferencesByUserId } from "../models/spanner/preferencesModel";
-import { setWithExpiration } from "../config/redis";
+/* import { setWithExpiration } from "../config/redis"; */
 
 export const setupUserPreferencesService = async (
   userId: string
@@ -27,10 +27,10 @@ export const setupUserPreferencesService = async (
     );
 
     // Almacenar en Redis (cache)
-    await setWithExpiration(
+    /* await setWithExpiration(
       `relevantGames:${userId}`,
       JSON.stringify(relevantGames)
-    );
+    ); */
 
     logger.info(`Setup completed for userId: ${userId}`);
   } catch (error) {

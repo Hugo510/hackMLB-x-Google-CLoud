@@ -53,23 +53,28 @@ export const setPreferencesController = async (
   req: Request,
   res: Response
 ): Promise<void> => {
+  // logger.info("setPreferencesController llamado con body:", req.body);
   try {
     const { userId, teams, players, playTypes } = req.body;
 
-    // Verificar si la tabla Teams está poblada
+    // logger.info("Verificando si la tabla Teams está poblada.");
     const teamsPopulated = await isTeamsTablePopulated();
+    // logger.info("Tabla Teams poblada:", teamsPopulated);
     if (!teamsPopulated) {
-      // Utilizar el servicio para almacenar los mapeos de equipos
+      // logger.info("Tabla Teams no poblada. Almacenando mapeos de equipos.");
       await storeTeamMappings();
     }
 
-    // Mapear nombres de equipos a IDs
+    // logger.info("Mapeando nombres de equipos a IDs.");
     const teamIds: string[] = [];
     for (const teamName of teams) {
+      // logger.info(`Obteniendo ID para el equipo: ${teamName}`);
       const teamId = await getTeamIdByName(teamName);
+      // logger.info(`ID obtenido para ${teamName}: ${teamId}`);
       if (teamId) {
         teamIds.push(teamId);
       } else {
+        logger.warn(`Equipo no encontrado: ${teamName}`);
         res.status(400).send(`Equipo no encontrado: ${teamName}`);
         return;
       }
@@ -82,10 +87,12 @@ export const setPreferencesController = async (
       teams: teamIds, // Guardar IDs en lugar de nombres
       players,
       playTypes,
-      createdAt: new Date().toISOString(),
     };
+    // logger.info("Preferencias mapeadas antes de guardar:", preferences);
     await setPreferences(preferences);
+    // logger.info("Preferencias guardadas correctamente.");
     await triggerSetupProcess(preferences.userId); // Encolar tarea en Cloud Tasks
+    // logger.info("Tarea de configuración encolada.");
     res
       .status(201)
       .json({ message: "Preferencias actualizadas exitosamente." });
@@ -124,7 +131,6 @@ export const getUserPreferencesDetails = async (
         players: preferences.players,
         playTypes: preferences.playTypes,
       },
-      lastUpdated: preferences.createdAt,
     };
 
     logger.info(`Preferencias recuperadas para el usuario: ${userId}`);

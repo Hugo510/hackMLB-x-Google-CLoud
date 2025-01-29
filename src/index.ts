@@ -13,6 +13,7 @@ import summaryRoutes from "./routes/summaryRoutes";
 import gameEventsRoutes from "./routes/gameEventsRoutes"; // Importar rutas de eventos de juego
 import teamsRoutes from "./routes/teamsRoutes"; // Importar rutas de equipos
 import mlbStatsRoutes from "./routes/mlbStatsRoutes"; // Importar rutas de MLB Stats
+import setupRoutes from "./routes/setupRoutes"; // Importar las rutas de setup
 import { errorHandler } from "./middleware/errorHandler";
 import rateLimit from "express-rate-limit"; // Importar rateLimit
 import { startPubSubProcessor } from "./middleware/pubSubProcessor"; // Importar startPubSubProcessor
@@ -41,6 +42,7 @@ app.use("/api/teams", teamsRoutes);
 app.use("/api/summaries", summaryRoutes); // Usar rutas de resúmenes
 app.use("/api/game-events", gameEventsRoutes); // Usar rutas de eventos de juego
 app.use("/api/mlb-stats", mlbStatsRoutes); // Usar rutas de MLB Stats
+app.use("/api/setup", setupRoutes); // Registrar rutas de setup
 
 // Middleware de manejo de errores
 app.use(errorHandler);
@@ -58,7 +60,7 @@ const startServer = async () => {
       .collection("gameEvents")
       .limit(1)
       .get();
-    logger.info("Conexión a Firestore exitosa."); */
+    // logger.info("Conexión a Firestore exitosa."); */
 
     // // Verificar conexión a Redis (descomentar si Redis está habilitado)
     // await redis.ping();

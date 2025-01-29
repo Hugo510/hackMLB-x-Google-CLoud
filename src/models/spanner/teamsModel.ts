@@ -102,8 +102,6 @@ export const upsertTeams = async (
     }));
 
     await database.table("Teams").upsert(rows);
-
-    logger.info("Upsert de equipos realizado correctamente.");
   } catch (error) {
     logger.error(`Error al hacer upsert de equipos: ${error}`);
     throw new Error("Error al actualizar los equipos en la base de datos.");

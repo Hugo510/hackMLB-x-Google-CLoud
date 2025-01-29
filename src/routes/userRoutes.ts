@@ -133,7 +133,7 @@ router.put(
  */
 router.post(
   "/preferences",
-  authenticate,
+  /* authenticate, */
   celebrate({
     body: Joi.object({
       userId: Joi.string().required(),

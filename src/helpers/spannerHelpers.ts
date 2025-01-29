@@ -17,22 +17,26 @@ export const runSingleRowQuery = async (
   try {
     const [rows] = await database.run({ sql: query, params });
     if (rows.length === 0) return null;
-   // Convertir el Arreglo resultante a objeto para manejo del schema
-   const rowObject = rows[0].reduce(
-    (acc: Record<string, any>, column: { name: string; value: any }) => {
-      if (typeof column.value === "object" && column.value !== null && "value" in column.value) {
-        // Extrae el valor si es un objeto del tipo { value: '...' }
-        acc[column.name] = Number((column.value as any).value);
-      } else {
-        acc[column.name] = column.value;
-      }
-      return acc;
-    },
-    {}
-  );
-  console.log("Objeto transformado:", rowObject);
-  // Validar con el esquema de Zod
-  return schema.parse(rowObject);
+    // Convertir el Arreglo resultante a objeto para manejo del schema
+    const rowObject = rows[0].reduce(
+      (acc: Record<string, any>, column: { name: string; value: any }) => {
+        if (
+          typeof column.value === "object" &&
+          column.value !== null &&
+          "value" in column.value
+        ) {
+          // Extrae el valor si es un objeto del tipo { value: '...' }
+          acc[column.name] = Number((column.value as any).value);
+        } else {
+          acc[column.name] = column.value;
+        }
+        return acc;
+      },
+      {}
+    );
+    /* console.log("Objeto transformado:", rowObject); */
+    // Validar con el esquema de Zod
+    return schema.parse(rowObject);
   } catch (error) {
     logger.error(`Error ejecutando consulta de una sola fila: ${error}`);
     throw error;
@@ -56,19 +60,21 @@ export const runMultipleRowQuery = async (
 
     const transformedRows = rows.map((row) => {
       const rowObject: Record<string | number, unknown> = {};
-      
+
       row.forEach((column: { name: string; value: unknown }) => {
         rowObject[column.name] = column.value;
       });
       row.forEach((column: { name: string | number; value: unknown }) => {
         if (
-          typeof column.value === "object" && column.value !== null && "value" in column.value
+          typeof column.value === "object" &&
+          column.value !== null &&
+          "value" in column.value
         ) {
           // Extrae el valor si es un objeto del tipo { value: '...' }
           rowObject[column.name] = Number((column.value as any).value);
         }
       });
-      console.log("Usuario transformado:", rowObject);
+      /* console.log("Usuario transformado:", rowObject); */
       return rowObject;
     });
     // Validación con Zod
