@@ -7,6 +7,8 @@ import { CloudTasksClient } from "@google-cloud/tasks";
 import { PubSub } from "@google-cloud/pubsub";
 import logger from "./logger";
 import { config } from "./index";
+import fs from "fs";
+import path from "path";
 
 /**
  * Crea una instancia del cliente de Google Cloud especificado.
@@ -60,28 +62,66 @@ export const extractVideoClip = async (
   startTime: number,
   endTime: number
 ): Promise<void> => {
+  logger.info(`Iniciando extracción de video clip...`);
+
   try {
-    const request = {
-      inputUri,
-      features: ["SHOT_CHANGE_DETECTION"],
-      videoContext: {
-        segments: [
-          {
-            startTimeOffset: { seconds: startTime },
-            endTimeOffset: { seconds: endTime },
-          },
-        ],
-      },
-    };
+    // Validar parámetros de entrada
+    if (!inputUri.startsWith("gs://")) {
+      throw new Error(
+        "inputUri debe ser una URL de Google Cloud Storage (gs://)"
+      );
+    }
 
-    const [operation] = await videoIntelligenceClient.annotateVideo(request);
-    const [result] = await operation.promise();
+    // Crear directorio temporal si no existe
+    const tempDir = "./temp";
+    if (!fs.existsSync(tempDir)) {
+      fs.mkdirSync(tempDir);
+    }
 
-    await storage.bucket("mlb-summaries-bucket").upload(outputUri, {
+    // Extraer bucket y nombre del archivo del inputUri
+    const gsPath = inputUri.replace("gs://", "").split("/");
+    const bucketName = gsPath[0];
+    const fileName = gsPath.slice(1).join("/");
+
+    // Nombres de archivos temporales
+    const tempInputPath = path.join(tempDir, "input.mp4");
+    const tempOutputPath = path.join(tempDir, "output.mp4");
+
+    logger.info("Descargando archivo de entrada desde GCS...");
+    await storage.bucket(bucketName).file(fileName).download({
+      destination: tempInputPath,
+    });
+
+    // Procesar video con ffmpeg o similar aquí
+    logger.info("Procesando video...");
+    // TODO: Implementar el procesamiento real del video
+    // Por ahora solo copiamos el archivo
+    fs.copyFileSync(tempInputPath, tempOutputPath);
+
+    logger.info("Subiendo archivo procesado a GCS...");
+    await storage.bucket("mlb-summaries-bucket").upload(tempOutputPath, {
       destination: `videos/${outputUri}`,
     });
+
+    // Limpiar archivos temporales
+    fs.unlinkSync(tempInputPath);
+    fs.unlinkSync(tempOutputPath);
+
+    logger.info("Proceso completado exitosamente");
   } catch (error) {
-    throw new Error("Error processing video clip.");
+    logger.error("Error en el procesamiento del video:", {
+      error:
+        error instanceof Error
+          ? {
+              message: error.message,
+              stack: error.stack,
+              name: error.name,
+            }
+          : error,
+      inputUri,
+      outputUri,
+    });
+    throw error;
   }
 };
 

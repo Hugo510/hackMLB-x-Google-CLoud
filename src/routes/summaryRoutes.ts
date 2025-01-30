@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { generateSummary } from "../controllers/summaryController";
-import { authenticate } from "../middleware/authenticate";
+/* import { authenticate } from "../middleware/authenticate"; */
 
 const router = Router();
 
