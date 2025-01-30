@@ -21,7 +21,8 @@ function ProfileSession({navigation}){
         <ImageBackground
             source={{ uri: user.banner }}
             style={stylesProfile.banner}
-            resizeMode='cover'> </ImageBackground>
+            resizeMode='cover'>
+        </ImageBackground>
 
           <Image source={{ uri: user.profileImage }} style={stylesProfile.profileImage} />
           
