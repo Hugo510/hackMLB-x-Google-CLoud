@@ -24,7 +24,7 @@ function ProfileSession({navigation}){
             resizeMode='cover'>
         </ImageBackground>
 
-          <Image source={{ uri: user.profileImage }} style={stylesProfile.profileImage} />
+          <Image source={{ uri: user.profileImage }} style={stylesProfile.profileImage}/>
           
           <Text style={stylesProfile.name}>{user.name}</Text>
           <Text style={stylesProfile.email}>{user.email}</Text>
