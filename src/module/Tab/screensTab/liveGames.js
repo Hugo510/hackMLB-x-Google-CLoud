@@ -8,7 +8,7 @@ function LiveGames() {
     
   return (
     <View style={stylesLiveHeader.container}>
-      <ScrollView style={stylesLive.list}>
+      <ScrollView style={stylesLiveHeader.list}>
         <EstadisticGame />
       </ScrollView>
     </View>
