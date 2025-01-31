@@ -154,7 +154,7 @@ export const translateText = async (
 ): Promise<string> => {
   try {
     const request = {
-      parent: `projects/${process.env.GCP_PROJECT_ID}/locations/global`,
+      parent: `projects/${config.gcloudProjectId}/locations/global`,
       contents: [text],
       mimeType: "text/plain",
       targetLanguageCode: targetLanguage,
