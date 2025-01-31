@@ -3,6 +3,8 @@ import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import stylesForm from "./Styles/stylesForm";
 import { useNavigation } from "@react-navigation/native";
 import { login } from "../../../services/config/auth";
+import { useAuth } from "../../../Context/AuthContext";
+
 
 const RegistrationForm = ({ screenSelect }) => {
   const [screen] = useState(screenSelect);
@@ -30,7 +32,7 @@ const RegistrationForm = ({ screenSelect }) => {
   const handleChange = (field, value) => {
     setFormData({ ...formData, [field]: value });
   };
-
+  const { loginUser } = useAuth();
   const handleSubmit = async () => {
     const email = formData.email.trim().toLowerCase();
     const password = formData.password.trim();
@@ -45,12 +47,14 @@ const RegistrationForm = ({ screenSelect }) => {
         console.log(screen);
         return;
       }
+      console.log('Iniciando Proceso para Login')
       const user = { email, password };
 
       try {
         // Llamar a la función login desde los servicios
         const data = await login(user);
         console.log('Login successful:', data);
+        await loginUser(data); // Guarda en AsyncStorage y Context
         navigation.navigate("TabNavigator"); // Navegar al siguiente screen si el login es exitoso
       } catch (error) {    
           console.error("Error message:", error.message);
