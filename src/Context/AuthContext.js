@@ -28,11 +28,16 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   const loginUser = async (data) => {
-    setToken(data.token);
-    setUser(data.user);
-
+    if (!data || !data.token) {
+      console.error("Error: No se puede guardar un token vacío");
+      return;
+    }
+    const expirationDate = new Date().getTime() + 24 * 60 * 60 * 1000; //Duracion de 24 horas
     await AsyncStorage.setItem("userToken", data.token);
     await AsyncStorage.setItem("userData", JSON.stringify(data.user));
+    await AsyncStorage.setItem("expirationDate", expirationDate.toString());
+    setToken(data.token);
+    setUser(data.user);
   };
 
   const logoutUser = async () => {
@@ -44,7 +49,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loginUser, logoutUser, loading }}>
+    <AuthContext.Provider value={{ user, token, loading, setUser, setToken, setLoading, loginUser, logoutUser }}>
       {children}
     </AuthContext.Provider>
   );

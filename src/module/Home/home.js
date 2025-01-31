@@ -4,10 +4,15 @@ import stylesHome from './Styles/stylesHome'; //Import the styles
 import RecentlyNews from './components/recentlyNews';
 import FavoriteGames from './components/favorites';
 import WhitoutSession from '../../components/noProfile';
+import { useAuth } from "../../Context/AuthContext";
+
 
 const Home = ({ navigation }) => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { token} = useAuth();
+    
+  const isLoggedIn = token != true
 
   useEffect(() => {
   //  Simulation of the News added Recentrly
@@ -53,9 +58,6 @@ const Home = ({ navigation }) => {
     }, 0);
   }, []);
 
-  const user={
-    session:'true'
-  }
 
   const renderHeader = () => (
     <>
@@ -70,7 +72,7 @@ return (
 
   <View style={stylesHome.allPage}>
     
-  {user.session === 'true' ? (
+  {isLoggedIn ? (
     <>
    
   <FlatList

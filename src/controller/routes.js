@@ -18,7 +18,7 @@ function Router() {
   return (
     <NavigationContainer>
         {/* define the initial route in the screen*/}
-      <Stack.Navigator initialRouteName='Login'> 
+      <Stack.Navigator initialRouteName='TabNavigator'> 
           {/* Route for the login */}
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
           {/* Route for the register */}

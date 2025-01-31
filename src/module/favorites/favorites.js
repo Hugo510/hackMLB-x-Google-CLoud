@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import WhitoutSession from '../../components/noProfile';
 import stylesFavorites from './styles/stylesFavorites';
+import { useAuth } from "../../Context/AuthContext";
 
 const styles = StyleSheet.create({
     container: {
@@ -11,15 +12,13 @@ const styles = StyleSheet.create({
   });
   
   function Favorites({navigation}) {
-    
-    const user ={
-      session:'false',
-    }
+    const {token} = useAuth;
 
+    const isLoggedIn = token !== true
     return (
 
     <View style={stylesFavorites.allPage}>
-      {user.session === 'true' ? (
+      {isLoggedIn ? (
       <>
         <ScrollView style={styles.container}>
   
