@@ -8,7 +8,7 @@ import { TabNavigator } from '../module/Tab/Components/navigation'
  import Favorites from '../module/favorites/favorites'
  import Games from '../module/Tab/screensTab/games'
  import Home from '../module/Home/home'
- import Notification from '../module/Tab/screensTab/notification'
+ import Notifications from '../module/notificationScreen/notificationScreen'
  import Players from '../module/Tab/screensTab/players'
  import Profile from '../module/profile/profile'
 
@@ -58,7 +58,7 @@ const TabNav = () => {
             title: 'Notification',
             screen: 'Notification',
             icon: 'bell-badge-outline',
-            Component: Notification,
+            Component: Notifications,
         },
         {
             id: 7,
