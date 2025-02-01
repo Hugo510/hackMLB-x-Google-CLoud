@@ -1,5 +1,5 @@
 // Import the dependences
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useAuth } from '../Context/AuthContext';
@@ -17,32 +17,28 @@ const Stack = createStackNavigator();
 // Create the routes
 function Router() {
   const { user } = useAuth(); 
+  const [initialRoute, setInitialRoute] = useState(null); // Almacenar la ruta inicial
+
+  useEffect(() => {
+    if (user) {
+      setInitialRoute('TabNavigator');
+    } else {
+      setInitialRoute('Login');
+    }
+  }, [user]);
+
+  if (initialRoute === null) {
+    return null;
+  }
+
   return (
     <NavigationContainer>
-        {/* define the initial route in the screen*/}
-      <Stack.Navigator>
-        {user ? (
-            <> 
-          <Stack.Screen
-            name="TabNavigator" component={TabNav} options={{headerShown: false}} />
-          {/*  route for see the information of the new Complete*/}
-          <Stack.Screen name='NewsDetails' component={NewsDetails} options={{header: () => (
-                <TopBar title="FMLB" showIcons={false} />),}} />
-          {/* Route for see Detail frome a ine Game */}
-          <Stack.Screen name='GameDetails' component={GameDetails} options={{header: () => (
-                <TopBar title="FMLB" showIcons={false} />),}} />
-         
-          </>
-        ) : (
-          // Si el usuario no está autenticado, mostrar solo Login y Registro
-          <>
-           {/* Route for the login */}
-           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
-          {/* Route for the register */}
-          <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}/>
-          </>
-        )}          
-
+      <Stack.Navigator initialRouteName={initialRoute}>
+        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+        <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+        <Stack.Screen name="TabNavigator" component={TabNav} options={{ headerShown: false }} />
+        <Stack.Screen name="NewsDetails" component={NewsDetails} options={{ header: () => <TopBar title="FMLB" showIcons={false} /> }} />
+        <Stack.Screen name="GameDetails" component={GameDetails} options={{ header: () => <TopBar title="FMLB" showIcons={false} /> }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

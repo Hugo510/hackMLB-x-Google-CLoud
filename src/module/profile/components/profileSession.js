@@ -12,9 +12,8 @@ function ProfileSession({navigation}){
       };
     console.log(token)
     const handleLogout = async () => {
-        console.log(user)
         await logoutUser(); 
-        navigation.replace('Login');
+        navigation.navigate("Login");
     };
     return(
         <>
@@ -27,13 +26,13 @@ function ProfileSession({navigation}){
         </ImageBackground>
 
           <Image source={{ uri: userProvide.profileImage }} style={stylesProfile.profileImage}/>
-          
+        {user ? (
+          <>
           <Text style={stylesProfile.name}>{user.name}</Text>
           <Text style={stylesProfile.email}>{user.email}</Text>
           <Text style={stylesProfile.location}>{user.location}</Text>
-    
-         
-    
+          </>
+        ) : null} 
           <TouchableOpacity style={stylesProfile.logoutButton} onPress={handleLogout}>
             <Text style={stylesProfile.logoutText}>Cerrar Sesión</Text>
           </TouchableOpacity>

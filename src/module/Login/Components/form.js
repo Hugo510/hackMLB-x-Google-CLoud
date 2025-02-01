@@ -55,7 +55,7 @@ const RegistrationForm = ({ screenSelect }) => {
         const data = await login(user);
         console.log('Login successful:', data);
         await loginUser(data); // Guarda en AsyncStorage y Context
-        navigation.navigate("TabNavigator"); // Navegar al siguiente screen si el login es exitoso
+        navigation.navigate("TabNavigator");
       } catch (error) {    
           console.error("Error message:", error.message);
         console.error("Config:", error.config);
