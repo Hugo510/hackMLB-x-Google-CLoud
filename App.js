@@ -4,7 +4,7 @@ import Router from './src/controller/routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const App = () => {
-  const { setUser, setToken, } = useAuth(); 
+  const { user, setUser, setToken, } = useAuth(); 
   const [isReady, setIsReady] = useState(false); 
 
   useEffect(() => {
@@ -22,6 +22,8 @@ const App = () => {
         await AsyncStorage.removeItem("userToken");
         await AsyncStorage.removeItem("userData");
         await AsyncStorage.removeItem("expirationDate");
+        setUser(null);
+        setToken(null);
         setIsReady(true);
         return;
       }
@@ -37,8 +39,12 @@ const App = () => {
     checkSession();
   }, []);
 
+  if (!isReady) {
+    return null;
+  }
+
   return (
-      <Router /> 
+      <Router isAuthenticated={!!user}/> 
   );
 };
 const AppWrapper = () => {

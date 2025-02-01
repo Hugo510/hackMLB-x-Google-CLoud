@@ -4,13 +4,18 @@ import stylesProfile from '../styles/stylesProfile';
 import { useAuth } from '../../../Context/AuthContext';
 
 function ProfileSession({navigation}){
-    const { user, } = useAuth();
+    const { user, logoutUser,token } = useAuth();
 
     const userProvide = {
         profileImage: 'https://upload.wikimedia.org/wikipedia/commons/e/e6/Dodgers_at_Nationals_%2853677192000%29_%28cropped%29.jpg',
         banner: 'https://img.mlbstatic.com/mlb-images/image/private/t_16x9/t_w1024/mlb/imlzxnamjqq98s8cxdfo'
       };
-      
+    console.log(token)
+    const handleLogout = async () => {
+        console.log(user)
+        await logoutUser(); 
+        navigation.replace('Login');
+    };
     return(
         <>
         <View style={stylesProfile.container}>
@@ -29,7 +34,7 @@ function ProfileSession({navigation}){
     
          
     
-          <TouchableOpacity style={stylesProfile.logoutButton} onPress={() => navigation.navigate('Login')}>
+          <TouchableOpacity style={stylesProfile.logoutButton} onPress={handleLogout}>
             <Text style={stylesProfile.logoutText}>Cerrar Sesión</Text>
           </TouchableOpacity>
          </View>
