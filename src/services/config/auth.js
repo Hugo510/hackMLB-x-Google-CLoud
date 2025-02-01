@@ -14,7 +14,7 @@ console.log("API PORT:", PORT);
 axios.defaults.withCredentials = true;
 
 // Funciones para interactuar con el servidor
-// export const login = async (user) => axios.post(`http://${apiUrl}:${PORT}/api/users/login`, user);
+// Guardar datos del Login
 export const login = async (user) => {
   try {
     const response = await axios.post(`http://${apiUrl}:${PORT}/api/users/login`, user, {
@@ -30,3 +30,14 @@ export const login = async (user) => {
   }
 };
 export const signup = async (user) => axios.post(`http://${apiUrl}:${PORT}/api/users/signup`, user);
+
+export const getTeams = async(setTeams, setLoading)=>{
+  try {
+    const response = await axios.get(`http://${apiUrl}:${PORT}/api/teams`);
+    setTeams(response.data);
+    setLoading(false);
+  } catch (error) {
+    console.error('Error al obtener los equipos:', error);
+    setLoading(false);
+  }
+}

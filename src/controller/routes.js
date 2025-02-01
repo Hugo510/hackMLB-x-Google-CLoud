@@ -10,7 +10,7 @@ import Register from '../module/Login/register'
 import TabNav from './tabNavigation';
 import NewsDetails from '../components/newDetails';
 import GameDetails from '../module/gameDetails/gameDetails';
-
+import SelectTeamsScreen from '../module/preferences/teamPreferences';
 import TopBar from '../module/topBar/TopBar';
 const Stack = createStackNavigator();
 
@@ -39,6 +39,7 @@ function Router() {
         <Stack.Screen name="TabNavigator" component={TabNav} options={{ headerShown: false }} />
         <Stack.Screen name="NewsDetails" component={NewsDetails} options={{ header: () => <TopBar title="FMLB" showIcons={false} /> }} />
         <Stack.Screen name="GameDetails" component={GameDetails} options={{ header: () => <TopBar title="FMLB" showIcons={false} /> }} />
+        <Stack.Screen name="SelectTeamsScreen" component={SelectTeamsScreen} options={{ header: () => <TopBar title="FMLB" showIcons={false} /> }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
