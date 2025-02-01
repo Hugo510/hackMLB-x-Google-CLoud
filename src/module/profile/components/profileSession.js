@@ -1,5 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { View, Text, ImageBackground, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import stylesProfile from '../styles/stylesProfile';
 import { useAuth } from '../../../Context/AuthContext';
 
@@ -13,8 +14,19 @@ function ProfileSession({navigation}){
     console.log(token)
     const handleLogout = async () => {
         await logoutUser(); 
-        navigation.navigate("Login");
     };
+
+    useEffect(() => {
+      if (!user) {
+          navigation.dispatch(
+              CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: 'Login' }],
+              })
+          );
+      }
+  }, [user, navigation]); 
+
     return(
         <>
         <View style={stylesProfile.container}>
