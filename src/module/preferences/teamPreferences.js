@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList, ActivityIndicator } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import { useNavigation } from '@react-navigation/native';
 import teamStyles from './styles/teamPreferenceStyle';
 import { getPreferences, getTeams } from '../../services/config/auth';
@@ -86,7 +87,12 @@ const SelectTeamsScreen = () => {
     try {
         await updatePreferences(preferencesData); 
         console.log("Preferencias guardadas:", preferencesData);
-        navigation.navigate("TabNavigator", { refresh: true }); 
+        navigation.dispatch(
+                      CommonActions.reset({
+                          index: 0,
+                          routes: [{ name: 'TabNavigator' }],
+                      })
+                  );
     } catch (error) {
         console.error("Error al guardar preferencias:", error);
     }
