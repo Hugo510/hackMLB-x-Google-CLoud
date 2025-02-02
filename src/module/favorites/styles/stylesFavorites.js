@@ -33,6 +33,23 @@ const stylesFavorites = StyleSheet.create({
         fontSize: 16,
         color: '#FFF',
       },
+      buttonSelecteam: {
+        backgroundColor: '#007BFF', 
+        paddingVertical: 8,          
+        paddingHorizontal: 12,      
+        borderRadius: 20,           
+        justifyContent: 'center',   
+        alignItems: 'center',       
+        marginBottom: 10,          
+        width: 'auto',              
+        minWidth: 200,              
+      },
+      buttonTextSelecteam: {
+        color: 'white',             
+        fontSize: 14,               
+        fontWeight: 'bold',         
+        textAlign: 'center',      
+      }
 })
 
 

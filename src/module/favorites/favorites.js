@@ -54,9 +54,9 @@ function Favorites({ navigation }) {
   return (
     <View style={stylesFavorites.container}>
       <Text style={stylesFavorites.title}>Mis Favoritos</Text>
-      <TouchableOpacity  onPress={handleTeams}>
-            <Text>SELECCIONAR EQUIPOS FAVORITOS</Text>
-          </TouchableOpacity>
+      <TouchableOpacity  style={stylesFavorites.buttonSelecteam} onPress={handleTeams}>
+            <Text style={stylesFavorites.buttonTextSelecteam}>SELECCIONAR EQUIPOS FAVORITOS</Text>
+      </TouchableOpacity>
       <Text style={stylesFavorites.sectionTitle}>Equipos Favoritos</Text>
       <FlatList
         data={favoriteTeams}
