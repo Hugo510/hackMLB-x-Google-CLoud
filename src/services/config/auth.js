@@ -41,3 +41,28 @@ export const getTeams = async(setTeams, setLoading)=>{
     setLoading(false);
   }
 }
+
+export const updatePreferences = async (preferences) => {
+  try {
+    const response = await axios.post(
+      `http://${apiUrl}:${PORT}/api/users/preferences`, preferences, { 
+      headers: { "Content-Type": "application/json" } 
+    });
+    
+    return response.data;
+  } catch (error) {
+    console.error("Error al actualizar preferencias:", error);
+    throw error;
+  }
+};
+
+export const getPreferences = async (userId) => {
+  try {
+    const response = await axios.get(`http://${apiUrl}:${PORT}/api/users/preferences/${userId}`);
+    console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.error("Error al obtener preferencias:", error);
+    return { teams: [], players: [] }; 
+  }
+};

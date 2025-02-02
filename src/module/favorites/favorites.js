@@ -1,18 +1,50 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text,TouchableOpacity, ScrollView, FlatList } from 'react-native';
-import WhitoutSession from '../../components/noProfile';
+import { View, Text,TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
 import stylesFavorites from './styles/stylesFavorites';
 import { useAuth } from "../../Context/AuthContext";
-import { Touchable } from 'react-native';
+import { getPreferences, getTeams } from '../../services/config/auth';
 
   
 function Favorites({ navigation }) {
-  const favoriteTeams = ['Los Angeles Dodgers', 'New York Yankees', 'Boston Red Sox'];
-  const favoritePlayers = ['Shohei Ohtani', 'Aaron Judge', 'Mookie Betts'];
+  const { user } = useAuth();  
+  const [teams, setTeams] = useState([]);  
+  const [loading, setLoading] = useState(true); 
+  const [favoriteTeams, setFavoriteTeams] = useState([]);  
+  const [favoritePlayers, setFavoritePlayers] = useState([]);  
+
+  // Cargar equipos al inicio
+  useEffect(() => {
+    const fetchTeams = async () => {
+      await getTeams(setTeams, setLoading);
+    };
+    fetchTeams();
+  }, []);
+
+  // Obtener preferencias
+  useEffect(() => {
+    const fetchPreferences = async () => {
+      if (user && user.id && teams.length > 0) {
+        const preferences = await getPreferences(user.id);
+        const selectedTeamNames = preferences.teams.map(teamId => {
+          const team = teams.find(t => t.id === teamId);
+          return team ? team.name : "Desconocido";  
+        });
+        setFavoriteTeams(selectedTeamNames);
+        setFavoritePlayers(preferences.players || []); 
+      }
+    };
+    fetchPreferences();
+  }, [teams, user]); 
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#0000ff" />;
+  }
+
 
   const handleTeams = async () => {
    navigation.navigate('SelectTeamsScreen')
-};
+  };
+  
   const renderItem = ({ item }) => (
     <View style={stylesFavorites.itemContainer}>
       <Text style={stylesFavorites.itemText}>{item}</Text>
@@ -20,7 +52,7 @@ function Favorites({ navigation }) {
   );
 
   return (
-    <ScrollView style={stylesFavorites.container}>
+    <View style={stylesFavorites.container}>
       <Text style={stylesFavorites.title}>Mis Favoritos</Text>
       <TouchableOpacity  onPress={handleTeams}>
             <Text>SELECCIONAR EQUIPOS FAVORITOS</Text>
@@ -38,7 +70,7 @@ function Favorites({ navigation }) {
         renderItem={renderItem}
         keyExtractor={(item, index) => `player-${index}`}
       />
-    </ScrollView>
+    </View>
   );
   }
   

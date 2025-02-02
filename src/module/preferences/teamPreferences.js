@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import teamStyles from './styles/teamPreferenceStyle';
 import { getTeams } from '../../services/config/auth';
+import { updatePreferences } from '../../services/config/auth';
+import { useAuth } from "../../Context/AuthContext";
 
 const SelectTeamsScreen = () => {
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTeams, setSelectedTeams] = useState([]);
   const [numColumns, setNumColumns] = useState(3); // Estado para numColumns
+  const navigation = useNavigation(); 
+  const { user } = useAuth();
 
   useEffect(() => {
     getTeams(setTeams, setLoading);  
@@ -31,6 +36,33 @@ const SelectTeamsScreen = () => {
     } else {
         const allTeamIds = teams.map((team) => team.id);
         setSelectedTeams(allTeamIds);
+    }
+  };
+  // Funcion para guardar el equipo en las preferencias (favoritos)
+  const handleSaveTeams = async () => {
+    if (!user || !user.id) {
+        console.error("No se encontró el ID del usuario.");
+        return;
+    }
+
+    // Obtener solo los nombres de los equipos seleccionados
+    const selectedTeamNames = teams
+        .filter(team => selectedTeams.includes(team.id))
+        .map(team => team.name); 
+
+    const preferencesData = {
+        userId: user.id, 
+        teams: selectedTeamNames, 
+        players: ['Random'], 
+        playTypes: ['Juegos'],
+    };
+
+    try {
+        await updatePreferences(preferencesData); 
+        console.log("Preferencias guardadas:", preferencesData);
+        navigation.navigate("TabNavigator", { refresh: true }); 
+    } catch (error) {
+        console.error("Error al guardar preferencias:", error);
     }
 };
 
@@ -70,9 +102,7 @@ const SelectTeamsScreen = () => {
 
         <TouchableOpacity
             style={teamStyles.saveButton}
-            onPress={() => {
-                console.log('Equipos seleccionados:', selectedTeams);
-            }}
+            onPress={handleSaveTeams}
         >
             <Text style={teamStyles.saveButtonText}>Guardar Equipos</Text>
         </TouchableOpacity>
