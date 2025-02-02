@@ -75,9 +75,10 @@ const SelectTeamsScreen = () => {
         .filter(team => selectedTeams.includes(team.id))
         .map(team => team.name); 
 
+
     const preferencesData = {
         userId: user.id, 
-        teams: selectedTeamNames, 
+        teams: selectedTeams, 
         players: ['Random'], 
         playTypes: ['Juegos'],
     };
