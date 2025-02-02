@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import teamStyles from './styles/teamPreferenceStyle';
-import { getTeams } from '../../services/config/auth';
+import { getPreferences, getTeams } from '../../services/config/auth';
 import { updatePreferences } from '../../services/config/auth';
 import { useAuth } from "../../Context/AuthContext";
 
@@ -14,9 +14,34 @@ const SelectTeamsScreen = () => {
   const navigation = useNavigation(); 
   const { user } = useAuth();
 
+   // Cargar equipos y preferencias al iniciar
   useEffect(() => {
-    getTeams(setTeams, setLoading);  
-  }, []);  
+    const fetchTeamsAndPreferences = async () => {
+      try {
+        await getTeams(setTeams, setLoading);
+
+        if (user && user.id) {
+          const preferences = await getPreferences(user.id);
+          const selectedTeamIds = preferences.teams.map((teamId) => {
+            const team = teams.find((t) => t.id === teamId);
+            return team ? team.id : null;
+          }).filter(id => id !== null);
+
+           if (selectedTeamIds.length === 0 && teams.length > 0) {
+            selectedTeamIds.push(teams[0].id);
+          }
+
+          setSelectedTeams(selectedTeamIds);
+        }
+      } catch (error) {
+        console.error('Error al cargar equipos o preferencias:', error);
+      }
+    };
+
+    fetchTeamsAndPreferences();
+  }, [user, teams.length]);
+
+
 
   // Función para manejar la selección de equipos
   const handleSelectTeam = (id) => {
@@ -103,6 +128,7 @@ const SelectTeamsScreen = () => {
         <TouchableOpacity
             style={teamStyles.saveButton}
             onPress={handleSaveTeams}
+            disabled={selectedTeams.length === 0}
         >
             <Text style={teamStyles.saveButtonText}>Guardar Equipos</Text>
         </TouchableOpacity>

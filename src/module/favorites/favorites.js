@@ -64,12 +64,12 @@ function Favorites({ navigation }) {
         keyExtractor={(item, index) => `team-${index}`}
       />
 
-      <Text style={stylesFavorites.sectionTitle}>Jugadores Favoritos</Text>
+      {/* <Text style={stylesFavorites.sectionTitle}>Jugadores Favoritos</Text>
       <FlatList
         data={favoritePlayers}
         renderItem={renderItem}
         keyExtractor={(item, index) => `player-${index}`}
-      />
+      /> */}
     </View>
   );
   }
