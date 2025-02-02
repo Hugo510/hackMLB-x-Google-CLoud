@@ -81,3 +81,15 @@ export const getPreferences = async (userId) => {
     return { teams: [], players: [] }; 
   }
 };
+
+// Obtener Datos de la Temporada
+export const getSchedule = async () => {
+  try {
+    const response = await axios.get(`http://${apiUrl}:${PORT}/api/mlb-stats/schedule`);
+    console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.error("Error trayendo stats:", error);
+    throw error;
+  }
+};
