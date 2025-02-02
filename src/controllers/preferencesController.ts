@@ -65,26 +65,11 @@ export const setPreferencesController = async (
       await storeTeamMappings();
     }
 
-    // logger.info("Mapeando nombres de equipos a IDs.");
-    const teamIds: string[] = [];
-    for (const teamName of teams) {
-      // logger.info(`Obteniendo ID para el equipo: ${teamName}`);
-      const teamId = await getTeamIdByName(teamName);
-      // logger.info(`ID obtenido para ${teamName}: ${teamId}`);
-      if (teamId) {
-        teamIds.push(teamId);
-      } else {
-        logger.warn(`Equipo no encontrado: ${teamName}`);
-        res.status(400).send(`Equipo no encontrado: ${teamName}`);
-        return;
-      }
-    }
-
     // Aquí puedes agregar lógica similar para mapear jugadores si tienes una tabla Players
 
     const preferences = {
       userId,
-      teams: teamIds, // Guardar IDs en lugar de nombres
+      teams,
       players,
       playTypes,
     };
