@@ -1,136 +1,142 @@
-# hackMLB-x-Google-CLoud
+# HackMLB-x-Google-Cloud
 
-## Descripción
+## Description
 
-hackMLB-x-Google-Cloud es una aplicación diseñada para [describir el propósito del proyecto].
+hackMLB-x-Google-Cloud is an application designed to [describe the purpose of the project].
 
-## Instalación
+## Installation
 
-1. Clona el repositorio.
-2. Instala las dependencias con `npm install`.
-3. Configura las variables de entorno según el archivo `.env.example`.
-4. Ejecuta la aplicación con `npm start`.
+1. Clone the repository.
+2. Install the dependencies with `npm install`.
+3. Configure the environment variables according to the `.env.example` file.
+4. Run the application with `npm start`.
 
-## Uso
+## Usage
 
-Proporciona ejemplos de cómo utilizar la aplicación:
+Provide examples of how to use the application:
 
 ```bash
 npm run dev
 ```
 
-## Despliegue con Docker
+## Deployment with Docker
 
-Sigue los pasos a continuación para construir y ejecutar la aplicación utilizando Docker:
+Follow the steps below to build and run the application using Docker:
 
-1. **Construir la Imagen Docker**:
+1. **Build the Docker Image**:
 
    ```bash
    docker build -t hackmlb-backend:latest .
    ```
 
-2. **Configurar Variables de Entorno y Montar el Archivo de Credenciales**:
+2. **Set Up Environment Variables and Mount the Credentials File**:
 
-   Puedes proporcionar las variables de entorno de dos maneras:
+   You can provide environment variables in two ways:
 
-   ### Opción 1: Pasar Variables Individualmente
+   ### Option 1: Pass Variables Individually
 
-   **Para Bash/Mac/Linux**:
+   **For Bash/Mac/Linux**:
 
    ```bash
    docker run -d \
      -p 8080:8080 \
      --name hackmlb-backend \
-     -e JWT_SECRET=tu_jwt_secreto \
-     -e GCLOUD_PROJECT_ID=tu_project_id \
+     -e JWT_SECRET=your_jwt_secret \
+     -e GCLOUD_PROJECT_ID=your_project_id \
      -e GCLOUD_KEYFILE_PATH=/app/secrets/hackathonmlb-keyfile.json \
-     -e SPANNER_INSTANCE_ID=tu_instance_id \
-     -e SPANNER_DATABASE_ID=tu_database_id \
-     -e REDIS_HOST=tu_redis_host \
-     -e REDIS_PORT=tu_redis_port \
-     -e REDIS_PASSWORD=tu_redis_password \
-     -e REDIS_DEFAULT_EXPIRATION=tu_expiracion \
+     -e SPANNER_INSTANCE_ID=your_instance_id \
+     -e SPANNER_DATABASE_ID=your_database_id \
+     -e REDIS_HOST=your_redis_host \
+     -e REDIS_PORT=your_redis_port \
+     -e REDIS_PASSWORD=your_redis_password \
+     -e REDIS_DEFAULT_EXPIRATION=your_expiration \
      -e PORT=8080 \
      -e NODE_ENV=production \
-     -v /ruta/segura/hackathonmlb-keyfile.json:/app/secrets/hackathonmlb-keyfile.json \
+     -v /path/to/secure/hackathonmlb-keyfile.json:/app/secrets/hackathonmlb-keyfile.json \
      hackmlb-backend:latest
    ```
 
-   **Para PowerShell**:
+   **For PowerShell**:
 
    ```powershell
    docker run -d `
      -p 8080:8080 `
      --name hackmlb-backend `
-     -e JWT_SECRET=tu_jwt_secreto `
-     -e GCLOUD_PROJECT_ID=tu_project_id `
+     -e JWT_SECRET=your_jwt_secret `
+     -e GCLOUD_PROJECT_ID=your_project_id `
      -e GCLOUD_KEYFILE_PATH=/app/secrets/hackathonmlb-keyfile.json `
-     -e SPANNER_INSTANCE_ID=tu_instance_id `
-     -e SPANNER_DATABASE_ID=tu_database_id `
-     -e REDIS_HOST=tu_redis_host `
-     -e REDIS_PORT=tu_redis_port `
-     -e REDIS_PASSWORD=tu_redis_password `
-     -e REDIS_DEFAULT_EXPIRATION=tu_expiracion `
+     -e SPANNER_INSTANCE_ID=your_instance_id `
+     -e SPANNER_DATABASE_ID=your_database_id `
+     -e REDIS_HOST=your_redis_host `
+     -e REDIS_PORT=your_redis_port `
+     -e REDIS_PASSWORD=your_redis_password `
+     -e REDIS_DEFAULT_EXPIRATION=your_expiration `
      -e PORT=8080 `
      -e NODE_ENV=production `
-     -v C:\ruta\segura\hackathonmlb-keyfile.json:/app/secrets/hackathonmlb-keyfile.json `
+     -v C:\path\to\secure\hackathonmlb-keyfile.json:/app/secrets/hackathonmlb-keyfile.json `
      hackmlb-backend:latest
    ```
 
-   ### Opción 2: Usar un Archivo de Entorno
+   ### Option 2: Use an Environment File
 
-   1. Crea un archivo llamado `.env` en tu sistema con el siguiente contenido:
+   1. Create a file called `.env` in your system with the following content:
 
       ```plaintext
-      JWT_SECRET=tu_jwt_secreto
-      GCLOUD_PROJECT_ID=tu_project_id
+      JWT_SECRET=your_jwt_secret
+      GCLOUD_PROJECT_ID=your_project_id
       GCLOUD_KEYFILE_PATH=/app/secrets/hackathonmlb-keyfile.json
-      SPANNER_INSTANCE_ID=tu_instance_id
-      SPANNER_DATABASE_ID=tu_database_id
-      REDIS_HOST=tu_redis_host
-      REDIS_PORT=tu_redis_port
-      REDIS_PASSWORD=tu_redis_password
-      REDIS_DEFAULT_EXPIRATION=tu_expiracion
+      SPANNER_INSTANCE_ID=your_instance_id
+      SPANNER_DATABASE_ID=your_database_id
+      REDIS_HOST=your_redis_host
+      REDIS_PORT=your_redis_port
+      REDIS_PASSWORD=your_redis_password
+      REDIS_DEFAULT_EXPIRATION=your_expiration
       PORT=8080
       NODE_ENV=production
       ```
 
-   2. Ejecuta el contenedor usando el archivo de entorno y monta el archivo de credenciales:
+   2. Run the container using the environment file and mount the credentials file:
 
-      **Para Bash/Mac/Linux**:
+      **For Bash/Mac/Linux**:
 
       ```bash
       docker run -d \
         -p 8080:8080 \
         --name hackmlb-backend \
         --env-file .env \
-        -v /ruta/segura/hackathonmlb-keyfile.json:/app/secrets/hackathonmlb-keyfile.json \
+        -v /path/to/secure/hackathonmlb-keyfile.json:/app/secrets/hackathonmlb-keyfile.json \
         hackmlb-backend:latest
       ```
 
-      **Para PowerShell**:
+      **For PowerShell**:
 
       ```powershell
       docker run -d `
         -p 8080:8080 `
         --name hackmlb-backend `
         --env-file .env `
-        -v C:\ruta\segura\hackathonmlb-keyfile.json:/app/secrets/hackathonmlb-keyfile.json `
+        -v C:\path\to\secure\hackathonmlb-keyfile.json:/app/secrets/hackathonmlb-keyfile.json `
         hackmlb-backend:latest
       ```
 
-3. **Ejecutar el Contenedor**:
+## Environment Variables for Pub/Sub
 
-   Utiliza una de las opciones anteriores para ejecutar el contenedor con las variables de entorno configuradas y el archivo de credenciales montado de manera segura.
+These variables are configured in the environment and used to integrate Google Cloud Pub/Sub:
 
-4. **Verificar la Ejecución**:
+- **PUBSUB_TOPIC_NAME**: Pub/Sub topic name.
+- **PUBSUB_SUBSCRIPTION_NAME**: Name of the associated subscription.
+- **ENABLE_PUBSUB_PROCESSOR**: Enables or disables the message processor.
 
-   Abre tu navegador y navega a `http://localhost:8080` para asegurarte de que la aplicación esté corriendo correctamente.
+Make sure to enable the Pub/Sub API in Google Cloud and securely mount the appropriate credentials in the Docker container so the application can use these services.
 
-## Contribuciones
+3. **Run the Container**:
 
-Las contribuciones son bienvenidas. Por favor, abre un issue o envía un pull request.
+   Use one of the above options to run the container with the configured environment variables and the securely mounted credentials file.
 
-## Licencia
+4. **Verify Execution**:
 
-Este proyecto está licenciado bajo la Licencia MIT.
+   Open your browser and navigate to `http://localhost:8080` to ensure the application is running correctly.
+
+## Contributions
+
+Contributions are welcome. Please open an issue or submit a pull request.
