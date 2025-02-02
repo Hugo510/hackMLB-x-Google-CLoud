@@ -29,8 +29,22 @@ export const login = async (user) => {
     throw error; 
   }
 };
-export const signup = async (user) => axios.post(`http://${apiUrl}:${PORT}/api/users/signup`, user);
+// CREAR UN NUEVO USUARIO
+export const signup = async (user) => {
+  try {
+    const response = await axios.post(`http://${apiUrl}:${PORT}/api/users/signup`, user, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+      return response.data;
+    } catch (error) {
+      console.error("Error en login:", error.response?.data || error.message);
+      throw error; 
+    }
+};
 
+// LLAMAR A LOS EQUIPOS EN LA BD (IDS Y NOMBRES)
 export const getTeams = async(setTeams, setLoading)=>{
   try {
     const response = await axios.get(`http://${apiUrl}:${PORT}/api/teams`);
@@ -42,6 +56,7 @@ export const getTeams = async(setTeams, setLoading)=>{
   }
 }
 
+// Guardar Preferencias del usuario
 export const updatePreferences = async (preferences) => {
   try {
     const response = await axios.post(
@@ -55,7 +70,7 @@ export const updatePreferences = async (preferences) => {
     throw error;
   }
 };
-
+// Obtener las preferencias del usuario
 export const getPreferences = async (userId) => {
   try {
     const response = await axios.get(`http://${apiUrl}:${PORT}/api/users/preferences/${userId}`);

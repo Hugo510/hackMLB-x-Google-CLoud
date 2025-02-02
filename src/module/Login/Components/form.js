@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import stylesForm from "./Styles/stylesForm";
 import { useNavigation } from "@react-navigation/native";
-import { login } from "../../../services/config/auth";
+import { login, signup } from "../../../services/config/auth";
 import { useAuth } from "../../../Context/AuthContext";
 
 
@@ -67,6 +67,7 @@ const RegistrationForm = ({ screenSelect }) => {
     if (screen === "Register") {
       if (!email || !password || !name || !phone || !age) {
         console.log("Campos vacíos, llénalos register");
+        alert('Campos vacíos, llénalos')
         console.log(screen);
         return;
       }
@@ -74,6 +75,7 @@ const RegistrationForm = ({ screenSelect }) => {
       const parsedAge = parseInt(age, 10);
       if (isNaN(parsedAge) || parsedAge <= 17) {
         console.log("Por favor, ingresa una edad válida");
+        alert('Por favor, ingresa una edad válida')
         return;
       }
   
@@ -82,18 +84,22 @@ const RegistrationForm = ({ screenSelect }) => {
         console.log(
           "Por favor, ingresa un número de teléfono válido (10 dígitos)"
         );
+        alert("Por favor, ingresa un número de teléfono válido (10 dígitos)");
         return;
       }
-  
-      console.log("Registro exitoso", {
-        email,
-        password,
-        name,
-        phone,
-        age,
-      });
-      navigation.navigate("TabNavigator");
+      // Llamar a signup para crear un usuario
+    try {
+      // Llamar a la función signup desde los servicios
+      const response = await signup({ email, password, name, phone, age });
+      console.log("Registro exitoso:", response);
+      navigation.navigate("Login");
+    } catch (error) {
+      console.error("Error al registrar usuario:", error.message);
+      alert("Error al registrar usuario: "); // Mostrar mensaje de error al usuario
     }
+  }
+
+    
   };
   
   return (
