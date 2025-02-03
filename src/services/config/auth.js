@@ -96,6 +96,20 @@ export const getSchedule = async () => {
 };
 
 // Obtener juegos en vivo de la MLB
+export const getLiveGames = async (gamePk) => {
+  try {
+    const response = await axios.get(`http://${apiUrl}:${PORT}/api/mlb-stats/live/${gamePk}`);
+    const liveGames = response.data.dates
+      .flatMap(date => date.games)
+      .filter(game => game.status.abstractGameState === "Live");
+
+    return liveGames;
+  } catch (error) {
+    console.error("Error fetching live games:", error);
+    return [];
+  }
+};
+// SIMULADO
 export const getLiveGame = async (gamePk) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -110,7 +124,6 @@ export const getLiveGame = async (gamePk) => {
     }, 1000);
   });
 };
-
 
 // Filtrar Juegos en vivo de equipos favoritos
 export const getFavoriteLiveGames = async (userId) => {

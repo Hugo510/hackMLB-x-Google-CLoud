@@ -49,6 +49,12 @@ const stylesFavorites = StyleSheet.create({
         fontSize: 14,               
         fontWeight: 'bold',         
         textAlign: 'center',      
+      },
+      noGamesText:{
+        textAlign: 'center',
+        fontSize: 30,     
+        fontWeight: 'bold',
+        alignSelf: 'center'          
       }
 })
 

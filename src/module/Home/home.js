@@ -21,7 +21,7 @@ const Home = ({ navigation }) => {
             ListHeaderComponent={() => (
               <>
                 <Text style={stylesHome.header}>Live Games</Text>
-                <FavoriteGames navigation={navigation} />
+                <FavoriteLiveGames navigation={navigation} />
                 <Text style={stylesHome.header}>Recently</Text>
               </>
             )}

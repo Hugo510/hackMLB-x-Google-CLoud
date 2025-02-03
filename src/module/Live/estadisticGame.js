@@ -5,15 +5,16 @@ import stylesLiveHeader from './Styles/stylesHeaderLive';
 import FeaturedPlayers from './Components/featuredPlayers';
 import FoulPlayersLive from './Components/foulPlayersLive';
 import InfoGameLive from './Components/infoGamelive';
-
+import LiveAllGames from './Components/allLiveGames';
 function EstadisticGame() {
     
   return (
     <View style={stylesLiveHeader.container}>
-        <EstadisticGameLive />
+        <LiveAllGames />
+        {/* <EstadisticGameLive />
         <FeaturedPlayers />
         <FoulPlayersLive />
-        <InfoGameLive />
+        <InfoGameLive /> */}
     </View>
   );
 }
