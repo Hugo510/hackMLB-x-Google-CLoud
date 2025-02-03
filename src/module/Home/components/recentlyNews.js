@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, ActivityIndicator, TouchableOpacity } from "react-native";
 import { Audio } from "expo-av";
 import Video from "react-native-video";
-import { fetchGameSummary } from "../../../services/apiSummary";
+import { fetchGameSummary } from "../../../services/config/auth";
 import stylesSummary from "../Styles/stylesSummary";
 
 const GameSummary = ({ gameId }) => {
