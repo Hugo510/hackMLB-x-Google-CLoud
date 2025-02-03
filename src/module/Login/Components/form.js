@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import stylesForm from "./Styles/stylesForm";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, CommonActions } from "@react-navigation/native";
 import { login, signup } from "../../../services/config/auth";
 import { useAuth } from "../../../Context/AuthContext";
 
@@ -43,22 +43,22 @@ const RegistrationForm = ({ screenSelect }) => {
     // Validar campos para Login
     if (screen === "Login") {
       if (!email || !password) {
-        console.log("Campos vacíos, llénalos login");
-        console.log(screen);
+        alert("Campos vacíos, llénalos");
         return;
       }
-      console.log('Iniciando Proceso para Login')
       const user = { email, password };
 
       try {
         // Llamar a la función login desde los servicios
         const data = await login(user);
-        console.log('Login successful:', data);
         await loginUser(data); // Guarda en AsyncStorage y Context
-        navigation.navigate("TabNavigator");
+        navigation.dispatch(
+          CommonActions.reset({
+              index: 0,
+              routes: [{ name: 'TabNavigator' }]
+          }));
       } catch (error) {    
-          console.error("Error message:", error.message);
-        console.error("Config:", error.config);
+          alert('Error de Servidor')
       }
       return; // Prevenir la ejecución adicional del registro si es login
     }
@@ -66,24 +66,18 @@ const RegistrationForm = ({ screenSelect }) => {
     // Validar campos para Register
     if (screen === "Register") {
       if (!email || !password || !name || !phone || !age) {
-        console.log("Campos vacíos, llénalos register");
         alert('Campos vacíos, llénalos')
-        console.log(screen);
         return;
       }
   
       const parsedAge = parseInt(age, 10);
       if (isNaN(parsedAge) || parsedAge <= 17) {
-        console.log("Por favor, ingresa una edad válida");
         alert('Por favor, ingresa una edad válida')
         return;
       }
   
       const phoneValidation = /^[0-9]{10}$/; 
       if (!phoneValidation.test(phone)) {
-        console.log(
-          "Por favor, ingresa un número de teléfono válido (10 dígitos)"
-        );
         alert("Por favor, ingresa un número de teléfono válido (10 dígitos)");
         return;
       }
@@ -91,10 +85,12 @@ const RegistrationForm = ({ screenSelect }) => {
     try {
       // Llamar a la función signup desde los servicios
       const response = await signup({ email, password, name, phone, age });
-      console.log("Registro exitoso:", response);
-      navigation.navigate("Login");
+      navigation.dispatch(
+                   CommonActions.reset({
+                       index: 0,
+                       routes: [{ name: 'Login' }]
+                   }));
     } catch (error) {
-      console.error("Error al registrar usuario:", error.message);
       alert("Error al registrar usuario: "); // Mostrar mensaje de error al usuario
     }
   }

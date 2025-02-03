@@ -35,7 +35,7 @@ const SelectTeamsScreen = () => {
           setSelectedTeams(selectedTeamIds);
         }
       } catch (error) {
-        console.error('Error al cargar equipos o preferencias:', error);
+        console.error('Error al cargar equipos o preferencias:');
       }
     };
 
@@ -86,7 +86,6 @@ const SelectTeamsScreen = () => {
 
     try {
         await updatePreferences(preferencesData); 
-        console.log("Preferencias guardadas:", preferencesData);
         navigation.dispatch(
                       CommonActions.reset({
                           index: 0,
@@ -94,7 +93,7 @@ const SelectTeamsScreen = () => {
                       })
                   );
     } catch (error) {
-        console.error("Error al guardar preferencias:", error);
+        console.error("Error al guardar preferencias:",);
     }
 };
 

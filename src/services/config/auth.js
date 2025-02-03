@@ -12,7 +12,7 @@ export const login = async (user) => {
     }
     return response.data;
   } catch (error) {
-    console.error("Error en login:", error.response?.data || error.message);
+    console.error("Error en login:");
     throw error; 
   }
 };
@@ -26,7 +26,7 @@ export const signup = async (user) => {
     });
       return response.data;
     } catch (error) {
-      console.error("Error en login:", error.response?.data || error.message);
+      console.error("Error en login:");
       throw error; 
     }
 };
@@ -38,7 +38,7 @@ export const getTeams = async(setTeams, setLoading)=>{
     setTeams(response.data);
     setLoading(false);
   } catch (error) {
-    console.error('Error al obtener los equipos:', error);
+    console.error('Error al obtener los equipos:');
     setLoading(false);
   }
 }
@@ -53,7 +53,7 @@ export const updatePreferences = async (preferences) => {
     
     return response.data;
   } catch (error) {
-    console.error("Error al actualizar preferencias:", error);
+    console.error("Error al actualizar preferencias:");
     throw error;
   }
 };
@@ -62,10 +62,9 @@ export const getPreferences = async (userId) => {
   try {
     
     const response = await apiClient.get(`/api/users/preferences/${userId}`);
-    console.log(response.data)
     return response.data;
   } catch (error) {
-    console.error("Error al obtener preferencias:", error);
+    console.error("Error al obtener preferencias:");
     return { teams: [], players: [] }; 
   }
 };
@@ -74,10 +73,9 @@ export const getPreferences = async (userId) => {
 export const getSchedule = async () => {
   try {
     const response = await apiClient.get(`/api/mlb-stats/schedule`);
-    console.log(response.data)
     return response.data;
   } catch (error) {
-    console.error("Error trayendo stats:", error);
+    console.error("Error trayendo stats:");
     throw error;
   }
 };
@@ -92,7 +90,7 @@ export const getLiveGames = async (gamePk) => {
 
     return liveGames;
   } catch (error) {
-    console.error("Error fetching live games:", error);
+    console.error("Error fetching live games:",);
     return [];
   }
 };

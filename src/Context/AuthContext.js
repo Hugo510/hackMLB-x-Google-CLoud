@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
           setUser(JSON.parse(storedUser));
         }
       } catch (error) {
-        console.error("Error loading user data", error);
+        console.error("Error loading user data");
       }
       setLoading(false);
     };

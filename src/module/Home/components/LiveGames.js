@@ -56,7 +56,7 @@ const FavoriteLiveGames = () => {
   
         setLiveGames(liveGameData);
       } catch (err) {
-        console.error("Error en fetchLiveGames:", err.message);
+        console.error("Error en fetchLiveGames:");
         setError(err.message);
       } finally {
         setLoading(false);
