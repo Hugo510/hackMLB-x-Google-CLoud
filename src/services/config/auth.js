@@ -1,23 +1,10 @@
-import axios from 'axios';
-
-// Cambiar la IP según la red local que utilices
-const apiUrl = process.env.EXPO_PUBLIC_API_URL;
-const PORT = process.env.EXPO_PUBLIC_PORT;
-
-if (!apiUrl || !PORT) {
-    console.error("Error: Las variables de entorno no están definidas correctamente");
-  }
-
-console.log("API URL:", apiUrl);
-console.log("API PORT:", PORT);
-// Configurar Axios para que siempre incluya cookies
-axios.defaults.withCredentials = true;
+import apiClient from "./apiClient";
 
 // Funciones para interactuar con el servidor
 // Guardar datos del Login
 export const login = async (user) => {
   try {
-    const response = await axios.post(`http://${apiUrl}:${PORT}/api/users/login`, user, {
+    const response = await apiClient.post(`/api/users/login`, user, {
       headers: { "Content-Type": "application/json" },
     });
     if (!response.data || !response.data.token) {
@@ -32,7 +19,7 @@ export const login = async (user) => {
 // CREAR UN NUEVO USUARIO
 export const signup = async (user) => {
   try {
-    const response = await axios.post(`http://${apiUrl}:${PORT}/api/users/signup`, user, {
+    const response = await apiClient.post(`/api/users/signup`, user, {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -47,7 +34,7 @@ export const signup = async (user) => {
 // LLAMAR A LOS EQUIPOS EN LA BD (IDS Y NOMBRES)
 export const getTeams = async(setTeams, setLoading)=>{
   try {
-    const response = await axios.get(`http://${apiUrl}:${PORT}/api/teams`);
+    const response = await apiClient.get(`/api/teams`);
     setTeams(response.data);
     setLoading(false);
   } catch (error) {
@@ -59,8 +46,8 @@ export const getTeams = async(setTeams, setLoading)=>{
 // Guardar Preferencias del usuario
 export const updatePreferences = async (preferences) => {
   try {
-    const response = await axios.post(
-      `http://${apiUrl}:${PORT}/api/users/preferences`, preferences, { 
+    const response = await apiClient.post(
+      `/api/users/preferences`, preferences, { 
       headers: { "Content-Type": "application/json" } 
     });
     
@@ -74,7 +61,7 @@ export const updatePreferences = async (preferences) => {
 export const getPreferences = async (userId) => {
   try {
     
-    const response = await axios.get(`http://${apiUrl}:${PORT}/api/users/preferences/${userId}`);
+    const response = await apiClient.get(`/api/users/preferences/${userId}`);
     console.log(response.data)
     return response.data;
   } catch (error) {
@@ -86,7 +73,7 @@ export const getPreferences = async (userId) => {
 // Obtener Datos de la Temporada
 export const getSchedule = async () => {
   try {
-    const response = await axios.get(`http://${apiUrl}:${PORT}/api/mlb-stats/schedule`);
+    const response = await apiClient.get(`/api/mlb-stats/schedule`);
     console.log(response.data)
     return response.data;
   } catch (error) {
@@ -98,7 +85,7 @@ export const getSchedule = async () => {
 // Obtener juegos en vivo de la MLB
 export const getLiveGames = async (gamePk) => {
   try {
-    const response = await axios.get(`http://${apiUrl}:${PORT}/api/mlb-stats/live/${gamePk}`);
+    const response = await apiClient.get(`/api/mlb-stats/live/${gamePk}`);
     const liveGames = response.data.dates
       .flatMap(date => date.games)
       .filter(game => game.status.abstractGameState === "Live");
