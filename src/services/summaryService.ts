@@ -1,5 +1,6 @@
 import {
   getSummariesByUserId,
+  getAllSummaries, // <-- nueva importación
   createSummary,
 } from "../models/firestore/summariesModel";
 import { Summary } from "../models/firestore/summariesModel";
@@ -14,12 +15,19 @@ export const extractVideoClip = gcExtractVideoClip;
 export const generateAudio = gcGenerateAudio;
 export const translateText = gcTranslateText;
 
-// Si sólo quieres un arreglo de Summary:
 export const fetchSummariesByUserId = async (
   userId: string
 ): Promise<{ summaries: Summary[]; lastCreatedAt?: Timestamp }> => {
   const result = await getSummariesByUserId(userId);
-  // Retornar el objeto completo para que coincida con la firma
+  return result;
+};
+
+// Nueva función para obtener todos los summaries en general
+export const fetchAllSummaries = async (): Promise<{
+  summaries: Summary[];
+  lastCreatedAt?: Timestamp;
+}> => {
+  const result = await getAllSummaries();
   return result;
 };
 

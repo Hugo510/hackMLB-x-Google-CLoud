@@ -3,6 +3,8 @@ import {
   extractVideoClip,
   generateAudio,
   translateText,
+  fetchSummariesByUserId, // para obtener summaries por usuario
+  fetchAllSummaries, // para obtener todos los summaries
 } from "../services/summaryService";
 import { addGameEvent } from "../models/firestore/gameEventsModel";
 import logger from "../config/logger";
@@ -101,5 +103,39 @@ export const generateSummary = async (
       stack: (error as Error)?.stack,
     });
     res.status(500).json({ error: "Error generating summary." });
+  }
+};
+
+// Obtener summaries de un usuario específico
+export const getSummaries = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  // Priorizar el id obtenido de los parámetros de la ruta
+  const userId = req.params.userId || req.user?.id;
+  if (!userId || typeof userId !== "string") {
+    res.status(400).json({ error: "Falta el campo 'userId'." });
+    return;
+  }
+  try {
+    const result = await fetchSummariesByUserId(userId);
+    res.status(200).json(result);
+  } catch (error) {
+    logger.error("Error al obtener summaries por usuario:", error);
+    res.status(500).json({ error: "Error al obtener summaries por usuario." });
+  }
+};
+
+// Obtener todos los summaries generales
+export const getAllSummaries = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
+  try {
+    const result = await fetchAllSummaries();
+    res.status(200).json(result);
+  } catch (error) {
+    logger.error("Error al obtener todos los summaries:", error);
+    res.status(500).json({ error: "Error al obtener todos los summaries." });
   }
 };

@@ -1,16 +1,21 @@
 import { Router } from "express";
-import { generateSummary } from "../controllers/summaryController";
+import {
+  generateSummary,
+  getSummaries,
+  getAllSummaries,
+} from "../controllers/summaryController";
 /* import { authenticate } from "../middleware/authenticate"; */
 
 const router = Router();
 
-// Rutas protegidas para resúmenes
-/**
- * @route POST /api/summaries
- * @desc Generar resúmenes personalizados
- * @access Privado
- */
+// Ruta para generar summary
 router.post("/", /* authenticate, */ generateSummary);
+
+// Ruta para obtener todos los summaries
+router.get("/", /* authenticate, */ getAllSummaries);
+
+// Ruta para obtener summaries de un usuario específico (con parámetro en la ruta)
+router.get("/user/:userId", /* authenticate, */ getSummaries);
 
 // ...otras rutas si son necesarias...
 

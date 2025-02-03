@@ -51,6 +51,42 @@ const getSummariesByUserId = async (
   }
 };
 
+const getAllSummaries = async (
+  limitSummaries = 10,
+  lastCreatedAt?: Timestamp
+): Promise<{ summaries: Summary[]; lastCreatedAt?: Timestamp }> => {
+  try {
+    let query = firestore
+      .collection("summaries")
+      // ...posible orderBy si se requiere...
+      .limit(limitSummaries);
+
+    if (lastCreatedAt) {
+      query = query.startAfter(lastCreatedAt);
+    }
+
+    const snapshot = await query.get();
+
+    const summaries: Summary[] = snapshot.docs.map((doc) => {
+      const data = summarySchema.parse(doc.data());
+      return {
+        id: doc.id,
+        userId: data.userId,
+        content: data.content,
+        createdAt: data.createdAt,
+      };
+    });
+
+    const lastDoc = snapshot.docs[snapshot.docs.length - 1];
+    const newLastCreatedAt = lastDoc?.get("createdAt") as Timestamp;
+
+    return { summaries, lastCreatedAt: newLastCreatedAt };
+  } catch (error) {
+    logger.error(`Error obteniendo todos los summaries: ${error}`);
+    throw new Error("Error al obtener todos los summaries.");
+  }
+};
+
 const createSummary = async (
   summary: Omit<Summary, "id" | "createdAt">
 ): Promise<void> => {
@@ -67,4 +103,4 @@ const createSummary = async (
   }
 };
 
-export { getSummariesByUserId, createSummary, Summary }; // Exportar Summary
+export { getSummariesByUserId, getAllSummaries, createSummary, Summary }; // Exportar Summary
