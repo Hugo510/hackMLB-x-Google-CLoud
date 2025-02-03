@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, FlatList, ActivityIndicator } from 'react-native';
 import stylesHome from './Styles/stylesHome';
-import RecentlyNews from './components/recentlyNews';
+import GameSummary from './components/recentlyNews';
 import FavoriteGames from './components/favorites'; //Componente Simulado
 import WhitoutSession from '../../components/noProfile'; 
 import { useAuth } from "../../Context/AuthContext";
@@ -28,7 +28,7 @@ const Home = ({ navigation }) => {
             data={news}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <RecentlyNews news={[item]} navigation={navigation} />
+              <GameSummary summary={[item]} navigation={navigation} />
             )}
             contentContainerStyle={stylesHome.list}
           />

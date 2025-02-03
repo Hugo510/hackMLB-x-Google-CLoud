@@ -120,7 +120,19 @@ export const getFavoriteLiveGames = async (userId) => {
       teamIds.includes(game.teams.home.team.id) || teamIds.includes(game.teams.away.team.id)
     );
   } catch (error) {
-    console.error("Error fetching favorite live games:", error);
+    console.error("Error fetching favorite live games:");
     return [];
+  }
+};
+
+// Acceder a los resumenes: import apiClient from "./apiClient";
+
+export const fetchGameSummary = async (gameId) => {
+  try {
+    const response = await apiClient.get(`/game-summary/${gameId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching summary:");
+    return null;
   }
 };
