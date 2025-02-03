@@ -1,43 +1,43 @@
-# Documentación de Integración con Google Cloud Pub/Sub
+# Google Cloud Pub/Sub Integration Documentation
 
-## Descripción General
+## Overview
 
-Este proyecto utiliza **Google Cloud Pub/Sub** para manejar la publicación y suscripción de eventos clave relacionados con los juegos de MLB. La integración con Pub/Sub permite una arquitectura escalable y desacoplada para procesar eventos en tiempo real.
+This project uses **Google Cloud Pub/Sub** to handle the publishing and subscribing of key events related to MLB games. Pub/Sub integration provides a scalable and decoupled architecture for processing events in real time.
 
-## Componentes Principales
+## Main Components
 
-### Publicador de Eventos (`pubSubPublisher.ts`)
+### Event Publisher (`pubSubPublisher.ts`)
 
-- **Función Principal:** `publishGameEvent`
-- **Descripción:** Publica eventos de juego (como jonrones y ponches) en el tema de Pub/Sub especificado.
-- **Ubicación:** `src/utils/pubSubPublisher.ts`
+- **Main Function:** `publishGameEvent`
+- **Description:** Publishes game events (such as home runs and strikeouts) to the specified Pub/Sub topic.
+- **Location:** `src/utils/pubSubPublisher.ts`
 
-### Procesador de Eventos (`pubSubProcessor.ts`)
+### Event Processor (`pubSubProcessor.ts`)
 
-- **Función Principal:** `startPubSubProcessor`
-- **Descripción:** Suscribe al tema de Pub/Sub y procesa los mensajes entrantes según la lógica de negocio definida.
-- **Ubicación:** `src/middleware/pubSubProcessor.ts`
+- **Main Function:** `startPubSubProcessor`
+- **Description:** Subscribes to the Pub/Sub topic and processes incoming messages according to defined business logic.
+- **Location:** `src/middleware/pubSubProcessor.ts`
 
-### Servicios Relacionados (`mlbStatsService.ts`)
+### Related Services (`mlbStatsService.ts`)
 
-- **Función Principal:** `getGamesInProgress`
-- **Descripción:** Obtiene los juegos en progreso y publica eventos clave en Pub/Sub.
-- **Ubicación:** `src/services/mlbStatsService.ts`
+- **Main Function:** `getGamesInProgress`
+- **Description:** Fetches games in progress and publishes key events to Pub/Sub.
+- **Location:** `src/services/mlbStatsService.ts`
 
-## Configuración
+## Configuration
 
-### Variables de Entorno
+### Environment Variables
 
-Asegúrate de definir las siguientes variables en tu archivo `.env`:
+Make sure to define the following variables in your `.env` file:
 
-- `PUBSUB_TOPIC_NAME`: Nombre del tema de Pub/Sub donde se publicarán los eventos de juego.
-- `PUBSUB_SUBSCRIPTION_NAME`: Nombre de la suscripción de Pub/Sub que procesará los eventos de juego.
-- `ENABLE_PUBSUB_PROCESSOR`: Booleano para habilitar o deshabilitar el procesador de Pub/Sub (`true` o `false`).
+- `PUBSUB_TOPIC_NAME`: Name of the Pub/Sub topic where game events are published.
+- `PUBSUB_SUBSCRIPTION_NAME`: Name of the Pub/Sub subscription that will process game events.
+- `ENABLE_PUBSUB_PROCESSOR`: Boolean to enable or disable the Pub/Sub processor (`true` or `false`).
 
-### Archivo `.env.example`
+### `.env.example` File
 
 ```plaintext
-PUBSUB_TOPIC_NAME=game-events  # Nombre del tema de Pub/Sub para publicar eventos de juego
-PUBSUB_SUBSCRIPTION_NAME=game-events-subscription  # Nombre de la suscripción de Pub/Sub para procesar eventos de juego
-ENABLE_PUBSUB_PROCESSOR=false  # Habilitar (true) o deshabilitar (false) el procesador de Pub/Sub
+PUBSUB_TOPIC_NAME=game-events  # Name of the Pub/Sub topic for publishing game events
+PUBSUB_SUBSCRIPTION_NAME=game-events-subscription  # Name of the Pub/Sub subscription for processing game events
+ENABLE_PUBSUB_PROCESSOR=false  # Enable (true) or disable (false) the Pub/Sub processor
 ```
