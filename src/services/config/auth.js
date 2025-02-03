@@ -73,6 +73,7 @@ export const updatePreferences = async (preferences) => {
 // Obtener las preferencias del usuario
 export const getPreferences = async (userId) => {
   try {
+    
     const response = await axios.get(`http://${apiUrl}:${PORT}/api/users/preferences/${userId}`);
     console.log(response.data)
     return response.data;
@@ -91,5 +92,37 @@ export const getSchedule = async () => {
   } catch (error) {
     console.error("Error trayendo stats:", error);
     throw error;
+  }
+};
+
+// Obtener juegos en vivo de la MLB
+export const getLiveGame = async (gamePk) => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve({
+        gamePk: gamePk,
+        teams: {
+          away: { team: { id: 108, name: "Yankees" } },
+          home: { team: { id: 147, name: "Red Sox" } }
+        },
+        status: { detailedState: "Final" }
+      });
+    }, 1000);
+  });
+};
+
+
+// Filtrar Juegos en vivo de equipos favoritos
+export const getFavoriteLiveGames = async (userId) => {
+  try {
+    const teamIds = await getPreferences(userId);
+    const liveGames = await getLiveGames();
+
+    return liveGames.filter(game =>
+      teamIds.includes(game.teams.home.team.id) || teamIds.includes(game.teams.away.team.id)
+    );
+  } catch (error) {
+    console.error("Error fetching favorite live games:", error);
+    return [];
   }
 };
