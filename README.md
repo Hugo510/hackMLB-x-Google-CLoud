@@ -1,4 +1,4 @@
-# hackMLB-x-Google-CLoud
+# Google Cloud x MLB(TM) Hackathon – Building with Gemini Models
 
 For this project, React Native with Expo is used to build a mobile app focused on displaying MLB data, news, and games. Users can select favorite teams and manage preferences. The main file is `App.js`, entry point is `index.js`, and overall configuration is defined in `app.json`. Routing is handled in `src/controller/routes.js`.
 
