@@ -1,4 +1,4 @@
-# HackMLB-x-Google-Cloud
+# Google Cloud x MLB(TM) Hackathon – Building with Gemini Models
 
 ## Description
 
