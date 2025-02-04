@@ -30,9 +30,9 @@ const FavoriteGames = ({ navigation }) => {
             homeScore: 2,
             awayScore: 4,
             time: '11:05',
-            status: 'Top of the 5th',
-            homeImage: 'https://upload.wikimedia.org/wikipedia/en/0/08/Los_Angeles_Dodgers_Logo.svg',
-            awayImage: 'https://upload.wikimedia.org/wikipedia/en/5/58/San_Francisco_Giants_Logo.svg',
+            status: 'Live',
+            homeImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/LA_Dodgers.svg/1024px-LA_Dodgers.svg.png',
+            awayImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/San_Francisco_Giants_Cap_Insignia.svg/1200px-San_Francisco_Giants_Cap_Insignia.svg.png',
           }
         ];
         setLiveGames(mockLiveGames);
