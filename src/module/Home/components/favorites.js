@@ -49,7 +49,6 @@ const FavoriteGames = ({ navigation }) => {
   return (
     <View>
       {liveGames.map((game) => (
-        <TouchableOpacity key={game.gamePk} style={stylesFavorites.gameCard} onPress={() => navigation.navigate('GameDetails', { game })}>
           <View style={stylesFavorites.gameCard}>
             <Text style={stylesFavorites.status}>{game.status}</Text>
             <Text style={stylesFavorites.time}>{game.time}</Text>
@@ -67,7 +66,7 @@ const FavoriteGames = ({ navigation }) => {
               </View>
             </View>
           </View>
-        </TouchableOpacity>
+      
       ))}
     </View>
   );
