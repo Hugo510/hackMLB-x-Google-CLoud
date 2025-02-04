@@ -77,6 +77,15 @@ const startServer = async () => {
 
     app.listen(port, "0.0.0.0", () => {
       logger.info(`Servidor funcionando en el puerto ${port}`);
+
+      // Log adicional inicial
+      logger.info("La aplicación ha iniciado correctamente.");
+
+      // Log periódico: cada minuto se registra que la aplicación sigue corriendo.
+      setInterval(() => {
+        logger.info("La aplicación sigue corriendo...");
+      }, 60000);
+
       if (config.enablePubsubProcessor) {
         // Iniciar procesador de Pub/Sub condicionalmente basado en la configuración
         startPubSubProcessor();
