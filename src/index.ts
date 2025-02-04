@@ -50,7 +50,7 @@ app.use("/api/setup", setupRoutes); // Registrar rutas de setup
 // Middleware de manejo de errores
 app.use(errorHandler);
 
-const port = process.env.PORT || 8080;
+const port = parseInt(process.env.PORT || "8080", 10);
 
 /**
  * Función asíncrona para iniciar el servidor después de verificar la conexión a Firestore.
@@ -69,7 +69,7 @@ const startServer = async () => {
     // await redis.ping();
     // logger.info("Conexión a Redis exitosa.");
 
-    app.listen(port, () => {
+    app.listen(port, "0.0.0.0", () => {
       logger.info(`Servidor funcionando en el puerto ${port}`);
       if (config.enablePubsubProcessor) {
         // Iniciar procesador de Pub/Sub condicionalmente basado en la configuración
