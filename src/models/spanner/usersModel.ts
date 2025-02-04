@@ -50,7 +50,7 @@ const createUser = async (user: User): Promise<void> => {
         email: user.email,
         password: user.password,
         age: user.age,
-        phone: user.phone
+        phone: user.phone,
       },
     ];
     await database.table("Users").insert(rows);
@@ -132,7 +132,7 @@ const deleteUser = async (userId: string): Promise<void> => {
         return;
       }
       const query = {
-        columns: ["id", "name", "email", "password","status", "created_at"],
+        columns: ["id", "name", "email", "password", "status", "created_at"],
         keys: [[userId]],
       };
 

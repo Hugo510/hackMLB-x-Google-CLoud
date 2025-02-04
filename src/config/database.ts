@@ -1,44 +1,87 @@
 import { Spanner } from "@google-cloud/spanner";
 import { initializeApp, cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
+import { SecretManagerServiceClient } from "@google-cloud/secret-manager";
+import { writeFileSync, unlinkSync } from "fs";
+import { join } from "path";
+import { tmpdir } from "os";
 import { config } from "./index";
 import logger from "../config/logger";
 
-const initializeFirebase = () => {
-  if (!config.gcloudProjectId || !config.gcloudKeyfilePath) {
+const getFirebaseCredentials = async () => {
+  try {
+    // Crear cliente de Secret Manager con credenciales explícitas
+    const client = new SecretManagerServiceClient({
+      keyFilename: config.gcloudKeyfilePath,
+    });
+
+    const name = `projects/${config.gcloudProjectId}/secrets/hackmlb-keyfile/versions/1`;
+
+    const [version] = await client.accessSecretVersion({ name });
+    const credentials = version.payload?.data?.toString() || "";
+
+    // Crear archivo temporal
+    const tempPath = join(tmpdir(), `firebase-credentials-${Date.now()}.json`);
+    writeFileSync(tempPath, credentials);
+
+    return tempPath;
+  } catch (error) {
+    logger.error("Error obteniendo credenciales desde Secret Manager:", error);
+    // Si falla Secret Manager, usar el archivo local como fallback
+    logger.info("Usando archivo de credenciales local como fallback");
+    return config.gcloudKeyfilePath;
+  }
+};
+
+const initializeFirebase = async () => {
+  if (!config.gcloudProjectId) {
     throw new Error(
-      "Configuración de Firestore inválida: 'gcloudProjectId' o 'gcloudKeyfilePath' faltante."
+      "Configuración de Firestore inválida: 'gcloudProjectId' faltante."
     );
   }
 
-  initializeApp({
-    credential: cert(config.gcloudKeyfilePath),
-  });
+  let tempCredPath: string | null = null;
 
-  const firestore = getFirestore();
+  try {
+    tempCredPath = await getFirebaseCredentials();
 
-  const verifyFirestoreConnection = async () => {
-    try {
-      const collections = await firestore.listCollections();
-      const collectionNames = collections.map((col) => col.id);
-      logger.info("Colecciones en Firestore:", collectionNames);
-      if (!collectionNames.includes("gameEvents")) {
-        logger.warn("La colección 'gameEvents' no existe en Firestore.");
-      } else {
-        logger.info("La colección 'gameEvents' está accesible.");
-      }
-    } catch (error) {
-      logger.error("Error listando colecciones de Firestore:", error);
-      throw new Error("Error al verificar la conexión con Firestore.");
+    if (!tempCredPath) {
+      throw new Error("No se pudieron obtener las credenciales de Firebase");
     }
-  };
 
-  /* verifyFirestoreConnection(); */
+    initializeApp({
+      credential: cert(tempCredPath),
+    });
 
-  return firestore;
+    return getFirestore();
+  } catch (error) {
+    logger.error("Error inicializando Firebase:", error);
+    throw error;
+  } finally {
+    // Eliminar el archivo temporal si existe
+    if (tempCredPath) {
+      try {
+        unlinkSync(tempCredPath);
+        logger.info("Archivo de credenciales temporal eliminado");
+      } catch (unlinkError) {
+        logger.error("Error eliminando archivo temporal:", unlinkError);
+      }
+    }
+  }
 };
 
-const firestore = initializeFirebase();
+// Inicializar Firestore de manera asíncrona
+let firestore: any = null;
+
+initializeFirebase()
+  .then((fs) => {
+    firestore = fs;
+    logger.info("Firestore inicializado correctamente");
+  })
+  .catch((error) => {
+    logger.error("Error fatal inicializando Firestore:", error);
+    process.exit(1);
+  });
 
 const spanner = new Spanner({
   projectId: config.gcloudProjectId,

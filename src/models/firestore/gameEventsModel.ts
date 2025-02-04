@@ -1,4 +1,4 @@
-import { firestore, database } from "../../config/database";
+import { firestore } from "../../config/database";
 import logger from "../../config/logger";
 import { z } from "zod";
 import { FieldValue, Timestamp } from "firebase-admin/firestore"; // Importar FieldValue y Timestamp

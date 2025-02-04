@@ -1,7 +1,7 @@
 import { firestore } from "../../config/database";
 import logger from "../../config/logger";
 import { z } from "zod";
-import { FieldValue, Timestamp } from "firebase-admin/firestore"; // Importar FieldValue y Timestamp
+import { FieldValue, Timestamp, DocumentData } from "firebase-admin/firestore"; // Importar FieldValue, Timestamp y DocumentData
 
 // Definir el esquema de validación de resúmenes
 const summarySchema = z.object({
@@ -31,7 +31,7 @@ const getSummariesByUserId = async (
 
     const snapshot = await query.get();
 
-    const summaries: Summary[] = snapshot.docs.map((doc) => {
+    const summaries: Summary[] = snapshot.docs.map((doc: DocumentData) => {
       const data = summarySchema.parse(doc.data());
       return {
         id: doc.id,
@@ -67,7 +67,7 @@ const getAllSummaries = async (
 
     const snapshot = await query.get();
 
-    const summaries: Summary[] = snapshot.docs.map((doc) => {
+    const summaries: Summary[] = snapshot.docs.map((doc: DocumentData) => {
       const data = summarySchema.parse(doc.data());
       return {
         id: doc.id,
