@@ -54,6 +54,8 @@ app.use("/api/setup", setupRoutes); // Registrar rutas de setup
 // Middleware de manejo de errores
 app.use(errorHandler);
 
+logger.log("Puerto configurado:", process.env.PORT);
+
 const port = parseInt(process.env.PORT || "8080", 10);
 
 /**
