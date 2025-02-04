@@ -9,7 +9,6 @@ import { TabNavigator } from '../module/Tab/Components/navigation'
  import Games from '../module/teams/games'
  import Home from '../module/Home/home'
  import Notifications from '../module/notificationScreen/notificationScreen'
- import Players from '../module/Tab/screensTab/players'
  import Profile from '../module/profile/profile'
 
  import TopBar from '../module/topBar/TopBar'
@@ -27,41 +26,34 @@ const TabNav = () => {
         },
         {
             id: 2,
-            title: 'Players',
-            screen: 'Players',
-            icon: 'account-group',
-            Component: Players,
-        },
-        {
-            id: 3,
             title: 'Live',
             screen: 'LiveGames',
             icon: 'record-circle-outline',
             Component: LiveGames,
         },
         {
-            id: 4,
+            id: 3,
             title: 'Home',
             screen: 'Home',
             icon: 'home-outline',
             Component: Home,
         },
         {
-            id: 5,
+            id: 4,
             title: 'Favorites',
             screen: 'Favorites',
             icon: 'star-check',
             Component: Favorites,
         },
         {
-            id: 6,
+            id: 5,
             title: 'Notification',
             screen: 'Notification',
             icon: 'bell-badge-outline',
             Component: Notifications,
         },
         {
-            id: 7,
+            id: 6,
             title: 'Profile',
             screen: 'Profile',
             icon: 'account-circle-outline',
