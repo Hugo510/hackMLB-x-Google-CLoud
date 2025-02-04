@@ -5,7 +5,7 @@ import { credentials } from "./credentials";
 import { appSettings } from "./appSettings";
 
 const envSchema = Joi.object({
-  PORT: Joi.number().default(3000),
+  PORT: Joi.number().default(8080),
   MLB_STATS_BASEURL: Joi.string().default("https://statsapi.mlb.com"), // Añadir validación
   JWT_SECRET: Joi.string().required(),
   GCLOUD_PROJECT_ID: Joi.string().required(),
