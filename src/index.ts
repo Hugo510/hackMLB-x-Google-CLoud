@@ -38,6 +38,10 @@ app.use(morgan("combined"));
 app.use(compression());
 app.use(limiter); // Usar rateLimit
 
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 // Rutas principales
 app.use("/api/users", userRoutes);
 app.use("/api/games", gameRoutes);
