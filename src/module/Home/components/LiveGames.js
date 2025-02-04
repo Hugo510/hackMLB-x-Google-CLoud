@@ -24,8 +24,10 @@ const FavoriteLiveGames = () => {
   
         // Obtener preferencias
         const preferences = await getPreferences(user.id);
-        if (!preferences || !Array.isArray(preferences.teams)) {
-          throw new Error("No se pudieron obtener las preferencias");
+        if (!preferences || !Array.isArray(preferences.teams) || preferences.teams.length === 0) {
+          console.log("No hay preferencias, redirigiendo...");
+          navigation.replace("SelectTeamsScreen"); // 🔹 Redirige a la pantalla de selección
+          return;
         }
   
         // Convertir los IDs de los equipos
