@@ -62,9 +62,10 @@ export const getPreferences = async (userId) => {
   try {
     
     const response = await apiClient.get(`/api/users/preferences/${userId}`);
+    console.log(response.data)
     return response.data;
   } catch (error) {
-    console.error("Error al obtener preferencias:");
+    console.error("Error al obtener preferencias:",error);
     return { teams: [], players: [] }; 
   }
 };

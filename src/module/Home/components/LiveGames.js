@@ -4,12 +4,14 @@ import { getSchedule, getPreferences, getTeams, getLiveGame } from '../../../ser
 import stylesFavorites from '../Styles/stylesFavorites';
 import moment from 'moment';
 import { useAuth } from '../../../Context/AuthContext';
+import { useNavigation } from "@react-navigation/native";
 
 const FavoriteLiveGames = () => {
   const { user } = useAuth();
   const [liveGames, setLiveGames] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigation = useNavigation()
 
   useEffect(() => {
     const fetchLiveGames = async () => {

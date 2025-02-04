@@ -32,7 +32,7 @@ function Router() {
   }
 
   return (
-    <NavigationContainer>
+  
       <Stack.Navigator initialRouteName={initialRoute}>
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
@@ -41,7 +41,6 @@ function Router() {
         <Stack.Screen name="GameDetails" component={GameDetails} options={{ header: () => <TopBar title="FMLB" showIcons={false} /> }} />
         <Stack.Screen name="SelectTeamsScreen" component={SelectTeamsScreen} options={{ header: () => <TopBar title="FMLB" showIcons={false} /> }} />
       </Stack.Navigator>
-    </NavigationContainer>
   );
 }
 

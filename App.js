@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { AuthProvider, useAuth } from './src/Context/AuthContext';
 import Router from './src/controller/routes';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationContainer } from '@react-navigation/native';
 
 const App = () => {
   const { user, setUser, setToken, } = useAuth(); 
@@ -49,9 +50,11 @@ const App = () => {
 };
 const AppWrapper = () => {
   return (
-    <AuthProvider>
-      <App />
-    </AuthProvider>
+    <NavigationContainer>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </NavigationContainer>
   );
 };
 

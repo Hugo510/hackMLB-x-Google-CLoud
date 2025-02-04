@@ -1,5 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getPreferences } from "../services/config/auth";
+import { useNavigation, CommonActions } from "@react-navigation/native";
 
 const AuthContext = createContext();
 
@@ -7,7 +9,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true); 
-
+  const navigation= useNavigation();
+  
   useEffect(() => {
     const loadUserData = async () => {
       try {
@@ -15,17 +18,43 @@ export const AuthProvider = ({ children }) => {
         const storedUser = await AsyncStorage.getItem("userData");
 
         if (storedToken && storedUser) {
+          const parsedUser = JSON.parse(storedUser);
           setToken(storedToken);
-          setUser(JSON.parse(storedUser));
+          setUser(parsedUser);
+
+          // 🔹 Obtener preferencias y redirigir si no existen
+          try {
+            const preferences = await getPreferences(parsedUser.id);
+            if (!preferences || preferences.teams.length === 0) {
+              console.log("No hay preferencias, redirigiendo a selección de equipo...");
+              navigation.dispatch(
+                        CommonActions.reset({
+                            index: 0,
+                            routes: [{ name: 'SelectTeamsScreen' }]
+                        }));
+            }
+          } catch (error) {
+            if (error.response?.status === 404) {
+              console.log("Preferencias no encontradas (404), redirigiendo...");
+              navigation.dispatch(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: 'SelectTeamsScreen' }]
+                }));
+            } else {
+              console.error("Error al obtener preferencias:", error);
+            }
+          }
         }
       } catch (error) {
-        console.error("Error loading user data");
+        console.error("Error cargando datos del usuario:", error);
       }
       setLoading(false);
     };
 
     loadUserData();
   }, []);
+
 
   const loginUser = async (data) => {
     if (!data || !data.token) {
@@ -38,8 +67,31 @@ export const AuthProvider = ({ children }) => {
     await AsyncStorage.setItem("expirationDate", expirationDate.toString());
     setToken(data.token);
     setUser(data.user);
-  };
 
+ // 🔹 Verificar preferencias después del login
+    try {
+      const preferences = await getPreferences(data.user.id);
+      if (!preferences || preferences.teams.length === 0) {
+        console.log("No hay preferencias, redirigiendo...");
+        navigation.dispatch(
+          CommonActions.reset({
+              index: 0,
+              routes: [{ name: 'SelectTeamsScreen' }]
+          }));
+      }
+    } catch (error) {
+      if (error.response?.status === 404) {
+        console.log("Preferencias no encontradas (404), redirigiendo...");
+        navigation.dispatch(
+          CommonActions.reset({
+              index: 0,
+              routes: [{ name: 'SelectTeamsScreen' }]
+          }));
+      } else {
+        console.error("Error al obtener preferencias:", error);
+      }
+    }
+    };
   const logoutUser = async () => {
     await AsyncStorage.removeItem("userToken");
     await AsyncStorage.removeItem("userData");
