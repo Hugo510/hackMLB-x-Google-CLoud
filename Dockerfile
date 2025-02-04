@@ -50,8 +50,8 @@ LABEL version="1.0.0"
 LABEL description="hackMLB-x-Google-Cloud Backend"
 
 # Agregar healthcheck
-HEALTHCHECK --interval=60s --timeout=10s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:8080/health || exit 1
+#HEALTHCHECK --interval=60s --timeout=10s --start-period=60s --retries=3 \
+#  CMD curl -f http://localhost:8080/health || exit 1
 
 # Comando para iniciar la aplicación
 CMD ["node", "dist/index.js"]
